@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Queues login app</title>
+
+    <link rel="stylesheet" type="text/css" href="queues/styles.css"/>
+
+    <script src="queues/keycloak.js"></script>
+    <script src="queues/app.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="menu">
+            <button name="loginBtn" onclick="keycloak.login()" >Login</button>
+            <button name="logoutBtn" onclick="logout()">Logout</button>
+            <button name="queues" onclick="goToQueues()">Queues</button>
+        </div>
+
+        <div class="content">
+            <div class="message" id="message"></div>
+        </div>
+    </div>
+</body>
+
+</html>

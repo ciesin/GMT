@@ -1,0 +1,69 @@
+:host {
+  height: 100%;
+
+  & > button {
+    height: 100%;
+    // aspect-ratio: 1/1;
+
+    border: none;
+    color: var(--base-pale);
+    background: var(--base-dark);
+
+    cursor: pointer;
+  }
+}
+
+.user-email {
+  background: var(--base-light);
+  color: var(--base-base);
+  padding: 1rem;
+}
+
+.actions-container {
+  .mat-mdc-menu-item .mat-icon {
+    margin-right: 0;
+    width: 40px;
+    color: var(--base-dark);
+  }
+
+  & > button {
+    padding-left: 2rem;
+
+    span, a {
+      color: var(--base-dark);
+    }
+
+    a {
+      text-decoration: none;
+    }
+  }
+}
+
+::ng-deep app-help > a {
+  color: var(--base-dark);
+}
+
+.comment {
+  font-size: .7em;
+  color: var(--accent-base);
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+/* Fix the help link so clicking the non text part (whitespace to the right) also
+works.  This is just setting widths to 100% so the embedded link takes up the buttons full
+width*/
+::ng-deep button {
+  span {
+    width: 100%;
+    display: block;
+
+    app-help {
+      width: 100%;
+      display: block;
+
+
+    }
+  }
+}

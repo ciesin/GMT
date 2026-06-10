@@ -1,0 +1,58 @@
+@import "../../../_shared/components/accordion/accordion.component.less";
+@import "../../../components/catchment-card/catchment/catchment.component.less";
+
+:host {
+  display: block;
+  background: var(--base-pure-white);
+}
+
+.location-icon {
+  color: var(--accent-base);
+}
+
+.inside-ward-content {
+  color: var(--base-base);
+}
+
+.outside-ward-content {
+  color: var(--base-dark);
+}
+
+.problems-and-boundary-content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-block-end: 0.5rem;
+
+  fa-icon {
+    margin-inline-end: 0.5rem;
+  }
+}
+
+.inside-outside-ward-content {
+  color: var(--base-base);
+  text-align: center;
+}
+
+hr {
+  border-style: solid;
+  border-color: var(--base-light);
+  border-top: 0;
+}
+
+.detailed {
+  margin-bottom: 1em;
+}
+
+mat-expansion-panel.mat-expansion-panel
+  mat-expansion-panel-header.mat-expansion-panel-header
+  .mat-expansion-panel-header-title {
+  &.has-problematic {
+    color: var(--settlements-special);
+
+    fa-icon {
+      color: inherit;
+    }
+  }
+}

@@ -1,0 +1,59 @@
+<div gmtPopup class="rolesEditCardContainer">
+  <img src="assets/icons/close.png" class="closeBtn" (click)="handleClose()">
+  <div class="card">
+    <div class="header">
+      Roles attribution
+    </div>
+    <div class="gmtCard">
+      Select one or many roles to attribute to these <b>{{(selectedUsers.length == 1)? '1 user': selectedUsers.length + ' users'}} </b>:
+      <div class="row">
+        <div class="column1">
+          <b>User Administrator: </b>
+        </div>
+        <div class="column2">
+          {{userAdminRoleExplanation}}
+        </div>
+        <div class="column3">
+          <input type="checkbox" (change)="handleRoleCheck($event.target, userAdminRole)"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="column1">
+          <b>Editor: </b>
+        </div>
+        <div class="column2">
+          {{editorRoleExplanation}}
+        </div>
+        <div class="column3">
+          <input type="checkbox" (change)="handleRoleCheck($event.target, editorRole)"/>
+        </div>
+      </div>
+            <div class="row">
+        <div class="column1">
+          <b>Editor: </b>
+        </div>
+        <div class="column2">
+          {{participationManagerRoleExplanation}}
+        </div>
+        <div class="column3">
+          <input type="checkbox" (change)="handleRoleCheck($event.target, participationManagerRole)"/>
+        </div>
+      </div>
+            <div class="row">
+        <div class="column1">
+          <b>Editor: </b>
+        </div>
+        <div class="column2">
+          {{microPlaningStatusManagerRoleExplanation}}
+        </div>
+        <div class="column3">
+          <input type="checkbox" (change)="handleRoleCheck($event.target, microplanStatusManagerRole)"/>
+        </div>
+      </div>
+      <div class="saveContainer">
+        <div class="gmtTextButton" pButton (click)="handleClose()">Cancel</div>
+        <button class="save" pButton (click)="handleSaveRoles()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

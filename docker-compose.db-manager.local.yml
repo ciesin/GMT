@@ -1,0 +1,19 @@
+services:
+  db-manager:
+    image: "${DOCKER_IMAGES_PREFIX-gmt_}db-manager:${APP_VERSION-latest}"
+    networks:
+      gmt-net:
+    env_file:
+      - config/${CONFIG_FILE_NAME}.env
+      - config/secrets.${CONFIG_FILE_NAME}.env
+
+    deploy:
+      restart_policy:
+#        condition: none
+        max_attempts: 0
+    command: ["bash", "-c", "/init-scripts/000001.000001_Prerequisites.sh && apply-migrations.sh"]
+
+networks:
+  gmt-net:
+    name: '${DOCKER_NETWORK_NAME}'
+    external: '${DOCKER_NETWORK_IS_EXTERNAL}'

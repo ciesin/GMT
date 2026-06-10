@@ -1,0 +1,337 @@
+<header class="side-heading details">
+  <h4><fa-icon icon="sliders"></fa-icon>Data Management</h4>
+  <p>Manage local data, settings, and exports.</p>
+</header>
+<div class="mp-period" *ngIf="userCanResetMicroplan">
+  <div class="title">{{ resetMpAdmin1Name }}</div>
+  <div class="detail">
+    <div>
+      <span>{{ resetMicroplanErrorMessage }}</span>
+    </div>
+
+    @if (resetMpAdmin1Name) {
+    <button mat-flat-button (click)="startNewMPPeriod()">
+      <fa-icon icon="calendar-check"></fa-icon>
+      <span class="pre-label">Start</span>
+      <span class="label">New MP Period</span>
+    </button>
+    }
+  </div>
+</div>
+
+<mat-accordion displayMode="flat">
+  <mat-expansion-panel class="is-form" expanded>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <fa-icon icon="download"></fa-icon>
+        Downloaded Wards
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="filter-row">
+      <mat-form-field class="search" subscriptSizing="dynamic">
+        <mat-label>DOWNLOAD WARD</mat-label>
+        <fa-icon matPrefix icon="magnifying-glass"></fa-icon>
+        <input
+          matInput
+          #searchWardDlInput
+          [(ngModel)]="searchWardDl"
+          (ngModelChange)="searchWardDlUpdate.next($event)"
+          [matAutocomplete]="wardDlAuto"
+          type="text"
+          placeholder="Find Ward"
+        />
+        <a matSuffix (click)="searchWardDl = ''"
+          ><fa-icon [icon]="['far', 'circle-xmark']"></fa-icon
+        ></a>
+        <mat-autocomplete
+          #wardDlAuto="matAutocomplete"
+          (optionSelected)="takeOffline($event)"
+        >
+          <mat-option
+            *ngFor="
+              let boundary of searchedWardsDl | async;
+              trackBy: indentifyNode
+            "
+            [value]="boundary.global_id"
+          >
+            <fa-icon icon="download"></fa-icon>
+            <div class="boundary">
+              <span class="parent-admins">
+                <span *ngFor="let parent of boundary.hierarchy.slice(1)">{{
+                  parent
+                }}</span>
+              </span>
+              <span>{{ boundary.label }}</span>
+            </div>
+            <i>download</i>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+    <ward-download-card
+      *ngFor="let ward of offlineWards; trackBy: boundaryId"
+      [node]="ward"
+      [modified]="modifiedOfflineWardsIds.has(ward.global_id)"
+      (removeOfflineData)="removeOfflineData($event)"
+    ></ward-download-card>
+    <div class="empty" *ngIf="!offlineWards.size">No offline ward</div>
+
+    <!--Adding tooltip here so it can be seen when the sync button is disabled-->
+    <div class="action-buttons" [matTooltip]="syncTooltipMsg">
+      <button mat-flat-button [disabled]="!canSync" (click)="synchronize()">
+        <fa-icon icon="sync"></fa-icon>
+        <span class="label">Synchronize</span>
+      </button>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel class="is-form">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <fa-icon icon="file-export"></fa-icon>
+        Export Data & Maps
+        <span *ngIf="!!numberOfBoundariesSelectedForExport">
+          &nbsp;({{ numberOfBoundariesSelectedForExport.toLocaleString() }})
+        </span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="filter-row">
+      <mat-form-field class="search" subscriptSizing="dynamic">
+        <mat-label>ADD TO EXPORT</mat-label>
+        <fa-icon matPrefix icon="magnifying-glass"></fa-icon>
+        <input
+          matInput
+          #searchExportInput
+          [(ngModel)]="searchBoundaryExport"
+          (ngModelChange)="searchBoundaryExportUpdate$.next($event)"
+          [matAutocomplete]="BoundaryExportAuto"
+          type="text"
+          placeholder="Search Boundary"
+        />
+        <fa-icon matSuffix [icon]="['far', 'circle-xmark']"></fa-icon>
+        <mat-autocomplete
+          #BoundaryExportAuto="matAutocomplete"
+          (optionSelected)="selectBoundaryForExport($event)"
+        >
+          <mat-option
+            *ngFor="
+              let boundary of searchedBoundariesExport$ | async;
+              trackBy: indentifyNode
+            "
+            [value]="boundary.global_id"
+          >
+            <fa-icon icon="file-export"></fa-icon>
+            <div class="boundary">
+              <span class="parent-admins">
+                <span *ngFor="let parent of boundary.hierarchy.slice(1)">{{
+                  parent
+                }}</span>
+              </span>
+              <span>{{ boundary.label }}</span>
+            </div>
+            <i>add to export</i>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+    <ng-container *ngIf="!!shownExportBoundaries?.length">
+      <a
+        mat-button
+        (click)="drillUpExportBoundary()"
+        *ngIf="exportLevel && exportLevel.number > 0"
+      >
+        <fa-icon icon="circle-arrow-left"></fa-icon>
+        back to {{ getBackBoundaryLabel() }} list
+      </a>
+      <div class="parent-level-title" *ngIf="exportLevel">
+        {{ exportLevel.node.label }}
+      </div>
+      <mat-checkbox
+        class="select-all"
+        *ngIf="exportLevel.number"
+        (change)="selectAllForExport($event)"
+        [checked]="hasExportChildrenSelected(exportLevel.node) === 'all'"
+      >
+        Select All
+      </mat-checkbox>
+    </ng-container>
+
+    <export-boundary-card
+      *ngFor="let boundary of shownExportBoundaries; trackBy: indentifyNode"
+      [checked]="hasExportChildrenSelected(boundary)"
+      [node]="boundary"
+      (select)="selectBoundaryForExport($event)"
+      (drillDown)="drillDownExportBoundary($event)"
+    ></export-boundary-card>
+    <div class="empty" *ngIf="!shownExportBoundaries?.length">
+      Use search input to add boundary for export
+    </div>
+
+    <div class="action-buttons">
+      <button
+        mat-flat-button
+        (click)="openExportDialog()"
+        [disabled]="!numberOfBoundariesSelectedForExport"
+      >
+        <fa-icon icon="file-export"></fa-icon>
+        <span class="label" *ngIf="!!numberOfBoundariesSelectedForExport"
+          >export ({{
+            numberOfBoundariesSelectedForExport.toLocaleString()
+          }})</span
+        >
+        <span class="label" *ngIf="!numberOfBoundariesSelectedForExport"
+          >export</span
+        >
+      </button>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel *ngIf="userHasParticipationManagerRole">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <fa-icon icon="plus"></fa-icon>
+        Participation in Microplanning
+        <span *ngIf="!!selectedBoundariesForMP.size">
+          &nbsp;({{ selectedBoundariesForMP.size.toLocaleString() }})
+        </span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="filter-row">
+      <mat-form-field class="search" subscriptSizing="dynamic">
+        <mat-label>ADD TO MICROPLAN</mat-label>
+        <fa-icon matPrefix icon="magnifying-glass"></fa-icon>
+        <input
+          matInput
+          #searchMPInput
+          [(ngModel)]="searchBoundaryMP"
+          (ngModelChange)="searchBoundaryMPUpdate.next($event)"
+          [matAutocomplete]="BoundaryMPAuto"
+          type="text"
+          placeholder="Search Boundary"
+        />
+        <fa-icon matSuffix [icon]="['far', 'circle-xmark']"></fa-icon>
+        <mat-autocomplete
+          #BoundaryMPAuto="matAutocomplete"
+          (optionSelected)="selectBoundaryForMP($event)"
+        >
+          <mat-option
+            *ngFor="
+              let boundary of searchedBoundariesMP | async;
+              trackBy: indentifyNode
+            "
+            [value]="boundary.global_id"
+          >
+            <fa-icon icon="plus"></fa-icon>
+            <div class="boundary">
+              <span class="parent-admins">
+                <span *ngFor="let parent of boundary.hierarchy.slice(1)">{{
+                  parent
+                }}</span>
+              </span>
+              <span>{{ boundary.label }}</span>
+            </div>
+            <i>add to microplan</i>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+    <a mat-button (click)="drillUpMPBoundary()" *ngIf="mpLevel > 0">
+      <fa-icon icon="circle-arrow-left"></fa-icon>
+      back to {{ mpLevel < 2 ? "states" : "LGAs" }} list
+    </a>
+    <div class="parent-level-title">
+      {{ shownMPBoundaries.at(0)?.parent?.label }}
+    </div>
+
+    <mat-checkbox class="select-all" (change)="selectAllForMP($event)"
+      >Select All</mat-checkbox
+    >
+    <export-boundary-card
+      *ngFor="let boundary of shownMPBoundaries; trackBy: indentifyNode"
+      [checked]="hasMPChildrenSelected(boundary)"
+      [node]="boundary"
+      (select)="selectBoundaryForMP($event)"
+      (drillDown)="drillDownMPBoundary($event)"
+    ></export-boundary-card>
+
+    <div class="action-buttons">
+      <button
+        mat-flat-button
+        (click)="saveMPBoundaries()"
+        [disabled]="!selectedBoundariesForMP.size"
+      >
+        <fa-icon icon="circle-check"></fa-icon>
+        <span class="label" *ngIf="selectedBoundariesForMP.size > 0"
+          >save list ({{ selectedBoundariesForMP.size.toLocaleString() }})</span
+        >
+        <span class="label" *ngIf="selectedBoundariesForMP.size <= 0"
+          >save list</span
+        >
+      </button>
+    </div>
+  </mat-expansion-panel>
+  <mat-expansion-panel *ngIf="userHasApiRole">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <fa-icon icon="key"></fa-icon>
+        API Integration
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="api-description">
+      Use the API to access custom data, generating a token with a specific set
+      of permissions. Do not share your personal access token with anyone you
+      don’t want accessing sensitive information.
+    </div>
+    <div class="existing-tokens-container">
+      <div class="existing-token" *ngFor="let token of userApiTokens">
+        <div class="name-details">
+          <div class="name">{{ token.name }}</div>
+          <div class="details">
+            Use count: {{ token.use_count }} Expires:
+            {{ formatApiTokenDate(token.expire_date) }}
+          </div>
+        </div>
+        <div class="delete-container">
+          <button
+            mat-button
+            color="accent"
+            (click)="handleDeleteUserApiToken(token)"
+          >
+            <fa-icon icon="trash-can"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="action-buttons">
+      <button mat-flat-button (click)="openApiTokenDialog()">
+        <fa-icon icon="plus"></fa-icon>
+        <span class="label">Generate new token</span>
+      </button>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<div class="action-buttons">
+  <button mat-flat-button (click)="backup()">
+    <fa-icon icon="download"></fa-icon>
+    <span class="label">Backup</span>
+  </button>
+  <button mat-flat-button (click)="restoreBackup.click()">
+    <fa-icon icon="upload"></fa-icon>
+    <span class="label">Restore</span>
+    <input
+      hidden
+      type="file"
+      class="fileInput"
+      (change)="restore($event)"
+      #restoreBackup
+      id="restoreBackup"
+    />
+  </button>
+</div>

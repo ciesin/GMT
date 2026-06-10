@@ -1,0 +1,24 @@
+[workspace]
+
+members = [
+	"gdal-sys",
+    "gdal",
+	"geos",
+	"geos-sys",
+	"geo_util",
+
+	"raster_to_point",
+	"zonal_stats",
+	"cmdline_tools",
+	"calc_boundary_data",
+	"agg_settlements",
+	"raster_overview",
+
+	"raster_resample",
+
+	"raster_merge",
+
+	"buffer_shapes",
+	"union_shapes",
+	"remove_overlapping",
+]

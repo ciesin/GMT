@@ -1,0 +1,169 @@
+<mat-expansion-panel
+  class="sub-sub-expansion is-form"
+  [expanded]="
+    singleHfService.expandedOutreachGuid == outreach.json.properties.global_id
+  "
+  (opened)="handleOpenOutreachPanel()"
+  (closed)="handleCloseOutreachPanel()"
+>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <!-- fa-icon
+        class="v-align-middle accordion-title-icon"
+        [icon]="'location-crosshairs'"
+        (click)="handleShowHfSiteOnMap($event)"
+      ></fa-icon -->
+      {{ outreach.name }}
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <!--     [formGroup]="outreachDetailsInfoFormGroup"-->
+  <form
+    class="form-vertical outreach-details-content-form"
+    [formGroup]="outreachDetailsFormGroup"
+  >
+    <ng-template matStepLabel>Details</ng-template>
+
+    <mat-form-field subscriptSizing="dynamic" class="full-width">
+      <mat-label>SITE NAME</mat-label>
+      <!--           formControlName="name" -->
+      <input
+        matInput
+        placeholder="Outreach Site Name"
+        required
+        [formControlName]="FORM_KEY_NAME"
+        (ngModelChange)="nameChange($event)"
+      />
+    </mat-form-field>
+    <mat-form-field subscriptSizing="dynamic" class="full-width">
+      <mat-label>COMMENTS</mat-label>
+      <input
+        matInput
+        placeholder="Comments"
+        [formControlName]="FORM_KEY_COMMENTS"
+        (ngModelChange)="commentsChange($event)"
+      />
+    </mat-form-field>
+    <div class="fake-mat-form-field half-width">
+      <mat-label>TRANSPORT</mat-label>
+      <mat-select
+        placeholder="--"
+        [formControlName]="FORM_KEY_TRANSPORT"
+        (ngModelChange)="transportChange()"
+        multiple
+      >
+        <mat-option *ngFor="let opt of transportOptions" [value]="opt.value">{{
+          opt.label
+        }}</mat-option>
+      </mat-select>
+    </div>
+
+    <!--Group frequency and days of operation together, apply button recalculates catchment-->
+
+    <!--have 2 panels because we need the structure to change if weekly is selected or not
+    When its non weekly, the apply and frequency combo are on the same line
+    When its weekly, the frequency combo takes the entire width
+    -->
+    <div
+      class="frequency-panel-non-weekly"
+      *ngIf="
+        outreachDetailsFormGroup.get(this.FORM_KEY_FREQUENCY)!.value != 'weekly'
+      "
+    >
+      <div class="content">
+        <mat-form-field subscriptSizing="dynamic" class="half-width">
+          <mat-label>FREQUENCY</mat-label>
+          <mat-select
+            [formControlName]="FORM_KEY_FREQUENCY"
+            (ngModelChange)="frequencyChange()"
+          >
+            <mat-option
+              *ngFor="let opt of frequencyOptions"
+              [value]="opt.value"
+              >{{ opt.label }}</mat-option
+            >
+          </mat-select>
+          <fa-icon matSuffix icon="caret-down"></fa-icon>
+        </mat-form-field>
+      </div>
+      <!--      <div class="button-container">-->
+      <!--        <button mat-button color="accent" (click)="handleRecalc()">-->
+      <!--          <span>Apply</span>-->
+      <!--        </button>-->
+      <!--      </div>-->
+    </div>
+    <div
+      class="frequency-panel"
+      *ngIf="
+        outreachDetailsFormGroup.get(this.FORM_KEY_FREQUENCY)!.value == 'weekly'
+      "
+    >
+      <mat-form-field subscriptSizing="dynamic" class="half-width">
+        <mat-label>FREQUENCY</mat-label>
+        <mat-select
+          [formControlName]="FORM_KEY_FREQUENCY"
+          (ngModelChange)="frequencyChange()"
+        >
+          <mat-option
+            *ngFor="let opt of frequencyOptions"
+            [value]="opt.value"
+            >{{ opt.label }}</mat-option
+          >
+        </mat-select>
+        <fa-icon matSuffix icon="caret-down"></fa-icon>
+      </mat-form-field>
+      <div class="flex-container">
+        <div class="content">
+          <span
+            *ngIf="
+              outreachDetailsFormGroup.get(this.FORM_KEY_FREQUENCY)!.value ==
+              'weekly'
+            "
+            >Days of operation</span
+          >
+
+          <div
+            class="days-container"
+            *ngIf="
+              outreachDetailsFormGroup.get(this.FORM_KEY_FREQUENCY)!.value ==
+              'weekly'
+            "
+          >
+            <days
+              [selectedDays]="selectedDays"
+              (selectedDaysChange)="dayOptionChange($event)"
+              [disabled]="daysDisabled"
+            ></days>
+          </div>
+        </div>
+        <!--        <div class="button-container">-->
+        <!--          <button mat-button color="accent" (click)="handleRecalc()">-->
+        <!--            <span>Apply</span>-->
+        <!--          </button>-->
+        <!--        </div>-->
+      </div>
+    </div>
+    <mat-action-row
+      class="full-width"
+      *ngIf="editing && userHasPermissionsUpdateHf"
+    >
+      <button mat-button color="accent" (click)="handleDelete()">
+        <fa-icon icon="trash-can"></fa-icon>
+        <span> Delete</span>
+      </button>
+
+      <button mat-button color="accent" (click)="handleShowHfSiteOnMap($event)">
+        <fa-icon [icon]="'location-crosshairs'"></fa-icon>
+        <span> Locate</span>
+      </button>
+      <button
+        mat-button
+        mat-flat-button
+        color="accent"
+        (click)="enableLocationWizard()"
+      >
+        <fa-icon icon="location-crosshairs"></fa-icon>
+        <span> EDIT Location</span>
+      </button>
+    </mat-action-row>
+  </form>
+</mat-expansion-panel>

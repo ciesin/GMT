@@ -1,0 +1,69 @@
+<ng-container
+  *ngIf="settlementIssueItem && settlementIssueItem.settlementName && settlementIssueItem.settlementPart"
+>
+  <mat-expansion-panel
+  class="sub-sub-expansion is-form"
+    (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false"
+    (click)="onOpenPanelAction()"
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title
+        [class]="{'has-problematic': hasProblems()}"
+      >
+        <fa-icon
+          icon="location-crosshairs"
+          (click)="handleShowSettlementSiteOnMap($event)"
+        ></fa-icon>
+        {{settlementIssueItem.settlementName.properties.name}}
+      </mat-panel-title>
+      <mat-panel-description>
+        <div class="gmt-stats">
+          <div class="gmt-stats-text">
+            <span>{{formatPopulation(coverage.pop)}}</span>
+            <!-- span>{{formatPercentage(100 - coverage.percUnclaimed)}}</span -->
+          </div>
+          <gmt-catchment
+            mode="progressbar"
+            type="settlement"
+            [total]="coverage.pop"
+            [fixedPost]="coverage.fixedPost"
+            [outreach]="coverage.outreach"
+            [unclaimed]="coverage.unclaimed"
+            [settlementProblems]="coverage.problematic"
+          >
+          </gmt-catchment>
+        </div>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="panel-content">
+      <div>Please enter the name for the settlement.</div>
+      <form class="form-vertical" [formGroup]="basicInformationFormGroup">
+        <mat-form-field subscriptSizing="dynamic" class="st-name-input">
+          <mat-label>NAME</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Name"
+            name="settlement_name"
+            [formControlName]="FORM_KEY_NAME"
+            [disabled]="!userCanEdit"
+          />
+        </mat-form-field>
+        <span class="inline-edit-button" *ngIf="userCanEdit">
+          <button mat-flat-button (click)="nameChange()">
+            <fa-icon icon="circle-check"></fa-icon>
+            <span class="label">save</span>
+          </button>
+        </span>
+      </form>
+    </div>
+    <div class="mat-action-row">
+      <button mat-button mat-flat-button (click)="redirectToDetails()">
+        <fa-icon icon="share"></fa-icon>
+        <span class="pre-label">go to</span>
+        <span class="label">details</span>
+      </button>
+    </div>
+  </mat-expansion-panel>
+</ng-container>

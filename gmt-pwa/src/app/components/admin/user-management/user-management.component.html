@@ -1,0 +1,95 @@
+<ng-container *ngIf="!loaded">
+
+</ng-container>
+<div class="header">
+  <ul>
+    <li (click)="goToRoot()">
+      Nigeria
+    </li>
+  </ul>
+  <div class="main">
+    <h1>User Management</h1>
+  </div>
+</div>
+<ng-container *ngIf="!isOnline">
+  <div class="offline" style="color:white;background-color: darkred">You are offline. You need to connect to see user
+    management page.
+  </div>
+</ng-container>
+<ng-container *ngIf="!userIsUserAdmin">
+  <div class="offline">User doesn't have access to this page or is not logged in.</div>
+</ng-container>
+<div class="dashboard-container" *ngIf="userIsUserAdmin">
+  <ng-container *ngIf="!loaded">
+
+  </ng-container>
+  <ng-container *ngIf="loaded">
+    <ng-container *ngIf="!userEditorView">
+      <div class="controlsAboveTable">
+        <button mat-button class="back" (click)="goToRoot()">
+          <fa-icon
+            class="back-to-listing-icon"
+            icon="circle-arrow-left"
+          ></fa-icon>
+          <span class="label">Back to Microplan</span>
+        </button>
+<!--        <div class="controlButton">-->
+<!--          <button class="textButton p-button-text"-->
+<!--                  [ngClass]="{'active' : editableGeoPermissions}" pButton-->
+<!--                  (click)="handleGeoPermissionsAssignment()">-->
+<!--            <img *ngIf="!editableGeoPermissions" class="icon" src="assets/icons/user-management/geo-permissions.svg"-->
+<!--                 alt="Geographic permissions assignment">-->
+<!--            <img *ngIf="editableGeoPermissions" class="icon"-->
+<!--                 src="assets/icons/user-management/geo-permissions-active.svg" alt="Geographic permissions assignment">-->
+<!--            Geographic assignment-->
+<!--          </button>-->
+<!--        </div>-->
+<!--        <div class="controlButton">-->
+<!--          <button class="textButton p-button-text"-->
+<!--                  [ngClass]="{'active' : editableRoles}"-->
+<!--                  pButton (click)="handleRoleAssignment()">-->
+<!--            <img *ngIf="!editableRoles" class="icon" src="assets/icons/user-management/role.svg" alt="Roles assignment">-->
+<!--            <img *ngIf="editableRoles" class="icon" src="assets/icons/user-management/role-active.svg"-->
+<!--                 alt="Roles assignment">-->
+<!--            Role-->
+<!--          </button>-->
+<!--        </div>-->
+        <div class="alignRightButton">
+          <button mat-flat-button (click)="handleUserChanged(null)">
+            <fa-icon icon="user-plus"></fa-icon>
+            <span class="label">New User</span>
+          </button>
+        </div>
+        <div class="controlButton">
+          <input type="file" class="fileInput" (change)="handleImportUsers($event)" #usersCsv id="usersCsv"/>
+
+          <button mat-flat-button (click)="usersCsv.click()">
+            <fa-icon icon="upload"></fa-icon>
+            <span class="label">Import Users</span>
+          </button>
+        </div>
+      </div>
+      <user-list [refreshUserList]="refreshUserList.asObservable()"
+                 [editableRolesObs]="editableRolesObs.asObservable()"
+                 [editableGeoPermissionsObs]="editableGeoPermissionsObs.asObservable()"
+                 [applyUserEditsObs]="applyUserEditsObs.asObservable()"
+                 [cancelUserEditsObs]="cancelUserEditsObs.asObservable()"
+                 (calcelEdits)="handleCancelMultipleUserUpdate()"
+                 (totalUsers)="handleTotalUsersChanged($event)"
+                 (userSelected)="handleUserChanged($event)"
+      ></user-list>
+
+    </ng-container>
+    <user-create *ngIf="userEditorView" userId={{userId}}
+                 (userIsUpdated)="handleRefreshUsersList()"
+                 (userEditorClosed)="handleEditUserOpen(false)"></user-create>
+  </ng-container>
+</div>
+<ng-container *ngIf="loaded && isOnline && !userEditorView">
+  <div *ngIf="editableRoles" class="footer">
+    <div *ngIf="!userEditorView" class="cancel p-button-text alignRightButton" pButton
+         (click)="handleCancelMultipleUserUpdate()">Cancel
+    </div>
+    <div *ngIf="!userEditorView" class="saveFooter" pButton (click)="handleMultipleUsersUpdate()">Apply</div>
+  </div>
+</ng-container>

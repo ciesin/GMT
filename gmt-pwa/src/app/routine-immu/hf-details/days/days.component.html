@@ -1,0 +1,13 @@
+<div>
+  <div class="day-grid">
+    <button
+      *ngFor="let day of days; let i = index"
+      (click)="toggleDay(i)"
+      [ngClass]="{ selected: isSelected(i) }"
+      class="day-button"
+    >
+      <span>{{ day }}</span>
+      <span *ngIf="isSelected(i)" class="check">✓</span>
+    </button>
+  </div>
+</div>

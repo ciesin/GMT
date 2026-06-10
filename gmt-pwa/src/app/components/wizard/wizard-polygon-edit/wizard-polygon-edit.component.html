@@ -1,0 +1,47 @@
+<!-- <ng-template matStepLabel>{{stepTitle}}</ng-template> -->
+<ng-container *ngIf="isVisible">
+  <div>
+    {{ stepDescription }} Click / tap to draw the polygon. Double click / tap
+    twice to complete it. If needed, edit the polygon after completion by
+    selecting it.
+  </div>
+  <!-- <div *ngIf="editMode">
+    
+        You have completed drawing your settlement shape. If your shape is not
+        correct, you can <em>Start Over</em> and create a new one.  It is also possible to edit the shape before clicking Next.
+    Click on the shape to active editing (it will turn blue). Drag the
+          blue point to change the shape.
+</div> -->
+  <div class="wizard-buttons">
+    <button
+      mat-button
+      color="accent"
+      (click)="initializeDrawing(true)"
+      *ngIf="editMode"
+    >
+      <fa-icon icon="times"></fa-icon>
+      <span>Start Over</span>
+    </button>
+    <button
+      mat-button
+      color="accent"
+      (click)="undoDrawnVertices()"
+      *ngIf="!editMode"
+    >
+      <fa-icon icon="arrow-left"></fa-icon>
+      <span>Undo point</span>
+    </button>
+    <!-- button mat-button (click)="showHelpDelineateParentSettlement()">
+    <fa-icon icon="person-chalkboard"></fa-icon>
+    <span>Show me</span>
+    </button -->
+    <button
+      mat-flat-button
+      [disabled]="!editMode"
+      (click)="handleNextClicked()"
+    >
+      <fa-icon icon="circle-arrow-right"></fa-icon>
+      <span>Next</span>
+    </button>
+  </div>
+</ng-container>

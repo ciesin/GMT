@@ -1,0 +1,134 @@
+@import "../map-control.component.less";
+@import "src/shared";
+
+#gmt-legend {
+  @padding: 1rem;
+
+  /*
+   * legend modal header
+   */
+  .gmt-legend--header {
+    display: flex;
+    justify-content: space-between;
+
+    .heading {
+      padding: (@padding / 2) @padding;
+      padding-bottom: 0;
+    }
+
+    button.gmt-legend--close {
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+      font-size: 1.15rem;
+      color: var(--accent-base);
+    }
+  }
+
+  /*
+   * legend modal body
+   */
+  .gmt-legend--body {
+    padding: @padding;
+    padding-top: 0;
+    overflow: scroll;
+
+    // basics
+    section {
+      margin: 0.5rem 0;
+
+      header {
+        border-bottom: 1px dotted var(--base-base);
+
+        > mat-checkbox {
+          margin-left: -0.75rem;
+        }
+
+        h5 {
+          font-weight: 500;
+        }
+      }
+    }
+
+    // layer checkbox-buttons
+    ul,
+    li {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    ul {
+      margin-left: 0.5rem;
+    }
+
+    li {
+      display: inline;
+
+      /*
+       * Layer toggle button w/ checkbox effect
+       * (default display is unchecked)
+       */
+      mat-checkbox.mat-mdc-checkbox {
+        margin: 0.25rem;
+        padding-right: 0.75rem;
+        border-radius: 0.5rem;
+        background: var(--accent-pale);
+
+        &.is-pop {
+          ::ng-deep label {
+            flex-direction: column-reverse;
+          }
+        }
+
+        mat-icon,
+        fa-icon,
+        img {
+          opacity: 0.5;
+        }
+
+        // w/o ng-deep wont work
+        ::ng-deep label {
+          margin-left: -0.25rem;
+          padding-left: 0;
+          display: flex;
+          align-items: center;
+
+          h6 {
+            margin-left: 0.15rem;
+            color: var(--base-base);
+          }
+        }
+
+        // State: checked
+        &.mat-mdc-checkbox-checked {
+          background: var(--accent-light);
+          color: var(--base-dark);
+
+          h6 {
+            color: var(--base-black);
+            line-height: 1.15;
+          }
+
+          mat-icon,
+          fa-icon,
+          img {
+            opacity: 1;
+          }
+        }
+      } // mat-checkbox
+    } // li
+  }
+}
+
+/*
+ * responsive
+ */
+
+.gmt-legend--body {
+  @media screen and (min-width: 650px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}

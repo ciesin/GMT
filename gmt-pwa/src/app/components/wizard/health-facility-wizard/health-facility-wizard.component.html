@@ -1,0 +1,507 @@
+<div>
+  <!--Title is set with css-->
+
+  <!--Wrap in matUI button for https://github.com/novelt/GMT/issues/2376-->
+  <!-- <fa-icon mat-dialog-close icon="close" class="cancel" (click)="handleCancelDialog()"></fa-icon> -->
+  <button
+    mat-dialog-close
+    mat-button
+    (click)="handleCancelDialog()"
+    class="cancel"
+  >
+    <fa-icon icon="close"></fa-icon>
+  </button>
+
+  <mat-dialog-content>
+    <mat-stepper
+      [class.outreach-wizard]="data.isOutreach"
+      [class.fixed-post-wizard]="!data.isOutreach"
+      class="health-facility-wizard-stepper"
+      #stepper
+      [linear]="true"
+      (selectionChange)="handleStepChange($event)"
+    >
+      <mat-step
+        *ngIf="showStepParentHealthFacility"
+        [stepControl]="outreachParentFormGroup"
+        [editable]="true"
+      >
+        <form [formGroup]="outreachParentFormGroup">
+          <ng-template matStepLabel>Facility</ng-template>
+
+          <ng-container *ngIf="parentHfChoices.length <= 0">
+            <div class="info">
+              This boundary does not contain a fixed post health facility that
+              provides Routine Immunization Services. An outreach site requires
+              one.
+            </div>
+          </ng-container>
+          <ng-container *ngIf="parentHfChoices.length > 0">
+            <div class="info">
+              Select the Health Facility that will conduct this outreach
+            </div>
+
+            <!-- <mat-form-field class="full-width">
+              <mat-label id="parent-label">Parent Health Facility</mat-label>
+              <mat-select formControlName="parentHealthFacility">
+                <mat-option *ngFor="let opt of fixedPostHealthFacilities" [value]="opt.value">{{opt.label}}</mat-option>
+              </mat-select>
+              <fa-icon matSuffix icon="caret-down"></fa-icon>
+            </mat-form-field> -->
+
+            <cdk-virtual-scroll-viewport
+              itemSize="40"
+              class="parent-health-facility-viewpart"
+              [style]="
+                parentHfChoices && parentHfChoices.length > 2
+                  ? 'height:200px;'
+                  : 'height:100px;'
+              "
+            >
+              <mat-radio-group
+                [formControlName]="FORM_KEY_PARENT_HEALTH_FACILITY"
+                class="parent-health-facility-radio-group"
+              >
+                <mat-radio-button
+                  *cdkVirtualFor="let coverageHf of parentHfChoices"
+                  [value]="coverageHf.global_id"
+                >
+                  <span>{{ coverageHf.name }}</span>
+                  <div class="gmt-stats">
+                    <div class="gmt-stats-text">
+                      <span>{{
+                        formatPopulation(
+                          coverageHf.catchmentPopulation.computedPop
+                        )
+                      }}</span>
+                    </div>
+                    <gmt-catchment
+                      mode="progressbar"
+                      type="hf"
+                      [total]="100"
+                      [fixedPost]="coverageHf.percFixedPost"
+                      [outreach]="coverageHf.percOutreach"
+                      [problematic]="coverageHf.percProblematic"
+                    >
+                    </gmt-catchment>
+                  </div>
+                </mat-radio-button>
+              </mat-radio-group>
+            </cdk-virtual-scroll-viewport>
+
+            <div class="wizard-buttons">
+              <button
+                class="next"
+                mat-flat-button
+                matStepperNext
+                [disabled]="outreachParentFormGroup.status != 'VALID'"
+              >
+                Next
+              </button>
+            </div>
+          </ng-container>
+        </form>
+      </mat-step>
+
+      <mat-step
+        [stepControl]="basicInformationFormGroup"
+        *ngIf="!data.isOutreach"
+        [editable]="true"
+      >
+        <form [formGroup]="basicInformationFormGroup" class="form-vertical">
+          <ng-template matStepLabel>Properties</ng-template>
+          <mat-form-field subscriptSizing="dynamic" class="half-width">
+            <mat-label>Name</mat-label>
+            <input
+              matInput
+              placeholder="Health Facility Name"
+              [formControlName]="FORM_KEY_NAME"
+              required
+            />
+          </mat-form-field>
+
+          <gmt-wizard-list-control
+            [listItems]="additionalInfoFormGroup.get(FORM_KEY_SYNONYM)!.value"
+            label="ALSO KNOWN AS (AKA)"
+            class="half-width"
+          ></gmt-wizard-list-control>
+          <!-- <mat-form-field class="full-width">
+            <mat-label>Services</mat-label>
+            <mat-select formControlName="services" multiple>
+              <mat-option value="ri">RI Services</mat-option>
+            </mat-select>
+            <fa-icon matSuffix icon="caret-down"></fa-icon>
+          </mat-form-field> -->
+
+          <mat-form-field subscriptSizing="dynamic" class="third-width">
+            <mat-label>Ownership</mat-label>
+            <mat-select [formControlName]="FORM_KEY_OWNERSHIP">
+              <mat-option
+                *ngFor="let opt of ownershipOptions"
+                [value]="opt.value"
+                >{{ opt.label }}</mat-option
+              >
+            </mat-select>
+            <fa-icon matSuffix icon="caret-down"></fa-icon>
+          </mat-form-field>
+
+          <mat-form-field subscriptSizing="dynamic" class="third-width">
+            <mat-label>Type</mat-label>
+            <mat-select [formControlName]="FORM_KEY_LEVEL_OF_CARE">
+              <mat-option
+                *ngFor="let opt of hfTypesOptions"
+                [value]="opt.value"
+                >{{ opt.label }}</mat-option
+              >
+            </mat-select>
+            <fa-icon matSuffix icon="caret-down"></fa-icon>
+          </mat-form-field>
+
+          <mat-form-field
+            subscriptSizing="dynamic"
+            [ngClass]="
+              basicInformationFormGroup.get(FORM_KEY_LEVEL_OF_CARE)!.value ===
+              'Primary'
+                ? 'third-width'
+                : 'hidden'
+            "
+          >
+            <mat-label>PRIMARY TYPE</mat-label>
+            <mat-select
+              placeholder="--"
+              [formControlName]="FORM_KEY_PRIMARY_TYPE"
+            >
+              <mat-option
+                *ngFor="let primaryType of hfPrimaryTypeOptions"
+                [value]="primaryType.value"
+              >
+                {{ primaryType.label }}
+              </mat-option>
+            </mat-select>
+            <fa-icon matSuffix icon="caret-down"></fa-icon>
+          </mat-form-field>
+
+          <div class="wizard-buttons">
+            <button class="next" mat-flat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="locationFormGroup" [editable]="true">
+        <gmt-wizard-location-control
+          [dialog]="dialogRef"
+          [lonLat]="lonLat"
+          (lonLatChange)="handleLonLatChange($event)"
+        ></gmt-wizard-location-control>
+
+        <form [formGroup]="locationFormGroup">
+          <ng-template matStepLabel>Location</ng-template>
+        </form>
+        <!-- <div class ="coords">{{coordsText}}</div> -->
+      </mat-step>
+
+      <mat-step *ngIf="showStepDrawSettlement" [editable]="false">
+        <ng-template matStepLabel>Draw Settlement Shape</ng-template>
+
+        <gmt-wizard-polygon-edit
+          [isVisible]="true"
+          #polygonEditSlum
+          [stepDescription]="
+            'Your marker is inside a settlement covered by the Health Facility ' +
+            drawSettlementHealthFacilityName +
+            '; you will need to draw the ' +
+            'catchment area for the new outreach site. The newly created shape will ' +
+            'become a separate settlement, from the settlement named ' +
+            drawSettlementSettlementName +
+            '.'
+          "
+          (nextClicked)="finishSlumCasePolygonDrawing($event)"
+        >
+        </gmt-wizard-polygon-edit>
+      </mat-step>
+
+      <mat-step
+        [stepControl]="additionalInfoFormGroup"
+        [editable]="true"
+        *ngIf="!data.isOutreach"
+      >
+        <form [formGroup]="additionalInfoFormGroup" class="form-vertical">
+          <ng-template matStepLabel>Details</ng-template>
+          <!--      <facility-details-content [newHf]="true"></facility-details-content>-->
+
+          <mat-form-field
+            subscriptSizing="dynamic"
+            *ngIf="!data.isOutreach"
+            class="full-width"
+          >
+            <mat-label>MP STATUS</mat-label>
+            <mat-select [formControlName]="FORM_KEY_MP_STATUS">
+              <mat-option
+                *ngFor="let opt of mpStatusOptions"
+                [value]="opt.value"
+                [disabled]="
+                  [mpStatusNotStarted, mpStatusUnknown].includes(opt.value)
+                "
+                >{{ opt.label }}</mat-option
+              >
+            </mat-select>
+            <fa-icon matSuffix icon="caret-down"></fa-icon>
+          </mat-form-field>
+
+          <!-- <mat-form-field>
+            <mat-label># of Staff</mat-label>
+            <input matInput
+            type="number" min="-0" step="1" formControlName="staff" >
+          </mat-form-field> -->
+          <!-- Hidden https://github.com/novelt/GMT/issues/2589 -->
+          <!--                    <mat-form-field subscriptSizing="dynamic" class="half-width">-->
+          <!--                        <mat-label>Maturity Level</mat-label>-->
+          <!--                        <mat-select [formControlName]="FORM_KEY_MATURITY">-->
+          <!--                            <mat-option *ngFor="let opt of hfMaturityOptions"-->
+          <!--                                [value]="opt.value">{{opt.label}}</mat-option>-->
+          <!--                        </mat-select>-->
+          <!--                        <fa-icon matSuffix icon="caret-down"></fa-icon>-->
+          <!--                    </mat-form-field>-->
+          <!-- Hidden as per https://github.com/novelt/GMT/issues/2272#issuecomment-1526816627 -->
+          <!--        <mat-form-field subscriptSizing="dynamic" class="half-width">-->
+          <!--          <mat-label>FREQUENCY</mat-label>-->
+          <!--          <mat-select placeholder="&#45;&#45;" [formControlName]="FORM_KEY_FREQUENCY">-->
+          <!--            <mat-option *ngFor="let opt of frequencyOptions" [value]="opt.value">{{opt.label}}</mat-option>-->
+          <!--          </mat-select>-->
+          <!--          <fa-icon matSuffix icon="caret-down"></fa-icon>-->
+          <!--        </mat-form-field>-->
+
+          <h5 class="days-heading full-width">Days of Routine Immunization</h5>
+          <div class="days full-width">
+            <days [(selectedDays)]="selectedDays"></days>
+          </div>
+
+          <div class="wizard-buttons">
+            <button
+              *ngIf="showStepCatchment || showStepParentHealthFacility"
+              class="next"
+              mat-flat-button
+              matStepperNext
+            >
+              Next
+            </button>
+            <button
+              *ngIf="!showStepCatchment && !showStepParentHealthFacility"
+              class="done"
+              mat-flat-button
+              (click)="handleCloseDialog()"
+            >
+              Done
+            </button>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step
+        [stepControl]="outreachDetailsFormGroup"
+        [editable]="true"
+        *ngIf="data.isOutreach"
+      >
+        <form [formGroup]="outreachDetailsFormGroup" class="form-vertical">
+          <ng-template matStepLabel>Details</ng-template>
+
+          <mat-form-field subscriptSizing="dynamic" class="full-width">
+            <mat-label>SITE NAME</mat-label>
+            <input
+              matInput
+              placeholder="Outreach Site Name"
+              [formControlName]="FORM_KEY_NAME"
+              required
+            />
+          </mat-form-field>
+
+          <mat-form-field
+            subscriptSizing="dynamic"
+            *ngIf="showControlSettlementPrimaryName"
+            class="full-width"
+          >
+            <mat-label>SETTLEMENT NAME</mat-label>
+            <input
+              matInput
+              placeholder="Settlement Name"
+              [formControlName]="FORM_KEY_PRIMARY_NAME"
+              required
+            />
+          </mat-form-field>
+
+          <div class="fake-mat-form-field half-width" subscriptSizing="dynamic">
+            <mat-label>TRANSPORT</mat-label>
+            <mat-select
+              placeholder="--"
+              [formControlName]="FORM_KEY_TRANSPORT"
+              multiple
+            >
+              <mat-option
+                *ngFor="let opt of transportOptions"
+                [value]="opt.value"
+                >{{ opt.label }}</mat-option
+              >
+            </mat-select>
+          </div>
+
+          <mat-form-field subscriptSizing="dynamic" class="half-width">
+            <mat-label>FREQUENCY</mat-label>
+            <mat-select placeholder="--" [formControlName]="FORM_KEY_FREQUENCY">
+              <mat-option
+                *ngFor="let opt of frequencyOptions"
+                [value]="opt.value"
+                >{{ opt.label }}</mat-option
+              >
+            </mat-select>
+            <fa-icon matSuffix icon="caret-down"></fa-icon>
+          </mat-form-field>
+
+          <div
+            *ngIf="
+              outreachDetailsFormGroup.get(this.FORM_KEY_FREQUENCY)!.value ==
+              'weekly'
+            "
+          >
+            <h4 class="half-width">Days of Routine Immunization</h4>
+            <!-- <days selectedDays -->
+            <days [(selectedDays)]="selectedDays"></days>
+          </div>
+          <!-- <p><mat-checkbox formControlName="Mo">Mo</mat-checkbox></p> -->
+
+          <div class="wizard-buttons">
+            <button
+              *ngIf="showStepCatchment"
+              class="next"
+              mat-flat-button
+              matStepperNext
+              [disabled]="outreachDetailsFormGroup.status != 'VALID'"
+            >
+              Next
+            </button>
+            <button
+              *ngIf="!showStepCatchment"
+              class="done"
+              mat-flat-button
+              (click)="handleCloseDialog()"
+            >
+              Done
+            </button>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step
+        [stepControl]="catchmentFormGroup"
+        [editable]="true"
+        *ngIf="showStepCatchment"
+      >
+        <form [formGroup]="catchmentFormGroup">
+          <ng-template matStepLabel>Catchment</ng-template>
+
+          <div *ngIf="!customCatchmentSelection">
+            <!-- <p>By default this outreach site will have a catchment of 2km around the site. You can however explicitly
+              assign settlements that will be handled by this outreach site. These assigned settlements will no longer be
+              considered by the normal default catchment calculations.</p>
+
+            <p>
+              Click Add custom catchment in order
+              to select settlements to explicitly assign.
+            </p> -->
+
+            <p>
+              Your outreach site is ready to be created, and by default covers
+              all settlements within 2km radius.
+            </p>
+            <p>
+              <em>If required</em>, you can explicitly choose which settlements
+              will be covered by this outreach site by creating a custom
+              catchment. <em>Normally, a custom catchment is not needed</em>.
+            </p>
+          </div>
+
+          <div *ngIf="customCatchmentSelection">
+            <gmt-wizard-polygon-edit
+              #polygonEditCatchment
+              [isVisible]="!customCatchmentSelectionDone"
+              (nextClicked)="updateCustomCatchmentShape($event)"
+              stepDescription="Select which settlements should be in this outreach's catchment by drawing a polygon on the map.  "
+            >
+            </gmt-wizard-polygon-edit>
+          </div>
+          <ng-container
+            *ngIf="customCatchmentSelection && customCatchmentSelectionDone"
+          >
+            <!-- <mat-label>Custom Catchment</mat-label> -->
+            <div>
+              You can now manually remove settlements found inside the custom
+              catchment. Note: the entire settlement will be included in the
+              custom catchment.
+            </div>
+            <ol class="custom-catchment-settlement-list">
+              <li
+                *ngFor="
+                  let customCatchmentSettlement of customCatchmentSelections;
+                  let i = index
+                "
+              >
+                <div>
+                  <fa-icon
+                    icon="right-from-bracket"
+                    class="accordion-title-icon"
+                    *ngIf="customCatchmentSettlement.isOutsideBoundary"
+                  ></fa-icon>
+
+                  <ng-container
+                    *ngIf="customCatchmentSettlement.isOutsideBoundary"
+                  >
+                    {{ customCatchmentSettlement.boundaryName + " > " }}
+                  </ng-container>
+
+                  {{ customCatchmentSettlement.label }}
+                </div>
+
+                <button
+                  class="remove-button"
+                  (click)="removeCustomCatchmentSelection(i)"
+                >
+                  <fa-icon icon="times"></fa-icon>
+                </button>
+              </li>
+            </ol>
+          </ng-container>
+
+          <div
+            class="wizard-buttons"
+            *ngIf="!customCatchmentSelection || customCatchmentSelectionDone"
+          >
+            <button
+              mat-button
+              *ngIf="!customCatchmentSelection"
+              (click)="addCustomCatchmentSelection()"
+            >
+              Custom Catchment
+            </button>
+            <!--If we are already in custom catchment, let user start over.  It's the same action-->
+            <button
+              mat-button
+              !customCatchmentSelection
+              *ngif="customCatchmentSelection"
+              (click)="addCustomCatchmentSelection()"
+            >
+              Start Over
+            </button>
+
+            <button
+              mat-flat-button
+              matStepperNext
+              (click)="handleCloseDialog()"
+              [disabled]="isLoadingService.loading | async"
+            >
+              <fa-icon icon="circle-check"></fa-icon>
+              <span>Done</span>
+            </button>
+          </div>
+        </form>
+      </mat-step>
+    </mat-stepper>
+  </mat-dialog-content>
+</div>

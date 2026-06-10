@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. Tutorial 2 &mdash; GMT User Guide  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3. Tutorial 3" href="30Tutorial3.html" />
+    <link rel="prev" title="1. Tutorial 1" href="10Tutorial1.html" />
+<link href="../../_static/style.css" rel="stylesheet" type="text/css">
+<link rel="manifest" href="./../../manifest.webmanifest">
+<script>
+    // Registering our Service worker
+    if ('serviceWorker' in navigator) {
+        let broadcastChannel = new BroadcastChannel('sw-messages');
+        console.log("sw:","../../sw.js");
+        navigator.serviceWorker.register("../../sw.js")
+        // navigator.serviceWorker.register('sw.js', { scope: "./" })
+        broadcastChannel.addEventListener('message', event => {
+            console.log('main Received', event.data);
+            if (event.data.cacheDone) {
+                localStorage['cacheDone'] = true;
+            }
+            if (event.data.reload) {
+                window.location.reload();
+            }
+        });
+
+        setInterval(async () => {
+            let fetchResp;
+            try {
+                fetchResp = await fetch("../../_static/version", {
+                    method: 'GET',
+                    headers: new Headers({
+                        'pragma': 'no-cache',
+                        'cache-control': 'no-cache',
+                    }),
+                });
+            }catch(error) {
+                console.log("New version detection impossible: ", error);
+            }
+            const serverVersion = await fetchResp.text();
+            const oldVersion = localStorage['version'];
+            const cache = await caches.open('GMT_DOC');
+            const keys = await cache.keys();
+            console.log("keys length:",keys.length);
+            if (serverVersion !== oldVersion || keys.length === 0
+                || ((localStorage['cacheDone']+"") === "false")) //bb: !localStorage['cacheDone'] not working. This is mysterious..
+            {
+                localStorage['version'] = serverVersion;
+                console.log("New version available: ", oldVersion, "=>", serverVersion);
+                localStorage['cacheDone'] = false;
+                broadcastChannel.postMessage({updateCache: true, oldVersion});
+            } else {
+                console.log("Current version :", oldVersion)
+            }
+        },5000);}
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+            <a href="../../index.html">
+            <img src="../../_static/GMT_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Background</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../background/10background.html">1. Background</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="10Tutorial1.html">1. Tutorial 1</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Tutorial 2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#purpose">2.1. Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#let-s-get-started">2.2. Let’s Get Started!</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#preparation">2.2.1. Preparation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#review-the-health-facility-list">2.2.2. Review the Health Facility list</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#synonyms">2.2.2.1. Synonyms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-a-health-facility-with-no-location">2.2.2.2. Adding a Health Facility with no location</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#review-the-settlement-list">2.2.3. Review the Settlement list</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">2.2.3.1. Synonyms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-a-settlement-name">2.2.3.2. Adding a settlement name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-a-settlement-name-and-location">2.2.3.3. Adding a settlement name and location</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#field-data-collection">2.2.4. Field Data Collection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#perform-microplanning">2.2.5. Perform microplanning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#guides-distance">2.2.5.1. Guides - Distance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#guides-voronoi">2.2.5.2. Guides - Voronoi</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="30Tutorial3.html">3. Tutorial 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="40Tutorial4.html">4. Tutorial 4</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guide to the GMT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guide/10complete_guide.html">1. Guide to the GMT</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standard Operating Procedure</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../SOP/10SOP.html">1. Standard Operating Procedure for the GMT</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GMT User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">2. </span>Tutorial 2</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial-2">
+<h1><span class="section-number">2. </span>Tutorial 2<a class="headerlink" href="#tutorial-2" title="Permalink to this headline"></a></h1>
+<section id="purpose">
+<h2><span class="section-number">2.1. </span>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline"></a></h2>
+<p>The purpose of this second tutorial is to further understand the basic functionalities of
+the Geospatial Microplanning Toolkit (GMT). Previous knowledge is required - you are
+expected to have worked through <a class="reference internal" href="10Tutorial1.html"><span class="doc">Tutorial 1</span></a> and that you understand all concepts
+introduced there.</p>
+<p>This tutorial will follow the same principle as the previous one, and
+additionally we will introduce the following:</p>
+<ol class="arabic simple">
+<li><p>Synonyms of health facilities and settlements</p></li>
+<li><p>Addition of health facilities without a location</p></li>
+<li><p>Addition of settlement without a location</p></li>
+<li><p>Addition of settlement where there is no settlement on the map</p></li>
+<li><p>Review of field data collection</p></li>
+<li><p>Field data collection - enter collected data</p></li>
+<li><p>Guides to aid microplanning</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="let-s-get-started">
+<h2><span class="section-number">2.2. </span>Let’s Get Started!<a class="headerlink" href="#let-s-get-started" title="Permalink to this headline"></a></h2>
+<section id="preparation">
+<h3><span class="section-number">2.2.1. </span>Preparation<a class="headerlink" href="#preparation" title="Permalink to this headline"></a></h3>
+<p>Obtain the data for Ward “Iwoate” in LGA “Ogo Oluwa” in the
+State “Oyo” and download the data. Navigate to the health facility list. If
+any of those steps pose trouble, consult the steps in Tutorial 1.</p>
+</section>
+<section id="review-the-health-facility-list">
+<h3><span class="section-number">2.2.2. </span>Review the Health Facility list<a class="headerlink" href="#review-the-health-facility-list" title="Permalink to this headline"></a></h3>
+<section id="synonyms">
+<h4><span class="section-number">2.2.2.1. </span>Synonyms<a class="headerlink" href="#synonyms" title="Permalink to this headline"></a></h4>
+<p>In some cases, a health facility or a settlement may have more than one name
+it is referred to. Navigate to the health facility detail tab. For the sake
+of our tutorial, we will give it now a synonym “TestHF1”. Click in the “Add Synonym”
+field and add this name. Click on “Add”. This synonym has now been added to this
+health facility.</p>
+<img alt="../../_images/synonym_HF.png" class="align-center" src="../../_images/synonym_HF.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Navigate back to the health facility list. You see now that under the “AKA” column
+(“Also Known As”) the number of synonyms for this health facility is shown. If you
+click on the number, the synonyms will be listed.</p>
+<p>Note that if you search for the TestHF1 now in the search field, the number will
+be highlighted, indicating that there is a match.</p>
+<img alt="../../_images/search_synonym.png" class="align-center" src="../../_images/search_synonym.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>We will see later that the same concept for synonyms also exists for settlements.</p>
+</section>
+<hr class="docutils" />
+<section id="adding-a-health-facility-with-no-location">
+<h4><span class="section-number">2.2.2.2. </span>Adding a Health Facility with no location<a class="headerlink" href="#adding-a-health-facility-with-no-location" title="Permalink to this headline"></a></h4>
+<p>Since we will follow the same procedure as for Tutorial 1, we are currently still
+reviewing our health facility list. Let’s imagine that we know that our Ward has
+a health facility named “Hospital33”, but we don’t know it’s actual location.</p>
+<p>Nevertheless, we can still add “Hospital33”. To do so, type in the “Search” field “Hospital33”.
+There is no match in the list - this health facility doesn’t exist yet. We can press
+the “Add” button to add it though. Press the “Add” button.</p>
+<p>You will be directed to a new page that shows a table and a couple of buttons. At this point, let’s
+not worry too much about the table - in short, it shows already existing health facilities in the
+surroundings. The buttons can be used to put a location to our health facility.
+We don’t know the location of “Hospital33”. Thus, let’s just click on “Create”.</p>
+<p>You will be redirected back to the Health Facility list. Note that your health facility
+has been added. Since it does not have a location yet, it carries an error icon.</p>
+<img alt="../../_images/hf_wo_location.png" class="align-center" src="../../_images/hf_wo_location.png" />
+</section>
+</section>
+<hr class="docutils" />
+<section id="review-the-settlement-list">
+<h3><span class="section-number">2.2.3. </span>Review the Settlement list<a class="headerlink" href="#review-the-settlement-list" title="Permalink to this headline"></a></h3>
+<section id="id1">
+<h4><span class="section-number">2.2.3.1. </span>Synonyms<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h4>
+<p>Similar to the synonyms for health facilities, there may be several names for
+one single settlement. Let’s imagine that “Aba Onilu” is also known as “Settlement55”.</p>
+<p>Access the settlement detail page for “Aba Onilu” and add the synonym “Settlement55”.</p>
+<img alt="../../_images/synonym_sett.png" class="align-center" src="../../_images/synonym_sett.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Go back to the settlement list - you will see that Aba Onilu now has a number in
+the “AKA” column. If you click on it, you will see “Settlement55”. You can search for
+that settlement name as well. The number will be highlighted.</p>
+</section>
+<hr class="docutils" />
+<section id="adding-a-settlement-name">
+<h4><span class="section-number">2.2.3.2. </span>Adding a settlement name<a class="headerlink" href="#adding-a-settlement-name" title="Permalink to this headline"></a></h4>
+<p>Imagine we have a settlement name “Satigny” in our Ward. However, we don’t know the exact
+location of it. Let’s add it.</p>
+<p>Type “Satigny” in the search bar. Since there will be no match, click on “Add”.
+Note that this launches a wizard that will guide you through settlement addition.</p>
+<p>Click on “Next” in the first step which is merely an information screen.
+The second step of the wizard will assist if the location of the settlement is known.
+Since we don’t know the actual location of “Satigny” at this point, let’s
+continue and click “Next” as well.</p>
+<img alt="../../_images/settlement_add_wizard_loc.png" class="align-center" src="../../_images/settlement_add_wizard_loc.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The third step will ensure that there are no settlements in the same Ward or
+close-by that have an identical or very similar name. The closer a name is, the
+lower the “Levenshtein distance”. We will see this in a later step.</p>
+<p>For now, let’s click “Next”.</p>
+<p>On the final screen, read the text and click “Create new”.</p>
+<img alt="../../_images/wizard_new.png" class="align-center" src="../../_images/wizard_new.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>You are guided back to the settlement screen. As you will see, “Satigny” has been
+added to the list. You see that it has two error icons - it has no location and it
+also has not been linked to a health facility yet.</p>
+<img alt="../../_images/satigny.png" class="align-center" src="../../_images/satigny.png" />
+</section>
+<hr class="docutils" />
+<section id="adding-a-settlement-name-and-location">
+<h4><span class="section-number">2.2.3.3. </span>Adding a settlement name and location<a class="headerlink" href="#adding-a-settlement-name-and-location" title="Permalink to this headline"></a></h4>
+<p>In the last step, we added a settlement name that we didn’t know the location of.
+In this step, we imagine that there is one settlement missing on the map - that
+might be the case if the satellite imagery was not good enough to detect buildings,
+for instance - you can learn more about that in <a class="reference internal" href="../background/10background.html"><span class="doc">Background</span></a>.</p>
+<p>For that, follow the same procedure as before. We will add a settlement called “Mowilowa”.</p>
+<p>In the first step of the wizard, click “Next” again.</p>
+<p>In the second step we are asked to provide a location. We can provide a location
+by using the “Pin” button. Click on it and select a location on the map on the right.
+For our purposes, select a location that is remote and where there are no other settlements.
+Click “Next”.</p>
+<img alt="../../_images/mowilowa.png" class="align-center" src="../../_images/mowilowa.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>On this screen we are shown a list of the closest settlements around our selected point.
+This is to ensure that we are not creating a settlement where there is another settlement
+just next door. The closest settlement here seems to be over 1km away. Click “Next”.</p>
+<img alt="../../_images/closest_settlements.png" class="align-center" src="../../_images/closest_settlements.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>On this screen, we are shown a list of settlement names in the vicinity that are very
+close to our name - this is to prevent duplicates. The closer a name is, the lower
+the “Levenshtein distance” value. There is no absolute way to know if a name should
+be considered a duplicate - but pay attention to this value if it is quite low.
+Indeed, we see there is a settlement name called “Mowolowo”, very similar to our
+settlement “Mowilowa”. Let’s assume that our name is
+not a duplicate and we continue with adding “Mowilowa”. Click “Next”.</p>
+<img alt="../../_images/levenshtein.png" class="align-center" src="../../_images/levenshtein.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>We are about to create a settlement where no settlement existed before. Thus, it
+would be useful to know the size and population of this settlement. In this step
+you have the possibility to add a population value. Add 5000 here and click “Next”.</p>
+<p>Finally, on the last screen, you get a summary of what you are about to do. If all
+the information is correct, click on “Create New”. You will see that “Mowilowa” has now
+been added as a new settlement. Note that the new settlement has been created as a
+circle with 200m diameter, since the shape of the settlement is unknown.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="field-data-collection">
+<h3><span class="section-number">2.2.4. </span>Field Data Collection<a class="headerlink" href="#field-data-collection" title="Permalink to this headline"></a></h3>
+<p>We have now reached the point where we have entered all the information we have
+had upfront for this ward. However, we are not yet quite ready to perform our
+microplanning: there are still a couple of issues on our health facility and our settlement lists.</p>
+<p>You can highlight the issues that remain by clicking on “To Do”.</p>
+<img alt="../../_images/todo.png" class="align-center" src="../../_images/todo.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Click it in the settlement list. Since we have not defined any catchments, all settlements
+still appear in the “To Do” list, as this is part of the tasks we need to do.
+This is indicated via the error icon “Unclaimed” for settlements.</p>
+<p>However, you also see that some settlements still have other error icons such as
+“Satigny” which is missing a location as well as others that have machine generated
+names. Remember that we also have a health facility that has no location currently.</p>
+<p>In order to obtain the information for those places, we can access the “Field Data Collection” page.
+To do so, click on the field data collection icon.</p>
+<img alt="../../_images/fdc.png" class="align-center" src="../../_images/fdc.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>This page informs about all the places that still need a location or a name.</p>
+<p>For the sake of our tutorial, add the missing information for all the settlements.
+In this tutorial, the settlements have been renamed to “NoMachine”.</p>
+<img alt="../../_images/settlements_named.png" class="align-center" src="../../_images/settlements_named.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Add the missing information for “Hospital33”, give it a location. You can do that by clicking on the error icon and
+clicking on the map to specify the location. In this tutorial, it has been placed in the South.</p>
+<p>We imagine that someone went to all of these places to collect the correct information
+and that we have obtained this information now.</p>
+</section>
+<hr class="docutils" />
+<section id="perform-microplanning">
+<h3><span class="section-number">2.2.5. </span>Perform microplanning<a class="headerlink" href="#perform-microplanning" title="Permalink to this headline"></a></h3>
+<p>Since all data has now been “collected”, we can perform our microplanning. Note that
+in some cases, a settlement still might have an error icon that remains apart from
+the “Unclaimed” icon. Let’s not worry about this for now.</p>
+<p>We have now two health facilities in our Ward - “Hospital33” and “Mowolowo PHC”.
+Let’s go first to the catchment tab of “Hospital33”.</p>
+<p>Look at the “Suggested Settlements” list. You can choose whether this list should
+be filtered by Travel time by walking, travel time by car or distance. For now,
+let’s use distance. Set the threshold to 2km. Note that the list is now filtered
+accordingly. Add all settlements within our Ward to the catchment. Zoom on the map
+to the health facility to see how the catchment changes.</p>
+<img alt="../../_images/hosp33_catchment.png" class="align-center" src="../../_images/hosp33_catchment.png" />
+<hr class="docutils" />
+<section id="guides-distance">
+<h4><span class="section-number">2.2.5.1. </span>Guides - Distance<a class="headerlink" href="#guides-distance" title="Permalink to this headline"></a></h4>
+<p>To help you visualize on the map which settlements fall within the 2km radius of
+a health facility, there are visualization guides available on the microplan map. Click on
+the legend and select “Guides - Distance”.</p>
+<img alt="../../_images/distance_guide.png" class="align-center" src="../../_images/distance_guide.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The guides show per default for all
+health facilities (zoom in and out on the map to see that). You can change that: click
+on the “Show Single Catchment” button within the health facility catchment tab
+to restrict the guide to the health facility you are currently looking at. Clicking
+on another health facility now on the microplan map will also only show the guide for that health facility.</p>
+<img alt="../../_images/single_catchment.png" class="align-center" src="../../_images/single_catchment.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Note the strategy for all of those settlements is per default “Fixed-Post”. If necessary,
+you can change this.</p>
+<p>Next, set the distance threshold to 5km. Note how the list updates. You could add
+those settlements within our current Ward as well to this health facility and set
+the strategy to “Outreach”. However, in this case you may be adding settlements
+that fall within the catchment of another health facility. Thus, let us look at
+yet another visualization help.</p>
+</section>
+<hr class="docutils" />
+<section id="guides-voronoi">
+<h4><span class="section-number">2.2.5.2. </span>Guides - Voronoi<a class="headerlink" href="#guides-voronoi" title="Permalink to this headline"></a></h4>
+<p>To decide if a settlement is closer to one health facility or another, we can
+visualize all points around a health facility that are closer to this health facility
+than any other. To do that, deactivate the “Guides - Distance” on the legend and
+activate “Guides - Voronoi”. You will now see a pattern that shows for each health
+facility the areas that contain settlements that are closer to it than any other health
+facility.</p>
+<img alt="../../_images/voronoi.png" class="align-center" src="../../_images/voronoi.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Using the two above guides, you can now assign all settlements to the two health
+facilities.</p>
+<p>Once you think you are done, go the settlement list. Check if there is any
+remaining error icon “Unclaimed”. If not, you have added all settlements to a
+catchment and your microplan has been completed. You can review it on the map, or on
+the health facility catchment details. Here is an example:</p>
+<img alt="../../_images/iwoate_catchment_1.png" class="align-center" src="../../_images/iwoate_catchment_1.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Again, you can switch between “Show Single Catchment” and all catchments.</p>
+<img alt="../../_images/iwoate_catchment_2.png" class="align-center" src="../../_images/iwoate_catchment_2.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>It may be that during the process above, you have assigned a settlement to two
+health facilities. In that case you might see another error icon. Let’s not worry about
+that for now, we will look at this in a later tutorial.</p>
+<p>In the health facility catchment tab, mark both health facilities catchments as “Complete”.</p>
+<img alt="../../_images/complete.png" class="align-center" src="../../_images/complete.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>You can now print the PDF of the microplan in the same way we did in Tutorial 1. Note
+that since we have two health facilities in our Ward, the PDF will contain one page for
+each health facility.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>You reached the end of Tutorial 2!</p>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="10Tutorial1.html" class="btn btn-neutral float-left" title="1. Tutorial 1" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="30Tutorial3.html" class="btn btn-neutral float-right" title="3. Tutorial 3" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Novel-T.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

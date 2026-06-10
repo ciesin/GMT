@@ -1,0 +1,104 @@
+<!-- div class="controlContainer legend-container-layers-selector">
+  <div class="menuButton" (click)="toggleLegend()">
+    <fa-icon
+      class="legendIcon"
+      [class.selected]="isLegendOpen"
+      icon="circle-info"
+    ></fa-icon>
+  </div>
+</div -->
+
+<div class="gmt-map-legend indicators">
+  <section *ngIf="selectedIndicator == mpProgressLabel">
+    <header>
+      <fa-icon icon="calendar-check"></fa-icon>
+      <h6>MP Completion</h6>
+    </header>
+    <ul>
+      <li>
+        <mat-icon svgIcon="boundary-mp-status1"></mat-icon>
+        <label>0&ndash;50%</label>
+      </li>
+      <li>
+        <mat-icon svgIcon="boundary-mp-status2"></mat-icon>
+        <label>50&ndash;80%</label>
+      </li>
+      <li>
+        <mat-icon svgIcon="boundary-mp-status3"></mat-icon>
+        <label>80&ndash;100%</label>
+      </li>
+    </ul>
+  </section>
+  <section *ngIf="selectedIndicator == policyLabel">
+    <header>
+      <fa-icon icon="circle-info"></fa-icon>
+      <h6>Policy: is MP in line with theoretical?</h6>
+    </header>
+    <ul>
+      <li>
+        <mat-icon svgIcon="boundary-policy1"></mat-icon>
+        <label>FIXED POST > THEORETICAL</label>
+      </li>
+      <li>
+        <mat-icon svgIcon="boundary-policy2"></mat-icon>
+        <label>OUTREACH > THEORETICAL</label>
+      </li>
+      <li>
+        <mat-icon svgIcon="boundary-policy3"></mat-icon>
+        <label>TOO MUCH UNCLAIMED</label>
+      </li>
+      <li>
+        <mat-icon svgIcon="boundary-policy4"></mat-icon>
+        <label>ALIGNED WITH THEORETICAL</label>
+      </li>
+    </ul>
+  </section>
+  <section *ngIf="selectedIndicator == coverageLabel">
+    <header>
+      <fa-icon icon="people-line"></fa-icon>
+      <h6>Population Coverage</h6>
+    </header>
+    <ul>
+      <li>
+        <mat-icon svgIcon="boundary-coverage1"></mat-icon>
+        <label>0&ndash;20%</label>
+      </li>
+      <li>
+        <mat-icon svgIcon="boundary-coverage2"></mat-icon>
+        <label>20&ndash;50%</label>
+      </li>
+      <li>
+        <mat-icon svgIcon="boundary-coverage3"></mat-icon>
+        <label>50&ndash;80%</label>
+      </li>
+      <li>
+        <mat-icon svgIcon="boundary-coverage4"></mat-icon>
+        <label>80&ndash;100%</label>
+      </li>
+    </ul>
+  </section>
+  <section *ngIf="selectedIndicator == dataQualityLabel">
+    <header>
+      <fa-icon icon="chart-pie"></fa-icon>
+      <h6>Baseline Quality</h6>
+    </header>
+    <ul>
+      <li>
+        <mat-icon svgIcon="boundary-quality1"></mat-icon>
+        <label>0&ndash;20%</label>
+      </li>
+      <li>
+        <mat-icon svgIcon="boundary-quality2"></mat-icon>
+        <label>20&ndash;50%</label>
+      </li>
+      <li>
+        <mat-icon svgIcon="boundary-quality3"></mat-icon>
+        <label>50&ndash;80%</label>
+      </li>
+      <li>
+        <mat-icon svgIcon="boundary-quality4"></mat-icon>
+        <label>80&ndash;100%</label>
+      </li>
+    </ul>
+  </section>
+</div>

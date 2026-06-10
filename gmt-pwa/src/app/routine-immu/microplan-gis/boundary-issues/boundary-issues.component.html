@@ -1,0 +1,120 @@
+<mat-expansion-panel
+  closeChildExpansionOnClose
+  class="sub-expansion"
+  [expanded]="activeTab === boundaryEditsTab"
+  (opened)="mainPanelOpenState = true"
+  (closed)="mainPanelOpenState = false"
+>
+  <mat-expansion-panel-header
+    class="main-header"
+    (click)="showEditBoundaryLayer()"
+  >
+    <mat-panel-title>
+      <fa-icon
+        class="v-align-middle accordion-title-icon"
+        icon="draw-polygon"
+      ></fa-icon>
+      Boundary Correction ({{boundaryIssues.length}})
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <ng-template #noIssues>
+    <div class="container-with-padding">
+      No boundary issues
+    </div>
+  </ng-template>
+
+  <div class="panel-content" *ngIf="!!boundaryIssues.length; else noIssues">
+    <mat-accordion displayMode="flat" class="boundary-issues-container">
+      <mat-expansion-panel
+        class="sub-sub-expansion is-form"
+        *ngFor="let issue of boundaryIssues; let i = index"
+        (click)="enableBoundaryModification(issue)"
+        (opened)="panelOpenState = true"
+        (closed)="panelOpenState = false"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div *ngIf="issue?.properties?.union">
+              <fa-icon
+                class="v-align-middle accordion-title-icon"
+                icon="plus"
+              ></fa-icon>
+              Addition ({{getFirstPointCoordinateForName(issue)}})
+            </div>
+            <div *ngIf="!issue?.properties?.union">
+              <fa-icon
+                class="v-align-middle accordion-title-icon"
+                icon="minus"
+              ></fa-icon>
+              Substraction ({{getFirstPointCoordinateForName(issue)}})
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="correction-content">
+          <div *ngIf="issue?.properties?.union">
+            <mat-icon
+              class="v-align-middle"
+              svgIcon="boundary-edit-union"
+            ></mat-icon>
+            Union
+          </div>
+          <div *ngIf="!issue?.properties?.union">
+            <mat-icon
+              class="v-align-middle"
+              svgIcon="boundary-edit-difference"
+            ></mat-icon>
+            Difference
+          </div>
+
+          <mat-form-field subscriptSizing="dynamic" class="full-width">
+            <mat-label>USER COMMENT</mat-label>
+            <textarea
+              matInput
+              placeholder="User context on what to do with this specific boundary issue"
+              id="comment{{i}}"
+              value="{{issue?.properties?.comment!}}"
+              rows="4"
+            ></textarea>
+          </mat-form-field>
+
+          <div class="full-width issue-action" *ngIf="userCanEdit">
+            <button mat-button (click)="markAsResolved(issue)">
+              <fa-icon icon="circle-check"></fa-icon>
+              <span class="pre-label">mark as</span>
+              <span class="label">resolved</span>
+            </button>
+            <button mat-button (click)="saveCommentEdit(issue, i)">
+              <fa-icon icon="circle-check"></fa-icon>
+              <span class="pre-label">save</span>
+              <span class="label">comment</span>
+            </button>
+            <button
+              mat-flat-button
+              (click)="openBoundaryIssueUpdateModal(issue)"
+            >
+              <fa-icon icon="pen"></fa-icon>
+              <span class="pre-label">edit</span>
+              <span class="label">shape</span>
+            </button>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+  <div class="mat-action-row">
+    <button
+      mat-flat-button
+      (click)="openBoundaryEditModal()"
+      *ngIf="userCanCreate"
+    >
+      <fa-icon
+        class="v-align-middle accordion-title-icon"
+        icon="draw-polygon"
+      ></fa-icon>
+      <span class="label">New Boundary Modification</span>
+    </button>
+  </div>
+</mat-expansion-panel>

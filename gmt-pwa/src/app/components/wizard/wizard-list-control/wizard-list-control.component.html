@@ -1,0 +1,14 @@
+<mat-form-field subscriptSizing="dynamic">
+  <mat-label>{{label}}</mat-label>
+  <mat-chip-grid #chipGrid aria-label="Enter ">
+    <mat-chip-row *ngFor="let item of listItems; index as i" (removed)="remove(i)" [editable]="true"
+      (edited)="edit(i, $event)" [disabled]="!canEdit">
+      {{item}}
+      <button matChipRemove [attr.aria-label]="'remove ' + item">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip-row>
+    <input [disabled]="!canEdit" placeholder="New..." [matChipInputFor]="chipGrid" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)" />
+  </mat-chip-grid>
+</mat-form-field>

@@ -1,0 +1,348 @@
+set unstable
+set script-interpreter := ["bash", "-euo", "pipefail" ]
+
+export GITHUB_ROOT := clean(source_directory())
+
+[default]
+_default:
+    @just --list --unsorted
+
+
+[script]
+build-images:
+    cd "${GITHUB_ROOT}"
+    . config/dev.local.env
+    docker compose build
+
+[script]
+start:
+    cd "${GITHUB_ROOT}"
+    . config/dev.local.env
+    . config/secrets.dev.local.env
+    docker compose up -d
+
+[script]
+stop:
+    cd "${GITHUB_ROOT}"
+    . config/dev.local.env
+    docker compose down
+
+[script]
+line-endings:
+    cd "${GITHUB_ROOT}"
+    find . -type f -name "*.sh" -exec dos2unix {} +
+
+[script]
+importer-up:
+    cd "${GITHUB_ROOT}"
+    . config/dev.local.env
+    . config/secrets.dev.local.env
+
+    docker compose up -d db importer
+
+# Creates db with tables; does not import data
+[script]
+create-gmt-db:
+    cd "${GITHUB_ROOT}"
+    . config/dev.local.env
+    . config/secrets.dev.local.env
+
+    DB_EXISTS=false
+
+    if docker compose exec -T db psql \
+        -U postgres \
+        -d postgres \
+        -tc "SELECT 1 FROM pg_database WHERE datname = '${DB_NAME}'" \
+        | grep -q 1; then
+        DB_EXISTS=true
+    fi
+
+    echo "$DB_EXISTS"
+
+    if $DB_EXISTS; then
+        echo "${DB_NAME} db already exists"
+        # exit 0
+
+        docker compose exec db psql -U postgres -d postgres -c "
+            SELECT pg_terminate_backend(pid)
+            FROM pg_stat_activity
+            WHERE datname = '${DB_NAME}';
+        "
+
+        docker compose exec db dropdb \
+        -U postgres \
+        "${DB_NAME}"
+
+    fi
+
+    echo "Creating database ${DB_NAME}"
+    docker compose exec db createdb \
+        -U postgres \
+        "${DB_NAME}"
+
+    docker compose exec db \
+        psql -U postgres -d "${DB_NAME}" \
+        -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+
+    docker compose -f docker-compose.local.yml \
+        -f docker-compose.db-manager.local.yml \
+        -f docker-compose.db.yml run --rm db-manager
+
+    # We also need the settlements_latest view
+    # docker compose exec -T db \
+    #     psql -U postgres -d "${DB_NAME}" \
+    #     < "${GITHUB_ROOT}/db-manager/scripts/sql/migrations/000006.000008_settlement.polygon_view.sql"
+
+    # docker compose exec -T db \
+    #     psql -U postgres -d "${DB_NAME}" \
+    #     < "${GITHUB_ROOT}/db-manager/scripts/sql/migrations/000011.000003_settlement.part.sql"
+
+# Used for testing dev setup with a subset of NGA data
+[script]
+create-fgdb:
+    cd "${GITHUB_ROOT}"
+    FULL_GDB_PATH="${GITHUB_ROOT}/importer/data/full/GEOPODE_GEOMETRY_EXPORT.gdb"
+    GDB_PATH="${GITHUB_ROOT}/importer/data/GEOPODE_GEOMETRY_EXPORT.gdb"
+
+    rm -rf "${GDB_PATH}"
+
+    docker run --rm \
+        --user "$(id -u):$(id -g)" \
+        --mount type=bind,source="$(pwd)",target="$(pwd)" \
+        --entrypoint gdal \
+        ghcr.io/osgeo/gdal:ubuntu-full-3.13.0 \
+        vector pipeline \
+            ! read --input "${FULL_GDB_PATH}" --input-layer boundary_country_health_boundaries \
+            ! set-geom-type --geometry-type MULTIPOLYGON \
+            ! write --output "${GDB_PATH}" \
+                --output-format OpenFileGDB \
+                --overwrite
+
+    ogrinfo "${GDB_PATH}" -so
+
+    layers=(
+        boundary_lgas_health_boundaries
+        boundary_states_health_boundaries
+        boundary_wards_health_boundaries
+        poi_church_health_boundaries
+        poi_church_health_boundaries_osm
+        poi_commercial_health_boundaries_osm
+        poi_general_health_boundaries_osm
+        poi_health_facilities_health_boundaries
+        poi_infrastructure_health_boundaries_osm
+        poi_market_health_boundaries_osm
+        poi_mosque_health_boundaries
+        poi_mosque_health_boundaries_osm
+        poi_natural_health_boundaries_osm
+        poi_school_health_boundaries
+        poi_school_health_boundaries_osm
+        poi_security_health_boundaries_osm
+        poi_transport_health_boundaries_osm
+        poi_water_health_boundaries_osm
+        settlement_bua_health_boundaries
+        settlement_ha_health_boundaries
+        settlement_name_not_primary_health_boundaries
+        settlement_name_primary_health_boundaries
+        settlement_name_real_health_boundaries
+        settlement_pos_health_boundaries
+        settlement_ssa_health_boundaries
+        soi_roads_major_health_boundaries
+        soi_roads_residential_health_boundaries
+        soi_roads_tertiary_health_boundaries
+        soi_roads_track_health_boundaries
+    )
+
+    for layer in "${layers[@]}"; do
+            echo "Processing: $layer"
+
+        docker run --rm \
+            --user "$(id -u):$(id -g)" \
+            --mount type=bind,source="$(pwd)",target="$(pwd)" \
+            --entrypoint gdal \
+            ghcr.io/osgeo/gdal:ubuntu-full-3.13.0 \
+            vector pipeline \
+                ! read --input "${FULL_GDB_PATH}" --input-layer "${layer}" \
+                ! filter --where "states_code IN ('BR', 'KN')" \
+                ! write --output "${GDB_PATH}" \
+                    --output-format OpenFileGDB \
+                    --update \
+                    --output-layer "${layer}"
+    done
+
+    ogrinfo "${GDB_PATH}" \
+        boundary_states_health_boundaries -geom=no
+
+[script]
+names:
+    settlement_name_primary_health_boundaries
+
+[script]
+import-geopode-data: importer-up create-gmt-db
+    cd "${GITHUB_ROOT}"
+    . config/dev.local.env
+
+    GDB_PATH="${GITHUB_ROOT}/importer/data/GEOPODE_GEOMETRY_EXPORT.gdb"
+
+    if [ ! -d "$GDB_PATH" ]; then
+        echo "Expected Geopode NGA FileGDB to exist: $GDB_PATH"
+        exit 1
+    fi
+
+    RASTER_PATH="${GITHUB_ROOT}/importer/data/rasters/input/pop_4326.tif"
+
+    if [ ! -f "$RASTER_PATH" ]; then
+        echo "Expected worldpop raster to exist: $RASTER_PATH"
+        exit 1
+    fi
+
+    IMPORT_SH_PATH="${GITHUB_ROOT}/importer/data/import.sh"
+
+    rm -f "${IMPORT_SH_PATH}"
+
+    docker compose exec importer \
+        /scripts/prepare_import_views.sh
+
+    docker compose exec importer \
+        /scripts/import_all_data.sh
+
+    echo "Removing import views"
+
+    docker compose exec importer \
+        /scripts/remove_import_views.sh
+
+
+    echo "Assign set. part to names"
+
+    # to assign geospially the primary name
+    docker compose exec db psql \
+        --echo-all -v ON_ERROR_STOP=1 \
+        --dbname "${DB_NAME}" \
+        -U "${DB_USER}" -c "
+        WITH sp_global_ids AS (
+            SELECT
+                p.global_id AS part_global_id,
+                (ARRAY_AGG(DISTINCT n.global_id))[1] AS n_global_id
+            FROM settlement.part p
+            INNER JOIN settlement.name n
+                ON ST_Intersects(p.geom, n.geom)
+            WHERE n.settlement_part IS NULL
+            GROUP BY p.global_id
+            HAVING COUNT(DISTINCT n.global_id) = 1
+        )
+        UPDATE settlement.name n_update
+        SET settlement_part  = pn.part_global_id
+        FROM sp_global_ids pn
+        WHERE pn.n_global_id = n_update.global_id
+    "
+
+    docker compose exec importer \
+        /scripts/create_simplified.sh
+
+    docker compose exec importer \
+        /usr/gmt-venv/bin/python \
+        /src/gdm/partitions/main.py \
+        --config /config_files/docker_local_db.yml 1 8 --clean
+
+    docker compose exec db psql \
+        --echo-all -v ON_ERROR_STOP=1 \
+        --dbname "${DB_NAME}" \
+        -U "${DB_USER}" -c "
+            TRUNCATE TABLE boundary.polygon_edited;
+
+            INSERT INTO boundary.polygon_edited (global_id, version_id, is_deleted, boundary_polygon,
+            geom, name, code, properties, bbox)
+            SELECT global_id, version_id, is_deleted,
+            global_id as boundary_polygon,
+            geom, name, code, properties, bbox FROM boundary.polygon WHERE level=3;
+
+            REFRESH MATERIALIZED VIEW boundary.polygon_edited_latest;
+        "
+
+[script]
+create-keycloak-db:
+    cd "${GITHUB_ROOT}"
+    . config/dev.local.env
+    . config/secrets.dev.local.env
+
+    DB_NAME=keycloak
+    DB_EXISTS=false
+
+    if docker compose exec -T db psql \
+        -U postgres \
+        -d postgres \
+        -tc "SELECT 1 FROM pg_database WHERE datname = '${DB_NAME}'" \
+        | grep -q 1; then
+        DB_EXISTS=true
+    fi
+
+    echo "$DB_EXISTS"
+
+    if $DB_EXISTS; then
+        echo "${DB_NAME} db already exists"
+        # exit 0
+
+        docker compose exec db psql -U postgres -d postgres -c "
+            SELECT pg_terminate_backend(pid)
+            FROM pg_stat_activity
+            WHERE datname = '${DB_NAME}';
+        "
+
+        docker compose exec db dropdb \
+        -U postgres \
+        "${DB_NAME}"
+
+    fi
+
+    echo "Creating database ${DB_NAME}"
+    docker compose exec db createdb \
+        -U postgres \
+        "${DB_NAME}"
+
+[script]
+rebuild-keycloak-image: create-keycloak-db
+   docker stop gmt_keycloak || true
+   docker rm gmt_keycloak  || true
+
+   docker-compose build --no-cache keycloak
+
+   #Start keycloak container. This will create 5 users with credentials stored in these env variables:
+
+    . ./config/dev.local.env
+    . ./config/secrets.dev.local.env
+
+    docker compose up -d keycloak
+
+[script]
+build-help:
+    cd "${GITHUB_ROOT}"
+
+    set -x
+
+    export SPHINX_ROOT_PATH="${GITHUB_ROOT}/sphinx"
+    export SPHINX_SOURCE_PATH="${GITHUB_ROOT}/sphinx/UserGuide"
+    export SPHINX_OUTPUT_PATH="${GITHUB_ROOT}/sphinx/UserGuide/_build"
+
+    container_name='gmt_sphinx_run'
+
+    cleanup_sphinx_container() {
+        if docker ps -a --format '{{{{.Names}}' | grep -qx "$container_name"; then
+            echo "Removing container"
+            docker rm -f "$container_name"
+        else
+            echo "container did not exist"
+        fi
+    }
+
+    echo "build-help: Building from sources in ${SPHINX_SOURCE_PATH}"
+
+    cleanup_sphinx_container;
+
+    docker compose -f docker-compose.sphinx.yml build sphinx
+
+    docker-compose -f docker-compose.sphinx.yml run --name ${container_name} sphinx /usr/bin/make html
+
+    docker cp ${container_name}:/docs/_build/html ${SPHINX_OUTPUT_PATH}
+
+    echo "The Help was successfully built and copied to ${SPHINX_OUTPUT_PATH}"
+
+    cleanup_sphinx_container;

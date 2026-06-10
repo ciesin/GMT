@@ -1,0 +1,13 @@
+<div cdkDragRootElement=".cdk-overlay-pane">
+
+  <!--Wrap in matUI button for https://github.com/novelt/GMT/issues/2376-->
+  <!-- <fa-icon icon="close" class="cancel" (click)="handleCancelDialog()"></fa-icon> -->
+  <button mat-button (click)="handleCancelDialog()" class="cancel">
+    <fa-icon icon="close"></fa-icon>
+  </button>
+
+  <mat-dialog-content>
+    <p class="install-dialog-body">Add GMT to Home screen.  If already installed will open the installed version.</p>
+    <button mat-flat-button (click)="installPwa()">Install / Open</button>
+  </mat-dialog-content>
+</div>

@@ -1,0 +1,61 @@
+<mat-expansion-panel
+  *ngIf="coverageHf != null"
+  (opened)="panelOpenState = true"
+  (closed)="panelOpenState = false"
+  (click)="onOpenPanelAction()"
+>
+  <mat-expansion-panel-header class="main-header">
+    <mat-panel-title>
+      <!-- fa-icon icon="location-crosshairs" (click)="handleShowHfSiteOnMap($event)"></fa-icon -->
+      <span>{{displayName}}</span> {{ '' // span is necessary here to get
+      icon margin}}
+    </mat-panel-title>
+    <mat-panel-description>
+      <div class="gmt-stats">
+        <div class="gmt-stats-text">
+          <span>{{formatPopulation(coverageHf.catchmentPopulation.computedPop)}}</span>
+          <fa-icon
+            *ngIf="coverageHf.isCatchmentDone"
+            icon="circle-check"
+          ></fa-icon>
+          <fa-icon
+            *ngIf="!coverageHf.isCatchmentDone"
+            icon="circle-minus"
+          ></fa-icon>
+        </div>
+        <gmt-catchment
+          mode="progressbar"
+          type="hf"
+          [fixedPost]="coverageHf.percFixedPost"
+          [outreach]="coverageHf.percOutreach"
+          [problematic]="coverageHf.percProblematic"
+        >
+        </gmt-catchment>
+      </div>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <gmt-catchment
+    mode="detailed"
+    type="hf"
+    [fixedPost]="coverageHf.percFixedPost"
+    [outreach]="coverageHf.percOutreach"
+    [problematic]="coverageHf.percProblematic"
+    [settlementCountProblematic]="coverageHf.settlementCountProblematic"
+    [settlementCountFixedPost]="coverageHf.settlementCountFixedPost"
+    [settlementCountOutreach]="coverageHf.settlementCountOutreach"
+  >
+  </gmt-catchment>
+  <div class="mat-action-row">
+    <button
+      mat-flat-button
+      class="main"
+      [routerLink]="[coverageHf.global_id, 'edit']"
+      queryParamsHandling="preserve"
+    >
+      <fa-icon icon="share"></fa-icon>
+      <span class="pre-label">go to</span>
+      <span class="label">details</span>
+    </button>
+  </div>
+</mat-expansion-panel>

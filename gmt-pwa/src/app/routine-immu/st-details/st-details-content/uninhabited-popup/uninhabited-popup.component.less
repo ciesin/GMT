@@ -1,0 +1,57 @@
+:host {
+  //tb lr
+  padding: 15px 20px;
+  display:block;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* This vertically centers the items */
+  width: 100%;
+   margin-bottom: 1.5em;
+
+  h4 {
+    margin: 0;
+    padding: 0;
+  }
+
+  .cancel {
+    margin: 0;
+    padding: 0;
+    min-width: auto;
+    aspect-ratio: 1 / 1;
+    width: 18px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+}
+
+
+.content-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+
+
+  .full-width {
+    flex: 1 1 100%;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .vcenter {
+    align-self: center;
+  }
+}
+
+
+mat-dialog-actions {
+  // t r b l
+  padding: 10px 0 0 0;
+}
+
+

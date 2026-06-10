@@ -1,0 +1,62 @@
+{
+  "production": ${IS_PROD},
+  "disable_sync": ${DISABLE_SYNC},
+  "google_analytics_tracking_code": "${GA_TRACKING_CODE}",
+  "api_url": "$API_URL",
+  "geoserver_url": "$GEOSERVER_URL",
+  "app_version": "${APP_VERSION}",
+  "environment": "$ENV_NAME",
+  "developer_mode": ${DEVELOPER_MODE},
+  "env_color": "$ENV_COLOR",
+  "doc": {
+      "root": "${GMT_DOC_ROOT}"
+    },
+  "keycloak": {
+    "url": "${KEYCLOAK_EXTERNAL_BASE_URL}",
+    "realm": "/realms/gmt",
+    "token_endpoint": "/realms/gmt/protocol/openid-connect/token",
+    "clientId": "${KEYCLOAK_WEB_CLIENT_NAME}",
+    "scope": "${KEYCLOAK_PWA_SCOPE}"
+  },
+  "generic": {
+    "operational_boundary_level": ${OPERATIONAL_BOUNDARY_LEVEL},
+    "boundary_level_labels": "${BOUNDARY_LEVEL_LABELS}",
+    "default_language": "${DEFAULT_LANGUAGE}",
+    "suggested_location_accuracy_m": ${SUGGESTED_LOCATION_ACCURACY_M},
+    "dev_tools_pin_code": "${DEV_TOOLS_PIN_CODE}"
+  },
+  "catchment": {
+    "min_fixed_post_buffer_m": ${MIN_FIXED_POST_BUFFER_M},
+    "max_fixed_post_buffer_m": ${MAX_FIXED_POST_BUFFER_M},
+    "target_population_perc": ${TARGET_POPULATION_PERCENTAGE}
+  },
+  "coverage_weight": {
+    "strategy": {
+      "fixed_post": ${COVERAGE_WEIGHT_STRATEGY_FIXED_POST},
+      "outreach": ${COVERAGE_WEIGHT_STRATEGY_OUTREACH}
+    },
+    "frequency": {
+      "unknown": ${COVERAGE_WEIGHT_FREQUENCY_UNKNOWN},
+      "oncePerMonth": ${COVERAGE_WEIGHT_FREQUENCY_ONCE_PER_MONTH},
+      "twicePerMonth": ${COVERAGE_WEIGHT_FREQUENCY_TWICE_PER_MONTH},
+      "threePerMonth": ${COVERAGE_WEIGHT_FREQUENCY_THREE_PER_MONTH},
+      "oncePerWeek": ${COVERAGE_WEIGHT_FREQUENCY_ONCE_PER_WEEK},
+      "twicePerWeek": ${COVERAGE_WEIGHT_FREQUENCY_TWICE_PER_WEEK},
+      "threePerWeek": ${COVERAGE_WEIGHT_FREQUENCY_THREE_PER_WEEK},
+      "fourPerWeek": ${COVERAGE_WEIGHT_FREQUENCY_FOUR_PER_WEEK},
+      "fivePerWeek": ${COVERAGE_WEIGHT_FREQUENCY_FIVE_PER_WEEK},
+      "sixPerWeek": ${COVERAGE_WEIGHT_FREQUENCY_SIX_PER_WEEK},
+      "daily": ${COVERAGE_WEIGHT_FREQUENCY_DAILY},
+      "other": ${COVERAGE_WEIGHT_FREQUENCY_OTHER}
+    },
+    "boundary": {
+      "in": ${COVERAGE_WEIGHT_BOUNDARY_INSIDE},
+      "out": ${COVERAGE_WEIGHT_BOUNDARY_OUTSIDE}
+    },
+    "distance": "${COVERAGE_WEIGHT_DISTANCE_BREAKPOINTS}",
+    "min_square_perc": ${COVERAGE_WEIGHT_MIN_PERCENTAGE},
+
+    "min_sett_percentage": ${COVERAGE_WEIGHT_MIN_SETT_PERCENTAGE},
+    "min_sett_pop": ${COVERAGE_WEIGHT_MIN_SETT_POP}
+  }
+}

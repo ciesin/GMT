@@ -1,0 +1,111 @@
+<div class="aboveTable">
+  <span>{{ selection.selected.length }} / {{ totalRecords }}{{ (selection.selected.length == 1) ? 'User ' : ' Users ' }}
+    selected</span>
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Search by username/email/name" #input>
+  </mat-form-field>
+</div>
+
+
+<div class="mat-elevation-z8" *ngIf="dataSource">
+  <div class="scrollable-table">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <div class="trash_container">
+            <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()"
+                          [aria-label]="checkboxLabel()">
+            </mat-checkbox>
+            <button mat-icon-button aria-label="Edit user" [disabled]="!selection.hasValue()"
+                    (click)="handleDisableUsers()">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)"
+                        [aria-label]="checkboxLabel(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th class="col_id" mat-header-cell *matHeaderCellDef mat-sort-header> ID</th>
+        <td class="col_id" mat-cell *matCellDef="let row"> {{ truncateText(row.id) }}</td>
+      </ng-container>
+
+      <!-- Username Column -->
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Username</th>
+        <td mat-cell *matCellDef="let row"> {{ row.username }}</td>
+      </ng-container>
+
+      <!-- email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> email</th>
+        <td mat-cell *matCellDef="let row"> {{ row.email }}</td>
+      </ng-container>
+
+      <!-- firstName Column -->
+      <ng-container matColumnDef="first_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name</th>
+        <td mat-cell *matCellDef="let row"> {{ row.first_name }}</td>
+      </ng-container>
+
+      <!-- lastName Column -->
+      <ng-container matColumnDef="last_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name</th>
+        <td mat-cell *matCellDef="let row"> {{ row.last_name }}</td>
+      </ng-container>
+
+      <!-- Geopermissions Column -->
+      <ng-container matColumnDef="geoPermissionLabels">
+        <th mat-header-cell *matHeaderCellDef> GeoPermissions</th>
+        <td mat-cell *matCellDef="let row">
+          <mat-chip-set>
+            <mat-chip *ngFor="let perm of row.geoPermissionLabels">{{ perm }}</mat-chip>
+          </mat-chip-set>
+        </td>
+      </ng-container>
+
+      <!-- Roles Column -->
+      <ng-container matColumnDef="roles">
+        <th mat-header-cell *matHeaderCellDef> Roles</th>
+        <td mat-cell *matCellDef="let row">
+          <mat-chip-set>
+            <mat-chip *ngFor="let role of row.roles">{{ role }}</mat-chip>
+          </mat-chip-set>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef> Edit</th>
+        <td mat-cell *matCellDef="let row" class="edit">
+          <button mat-mini-fab aria-label="Edit user" (click)="handleEditUser(row.id)">
+            <fa-icon icon="pen"></fa-icon>
+          </button>
+        </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="headers"></tr>
+      <tr mat-row *matRowDef="let row; columns: headers;" [class.deactivated]="!row.enabled"></tr>
+
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{ input.value }}"</td>
+      </tr>
+    </table>
+  </div>
+
+  <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 50, 100]"
+                 aria-label="Select page of users"></mat-paginator>
+</div>

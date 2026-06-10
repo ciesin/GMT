@@ -1,0 +1,53 @@
+@import "src/shared";
+
+.host {
+  border: @color-d2w-4 solid 0.016rem;
+  border-radius: 0.480rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  //flex-direction: column;
+  div {
+    padding: 1.120rem;
+  }
+  img {
+    height: 0.6rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    margin-right: 1rem;
+    filter: @color_filter_1d1d1b;
+    &:hover {
+      opacity: 0.8
+    }
+  }
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  background-color: white;
+  border: @color-d2w-4 solid 0.016rem;
+  border-radius: 0.480rem;
+  opacity: 0;
+  z-index:  @zi-root-dropdown;
+  padding: 0.640rem;
+  gap: 0.640rem;
+
+  .item {
+    display: flex;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.show {
+  display: flex;
+  flex-direction: column;
+}
+
+.positioned {
+  opacity: 1;
+}

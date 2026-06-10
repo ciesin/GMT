@@ -1,0 +1,35 @@
+form {
+  display: flex;
+  flex-wrap: wrap;
+  @gap: 1em;
+  gap: 1em;
+
+  mat-label {
+    color: var(--base-dark);
+  }
+
+  .full-width {
+    flex: 1 1 100%;
+  }
+
+  .half-width {
+    flex: 1 1 calc(50% - @gap / 2);
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .vcenter {
+    align-self: center;
+  }
+}
+
+::ng-deep
+  .cdk-overlay-container
+  .cdk-global-overlay-wrapper.gmt-wizard-overlay-wrapper
+  .boundary-edit {
+  .mat-horizontal-stepper-header-container::before {
+    content: "Boundary Correction";
+  }
+}

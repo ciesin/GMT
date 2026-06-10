@@ -1,0 +1,131 @@
+<mat-expansion-panel
+  *ngIf="boundaryItem"
+  [expanded]="urlBoundaryId == boundaryId"
+>
+  <!--
+(opened)="panelOpenState = true"
+  (closed)="panelOpenState = false" (click)="onOpenPanelAction()"> -->
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <!-- fa-icon
+        icon="location-crosshairs"
+        (click)="progressService.handleShowBoundaryOnMap($event, boundaryItem)"
+      ></fa-icon -->
+      <span>{{ boundaryItem.properties.name }}</span>
+    </mat-panel-title>
+
+    <mat-panel-description>
+      <div
+        class="gmt-stats"
+        *ngIf="
+          boundaryItem.properties.boundary_pop &&
+          boundaryItem.properties.boundary_pop > 0
+        "
+      >
+        <div class="gmt-stats-text">
+          <span>{{
+            progressService.formatPopulation(
+              boundaryItem.properties.catchment_pop_fp! +
+                boundaryItem.properties.catchment_pop_outreach! +
+                boundaryItem.properties.catchment_pop_unclaimed!
+            )
+          }}</span>
+        </div>
+        <gmt-catchment
+          mode="progressbar"
+          type="boundary"
+          [total]="
+            boundaryItem.properties.catchment_pop_fp! +
+            boundaryItem.properties.catchment_pop_outreach! +
+            boundaryItem.properties.catchment_pop_unclaimed!
+          "
+          [fixedPost]="boundaryItem.properties.catchment_pop_fp!"
+          [outreach]="boundaryItem.properties.catchment_pop_outreach!"
+          [unclaimed]="boundaryItem.properties.catchment_pop_unclaimed!"
+          [problematic]="boundaryItem.properties.catchment_pop_problematic!"
+        >
+        </gmt-catchment>
+      </div>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <ng-template matExpansionPanelContent>
+    <!--Note that the participating property is the single source of truth, but only for operating level (wards=3)
+    So we hope the indicators are up to date and use num_boundary_participating
+    -->
+    <ng-container
+      *ngIf="
+        boundaryItem.properties.num_boundary_participating &&
+          boundaryItem.properties.num_boundary_participating > 0;
+        else notParticipating
+      "
+    >
+      <gmt-boundary-indicators
+        *ngIf="boundaryItem"
+        [boundaryItem]="boundaryItem"
+      ></gmt-boundary-indicators>
+    </ng-container>
+
+    <ng-template #notParticipating>
+      <span class="not-participating"
+        >Boundary is not doing Microplanning in GMT</span
+      >
+    </ng-template>
+
+    <div class="mat-action-row">
+      <button
+        *ngIf="
+          boundaryItem &&
+          boundaryItem.properties.level < operationalBoundaryLevel
+        "
+        mat-flat-button
+        class="details-btn main"
+        (click)="redirectToDetails(boundaryItem.properties.global_id)"
+        queryParamsHandling="preserve"
+      >
+        <fa-icon icon="share"></fa-icon>
+        <span class="pre-label">go to</span>
+        <span class="label">details</span>
+      </button>
+
+      <button
+        *ngIf="
+          boundaryItem &&
+          boundaryItem.properties.level == operationalBoundaryLevel &&
+          !boundaryIsOffline &&
+          isOnline
+        "
+        mat-flat-button
+        class="details-btn main"
+        (click)="takeOffline($event)"
+      >
+        <fa-icon icon="download"></fa-icon>
+        <span class="label">Take offline</span>
+      </button>
+      <span
+        *ngIf="
+          boundaryItem &&
+          boundaryItem.properties.level == operationalBoundaryLevel &&
+          !boundaryIsOffline &&
+          !isOnline
+        "
+      >
+        You are offline
+      </span>
+
+      <button
+        *ngIf="
+          boundaryItem &&
+          boundaryItem.properties.level == operationalBoundaryLevel &&
+          boundaryIsOffline
+        "
+        mat-flat-button
+        class="details-btn main"
+        [routerLink]="immunizationRoute(this.boundaryId)"
+      >
+        <fa-icon icon="share"></fa-icon>
+        <span class="label">Open</span>
+      </button>
+    </div>
+  </ng-template>
+</mat-expansion-panel>

@@ -1,0 +1,71 @@
+@import "src/shared";
+
+.geoPermissionsEditCardContainer {
+  .gmtCardContainer();
+  display: flex;
+  width: 90%;
+  //max-width: 70rem;
+  // font-size: 2rem;
+  font-family: @font-family;
+  color: @color-d2w-2;
+
+  .header {
+    // font-size: 3rem;
+    margin-bottom: 2rem;
+
+    .closeBtn {
+      margin-left: 1rem;
+      width: 2rem;
+    }
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    max-height: 50rem;//80%;
+    overflow: auto;
+    padding: 1rem 0 1rem 0;
+    vertical-align: middle;
+
+    .column1 {
+      flex: 90%;
+      b{
+        vertical-align: middle;
+        padding-left: 1rem;
+      }
+      input[type='checkbox'] {
+        .checkbox(@color-second-darkest, 2.5);
+        vertical-align: middle;
+      }
+    }
+
+    .column2 {
+      flex: 10%;
+    }
+
+    .column-3 {
+      flex: 33.3%;
+    }
+
+    .selected{
+      background-color: #F3F4F9;
+    }
+  }
+
+  .saveContainer {
+    display: flex;
+    justify-content: right;
+    margin-right: 2rem;
+
+    .gmtTextButton {
+      .gmtTextButton();
+    }
+
+    .save {
+      .primaryButton();
+      margin-top: 1rem;
+    }
+  }
+}

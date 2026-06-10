@@ -1,0 +1,25 @@
+<div cdkDragRootElement=".cdk-overlay-pane">
+  <h1 mat-dialog-title>
+    PIN
+  </h1>
+
+
+  <!--Wrap in matUI button for https://github.com/novelt/GMT/issues/2376-->
+  <!--<fa-icon mat-dialog-close icon="close" class="cancel" (click)="handleCancelDialog()"></fa-icon>
+  -->
+  <button mat-button mat-dialog-close class="cancel" (click)="handleCancelDialog()">
+    <fa-icon icon="close"></fa-icon>
+  </button>
+
+  <mat-dialog-content>
+    <p>Enter the pin code that you can get from GMT page support team</p>
+    <input matInput [(ngModel)]="enteredPinCode"
+           type="text"
+           placeholder="Example: 0000">
+    <button mat-flat-button (click)="checkPinCode()">Submit</button>
+
+    <p>About</p>
+    <span ><a href="https://github.com/novelt/GMT/commit/{{gitCommit}}" target="_blank">
+        Git hash [{{gitCommit}}]</a> App Version [{{appVersion}}]</span>
+  </mat-dialog-content>
+</div>

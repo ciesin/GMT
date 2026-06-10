@@ -1,0 +1,6 @@
+<a class="help" [href]="getHelpUrl()" target="_gmt_help">
+  <span #default><ng-content></ng-content></span>
+  <ng-container *ngIf="!default.hasChildNodes()">
+    <img src="assets/icons/help.png" title="Documentation">
+  </ng-container>
+</a>

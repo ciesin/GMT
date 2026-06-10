@@ -1,0 +1,132 @@
+@import "src/less/mat-multiple-select-fix.less";
+
+.drag-header {
+  cursor: move;
+}
+
+.coords {
+  font-size: small;
+  color: gray;
+  bottom: 10px;
+  position: absolute;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  @gap: 1em;
+  gap: 1em;
+
+  .full-width {
+    flex: 1 1 100%;
+  }
+
+  .half-width {
+    flex: 1 1 calc(50% - @gap / 2);
+  }
+
+  .third-width {
+    flex: 1 1 calc(33% - @gap / 2);
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .vcenter {
+    align-self: center;
+  }
+}
+
+.parent-health-facility-radio-group {
+  mat-radio-button ::ng-deep .mdc-form-field {
+    display: flex;
+
+    label {
+      display: flex;
+      flex: 1;
+      min-width: 0;
+      gap: 1em;
+      align-items: center;
+      padding: 0 1em 0 0;
+      color: var(--base-dark);
+
+      & > :first-child {
+        flex: 1;
+        min-width: 0;
+
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      .pop {
+        flex: 0 0.4 6em;
+
+        & > div:first-child {
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    }
+  }
+}
+
+.parent-health-facility-viewpart {
+  width: 100%;
+}
+
+.info {
+  color: var(--base-dark);
+}
+
+:host ::ng-deep .mat-horizontal-stepper-header-container {
+  display: var(--matStepperHeaderDisplay);
+}
+
+:host
+  ::ng-deep
+  .cdk-virtual-scroll-orientation-vertical
+  .cdk-virtual-scroll-content-wrapper {
+  max-width: 100%; // fix a bug where option takes too much width on scroll
+}
+
+.days-heading {
+  margin: 0;
+}
+
+.days {
+  display: flex;
+  flex-wrap: wrap;
+
+  mat-checkbox {
+    // 7 days, so 100/7 = 14.x
+    flex: 0 0 14%;
+  }
+}
+
+::ng-deep
+  .cdk-overlay-container
+  .cdk-global-overlay-wrapper.gmt-wizard-overlay-wrapper
+  .health-facility-wizard-stepper {
+  &.fixed-post-wizard .mat-horizontal-stepper-header-container::before {
+    content: "Add Health Facility";
+  }
+
+  &.outreach-wizard .mat-horizontal-stepper-header-container::before {
+    content: "Add Outreach";
+  }
+}
+
+.custom-catchment-settlement-list {
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+
+  .remove-button {
+    margin-left: 5px;
+  }
+}

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1. Guide to the GMT &mdash; GMT User Guide  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1. Standard Operating Procedure for the GMT" href="../SOP/10SOP.html" />
+    <link rel="prev" title="4. Tutorial 4" href="../tutorials/40Tutorial4.html" />
+<link href="../../_static/style.css" rel="stylesheet" type="text/css">
+<link rel="manifest" href="./../../manifest.webmanifest">
+<script>
+    // Registering our Service worker
+    if ('serviceWorker' in navigator) {
+        let broadcastChannel = new BroadcastChannel('sw-messages');
+        console.log("sw:","../../sw.js");
+        navigator.serviceWorker.register("../../sw.js")
+        // navigator.serviceWorker.register('sw.js', { scope: "./" })
+        broadcastChannel.addEventListener('message', event => {
+            console.log('main Received', event.data);
+            if (event.data.cacheDone) {
+                localStorage['cacheDone'] = true;
+            }
+            if (event.data.reload) {
+                window.location.reload();
+            }
+        });
+
+        setInterval(async () => {
+            let fetchResp;
+            try {
+                fetchResp = await fetch("../../_static/version", {
+                    method: 'GET',
+                    headers: new Headers({
+                        'pragma': 'no-cache',
+                        'cache-control': 'no-cache',
+                    }),
+                });
+            }catch(error) {
+                console.log("New version detection impossible: ", error);
+            }
+            const serverVersion = await fetchResp.text();
+            const oldVersion = localStorage['version'];
+            const cache = await caches.open('GMT_DOC');
+            const keys = await cache.keys();
+            console.log("keys length:",keys.length);
+            if (serverVersion !== oldVersion || keys.length === 0
+                || ((localStorage['cacheDone']+"") === "false")) //bb: !localStorage['cacheDone'] not working. This is mysterious..
+            {
+                localStorage['version'] = serverVersion;
+                console.log("New version available: ", oldVersion, "=>", serverVersion);
+                localStorage['cacheDone'] = false;
+                broadcastChannel.postMessage({updateCache: true, oldVersion});
+            } else {
+                console.log("Current version :", oldVersion)
+            }
+        },5000);}
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+            <a href="../../index.html">
+            <img src="../../_static/GMT_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Background</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../background/10background.html">1. Background</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/10Tutorial1.html">1. Tutorial 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/20Tutorial2.html">2. Tutorial 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/30Tutorial3.html">3. Tutorial 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/40Tutorial4.html">4. Tutorial 4</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guide to the GMT</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Guide to the GMT</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#neighboring-wards">1.1. Neighboring Wards</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#catchments-in-neighboring-wards">1.1.1. Catchments in neighboring Wards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assigning-a-health-facility-or-a-settlement-to-another-ward">1.1.2. Assigning a health facility or a settlement to another Ward</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#settlement-parts">1.2. Settlement Parts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#balancing-population">1.3. Balancing Population</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiple-claimed-settlements">1.4. Multiple Claimed Settlements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-icons">1.5. Error Icons</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standard Operating Procedure</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../SOP/10SOP.html">1. Standard Operating Procedure for the GMT</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GMT User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">1. </span>Guide to the GMT</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-to-the-gmt">
+<h1><span class="section-number">1. </span>Guide to the GMT<a class="headerlink" href="#guide-to-the-gmt" title="Permalink to this headline"></a></h1>
+<section id="neighboring-wards">
+<h2><span class="section-number">1.1. </span>Neighboring Wards<a class="headerlink" href="#neighboring-wards" title="Permalink to this headline"></a></h2>
+<section id="catchments-in-neighboring-wards">
+<h3><span class="section-number">1.1.1. </span>Catchments in neighboring Wards<a class="headerlink" href="#catchments-in-neighboring-wards" title="Permalink to this headline"></a></h3>
+<p>It is possible for a health facility to claim settlements in neighboring Wards.
+Visually, this is no different from usual catchments, except that the catchment now
+spans a Ward boundary. When you add a settlement from another Ward to a health facility,
+you will also see in the suggested settlement list that it is within another Ward.</p>
+<img alt="../../_images/outside_ward.png" class="align-center" src="../../_images/outside_ward.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>When doing the microplan now for the neighboring Ward, the settlement will be visually
+linked with the health facility it was claimed by with a red dashed line:</p>
+<img alt="../../_images/neighboring_ward.png" class="align-center" src="../../_images/neighboring_ward.png" />
+</section>
+<hr class="docutils" />
+<section id="assigning-a-health-facility-or-a-settlement-to-another-ward">
+<h3><span class="section-number">1.1.2. </span>Assigning a health facility or a settlement to another Ward<a class="headerlink" href="#assigning-a-health-facility-or-a-settlement-to-another-ward" title="Permalink to this headline"></a></h3>
+<p>It is possible to attribute a health facility or settlement to another Ward.
+You can do this in the settlement or health facility detail page.</p>
+<img alt="../../_images/ward_attribution.png" class="align-center" src="../../_images/ward_attribution.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>However, doing this will not have any further impact in the application. The Ward
+boundaries will remain as such. They will have to be changed elsewhere.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="settlement-parts">
+<h2><span class="section-number">1.2. </span>Settlement Parts<a class="headerlink" href="#settlement-parts" title="Permalink to this headline"></a></h2>
+<p>Two names that reside within the same settlement polygon have this icon next
+to them in the settlement list:</p>
+<img alt="../../_images/multi_prim_name_list_guide.png" class="align-center" src="../../_images/multi_prim_name_list_guide.png" />
+</section>
+<hr class="docutils" />
+<section id="balancing-population">
+<h2><span class="section-number">1.3. </span>Balancing Population<a class="headerlink" href="#balancing-population" title="Permalink to this headline"></a></h2>
+<p>In a case where you have multiple primary names for one polygon, you will need to
+assign each name a certain amount of the population residing within the polygon. When
+you add the name to the polygon, you will be asked to balance the population either by
+providing absolute numbers or else providing percentages.</p>
+<p>You can always change this later by clicking those icons:</p>
+<img alt="../../_images/multi_prim_name_list_balance.png" class="align-center" src="../../_images/multi_prim_name_list_balance.png" />
+</section>
+<hr class="docutils" />
+<section id="multiple-claimed-settlements">
+<h2><span class="section-number">1.4. </span>Multiple Claimed Settlements<a class="headerlink" href="#multiple-claimed-settlements" title="Permalink to this headline"></a></h2>
+<p>Whenever a settlement is claimed by several health facilities, it will appear
+as “Multiple Claimed”. It will frequently be the case in urban areas, where there
+are many health facilities within 2km of an area. In those cases, it is unclear how
+the population will be choosing which health facility they would go to. In such a case,
+a health facility will have to indicate what percentage of a settlement it is claiming (since
+if, for instance, two health facilities claim 100% of one settlement, it would be claimed
+for 200% - that would be incorrect). Per default, it is always assumed that a health facility
+claims a settlement fully (i.e. 100%).</p>
+<p>The percentages can be adjusted in the health facility catchment tab:</p>
+<img alt="../../_images/catchment_percentage.png" class="align-center" src="../../_images/catchment_percentage.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The percentage can also be adjusted from the settlements tab:</p>
+<img alt="../../_images/percentage_adjust.png" class="align-center" src="../../_images/percentage_adjust.png" />
+<p>If the population percentage of a multiple claimed settlement corresponds to 100%, this
+settlement will still have an orange warning icon to indicate it’s multiple claimed.
+If the population percentage of a multiple claimed settlement <strong>does not</strong> correspond to 100%, this
+settlement will have an error icon. If the percentage is below 100%, it will appear as multiple claimed
+as well as unclaimed. If the percentage is above 100%, the “Multiple claimed” icon will be red.</p>
+<p>If claimed above 100%:</p>
+<img alt="../../_images/multiple_claimed_above.png" class="align-center" src="../../_images/multiple_claimed_above.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>If claimed below 100%:</p>
+<img alt="../../_images/multiple_claimed_below.png" class="align-center" src="../../_images/multiple_claimed_below.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>If claimed exactly at 100%:</p>
+<img alt="../../_images/multi_claim_exact.png" class="align-center" src="../../_images/multi_claim_exact.png" />
+</section>
+<hr class="docutils" />
+<section id="error-icons">
+<h2><span class="section-number">1.5. </span>Error Icons<a class="headerlink" href="#error-icons" title="Permalink to this headline"></a></h2>
+<p>The following error icons exist:</p>
+<p><strong>Machine Name</strong>
+This settlement has an automatically generated name. You should give it a real name.</p>
+<a class="reference internal image-reference" href="../../_images/name_pb.svg"><img alt="../../_images/name_pb.svg" class="align-center" src="../../_images/name_pb.svg" width="100" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>No location</strong>
+This settlement / health facility has no location.</p>
+<a class="reference internal image-reference" href="../../_images/no_geometry.svg"><img alt="../../_images/no_geometry.svg" class="align-center" src="../../_images/no_geometry.svg" width="100" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Unclaimed</strong>
+This settlement has not been claimed by a health facility or it has not been claimed fully (i.e. 100%).</p>
+<a class="reference internal image-reference" href="../../_images/unclaimed.svg"><img alt="../../_images/unclaimed.svg" class="align-center" src="../../_images/unclaimed.svg" width="100" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Multiple claimed</strong>
+Orange as a warning if a settlement is claimed by several health facilities and it is not overclaimed.
+The icon is red if the settlement is claimed above 100%.</p>
+<a class="reference internal image-reference" href="../../_images/multiple_claimed.svg"><img alt="../../_images/multiple_claimed.svg" class="align-center" src="../../_images/multiple_claimed.svg" width="100" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>No settlement</strong>
+This health facility has not been assigned any settlement.</p>
+<a class="reference internal image-reference" href="../../_images/no_settlement_part.svg"><img alt="../../_images/no_settlement_part.svg" class="align-center" src="../../_images/no_settlement_part.svg" width="100" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Population not 100%</strong>
+This icon indicates that a settlement has not been assigned the full extent of the polygon. You will have to
+assign it the full 100% or balance the population accordingly, if there are several primary names in that polygon.</p>
+<a class="reference internal image-reference" href="../../_images/pop_not_100.svg"><img alt="../../_images/pop_not_100.svg" class="align-center" src="../../_images/pop_not_100.svg" width="100" /></a>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../tutorials/40Tutorial4.html" class="btn btn-neutral float-left" title="4. Tutorial 4" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../SOP/10SOP.html" class="btn btn-neutral float-right" title="1. Standard Operating Procedure for the GMT" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Novel-T.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

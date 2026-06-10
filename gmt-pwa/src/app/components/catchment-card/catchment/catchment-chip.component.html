@@ -1,0 +1,9 @@
+<h5 class="title" [ngStyle]="{color: color}" *ngIf="title">{{title}}</h5>
+<!--Don't display this if we don't have a value, but we do want it to display when detailValue is 0-->
+<div class="detail" *ngIf="detailValue != null && detailValue >= 0">
+  <fa-icon [icon]="detailIcon"></fa-icon> {{detailValue}} settlement(s)
+</div>
+<h4 class="content">
+  <fa-icon [icon]="icon" [ngStyle]="{color: color}"></fa-icon>
+  <span>{{value}}</span>
+</h4>

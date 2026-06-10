@@ -1,0 +1,158 @@
+<mat-expansion-panel
+  class="sub-sub-expansion is-form"
+  (opened)="panelOpenState = true"
+  (closed)="panelOpenState = false"
+  (click)="onOpenPanelAction()"
+>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <!-- fa-icon
+        icon="location-crosshairs"
+        (click)="handleShowHfSiteOnMap($event)"
+      ></fa-icon -->
+      {{(hf!.json!.properties.name.length > 0) ? hf!.json!.properties.name :
+      'Untitled' }}
+    </mat-panel-title>
+    <mat-panel-description>
+      <div class="gmt-stats" *ngIf="coverage">
+        <div class="gmt-stats-text">
+          <span>{{formatPopulation(coverage.catchmentPopulation.computedPop)}}</span>
+          <fa-icon
+            *ngIf="coverage.isCatchmentDone"
+            icon="circle-check"
+          ></fa-icon>
+          <fa-icon
+            *ngIf="!coverage.isCatchmentDone"
+            icon="circle-minus"
+          ></fa-icon>
+        </div>
+        <gmt-catchment
+          mode="progressbar"
+          type="hf"
+          [total]="100"
+          [fixedPost]="coverage.percFixedPost"
+          [outreach]="coverage.percOutreach"
+        >
+        </gmt-catchment>
+      </div>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <div class="panel-content">
+    <div>{{messages}}</div>
+    <form class="form-vertical" [formGroup]="basicInformationFormGroup">
+      <mat-form-field
+        subscriptSizing="dynamic"
+        *ngIf="problems[FORM_KEY_NAME]"
+        class="st-name-input"
+      >
+        <mat-label>NAME</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Name"
+          name="hf_name"
+          [formControlName]="FORM_KEY_NAME"
+          [disabled]="!userCanEdit"
+        />
+      </mat-form-field>
+
+      <span
+        class="inline-edit-button"
+        *ngIf="userCanEdit && problems[FORM_KEY_NAME]"
+      >
+        <button mat-flat-button (click)="nameChange()">
+          <fa-icon icon="circle-check"></fa-icon>
+          <span class="label">save</span>
+        </button>
+      </span>
+
+      <mat-form-field
+        subscriptSizing="dynamic"
+        *ngIf="userCanEdit && problems[FORM_KEY_OWNERSHIP]"
+        class="half-width"
+      >
+        <mat-label>OWNERSHIP</mat-label>
+        <mat-select
+          [formControlName]="FORM_KEY_OWNERSHIP"
+          (ngModelChange)="ownershipChange($event)"
+        >
+          <!--                      [value]="hf.properties.private ? OWNERSHIP_PRIVATE: OWNERSHIP_PUBLIC"-->
+          <mat-option
+            *ngFor="let ownership of ownershipOptions"
+            [value]="ownership.value"
+          >
+            {{ownership.label}}
+          </mat-option>
+        </mat-select>
+        <fa-icon matSuffix icon="caret-down"></fa-icon>
+      </mat-form-field>
+      <mat-form-field
+        subscriptSizing="dynamic"
+        *ngIf="userCanEdit && problems[FORM_KEY_LEVEL_OF_CARE]"
+        class="half-width"
+      >
+        <mat-label>TYPE</mat-label>
+        <mat-select
+          [formControlName]="FORM_KEY_LEVEL_OF_CARE"
+          (ngModelChange)="typeChange($event)"
+        >
+          <mat-option *ngFor="let type of hfTypesOptions" [value]="type.value">
+            {{type.label}}
+          </mat-option>
+        </mat-select>
+        <fa-icon matSuffix icon="caret-down"></fa-icon>
+      </mat-form-field>
+      <!--the mat-form-field div causes a nasty bug
+  https://github.com/novelt/GMT/issues/2583-->
+      <div class="fake-mat-form-field full-width"
+        subscriptSizing="dynamic"
+        *ngIf="userCanEdit && problems[FORM_KEY_SERVICES]"
+      >
+        <mat-label>SERVICES</mat-label>
+        <mat-select
+          [placeholder]="'Select Services for this Facility'"
+          [formControlName]="FORM_KEY_SERVICES"
+          (ngModelChange)="serviceChange($event)"
+          multiple
+        >
+          <mat-option
+            *ngFor="let serviceOpt of servicesOptions"
+            [value]="serviceOpt.value"
+          >
+            {{serviceOpt.label}}
+          </mat-option>
+        </mat-select>
+      </div>
+<!--      <mat-form-field-->
+<!--        subscriptSizing="dynamic"-->
+<!--        *ngIf="userCanEdit && problems[FORM_KEY_SERVICES]"-->
+<!--        class="full-width"-->
+<!--      >-->
+<!--        <mat-label>SERVICES</mat-label>-->
+<!--        <mat-select-->
+<!--          [placeholder]="'Select Services for this Facility'"-->
+<!--          [formControlName]="FORM_KEY_SERVICES"-->
+<!--          (ngModelChange)="serviceChange($event)"-->
+<!--          multiple-->
+<!--        >-->
+<!--          <mat-option-->
+<!--            *ngFor="let serviceOpt of servicesOptions"-->
+<!--            [value]="serviceOpt.value"-->
+<!--          >-->
+<!--            {{serviceOpt.label}}-->
+<!--          </mat-option>-->
+<!--        </mat-select>-->
+<!--        <fa-icon matSuffix icon="caret-down"></fa-icon>-->
+<!--      </mat-form-field>-->
+    </form>
+  </div>
+
+  <div class="mat-action-row">
+    <button mat-button mat-flat-button (click)="redirectToDetails()">
+      <fa-icon icon="location-crosshairs"></fa-icon>
+      <span class="pre-label">go to</span>
+      <span class="label">details</span>
+    </button>
+  </div>
+</mat-expansion-panel>

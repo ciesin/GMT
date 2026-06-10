@@ -1,0 +1,60 @@
+services:
+
+  server:
+    deploy:
+      resources:
+        limits:
+          cpus: ${SERVER_RES_LIMIT_CPU}
+          memory: "${SERVER_RES_LIMIT_MEMORY}"
+        reservations:
+          cpus: ${SERVER_RES_RESERVATION_CPU}
+          memory: "${SERVER_RES_RESERVATION_MEMORY}"
+
+  queues:
+    deploy:
+      resources:
+        limits:
+          cpus: ${QUEUES_RES_LIMIT_CPU}
+          memory: "${QUEUES_RES_LIMIT_MEMORY}"
+        reservations:
+          cpus: ${QUEUES_RES_RESERVATION_CPU}
+          memory: "${QUEUES_RES_RESERVATION_MEMORY}"
+
+  redis:
+    deploy:
+      resources:
+        limits:
+          cpus: ${REDIS_RES_LIMIT_CPU}
+          memory: "${REDIS_RES_LIMIT_MEMORY}"
+        reservations:
+          cpus: ${REDIS_RES_RESERVATION_CPU}
+          memory: "${REDIS_RES_RESERVATION_MEMORY}"
+  pwa:
+    deploy:
+      resources:
+        limits:
+          cpus: ${PWA_RES_LIMIT_CPU}
+          memory: "${PWA_RES_LIMIT_MEMORY}"
+        reservations:
+          cpus: ${PWA_RES_RESERVATION_CPU}
+          memory: "${PWA_RES_RESERVATION_MEMORY}"
+
+  importer:
+    deploy:
+      resources:
+        limits:
+          cpus: ${IMPORTER_RES_LIMIT_CPU}
+          memory: "${IMPORTER_RES_LIMIT_MEMORY}"
+        reservations:
+          cpus: ${IMPORTER_RES_RESERVATION_CPU}
+          memory: "${IMPORTER_RES_RESERVATION_MEMORY}"
+
+  keycloak:
+    deploy:
+      resources:
+        limits:
+          cpus: ${KEYCLOAK_RES_LIMIT_CPU}
+          memory: "${KEYCLOAK_RES_LIMIT_MEMORY}"
+        reservations:
+          cpus: ${KEYCLOAK_RES_RESERVATION_CPU}
+          memory: "${KEYCLOAK_RES_RESERVATION_MEMORY}"

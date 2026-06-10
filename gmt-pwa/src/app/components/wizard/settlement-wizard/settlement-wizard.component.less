@@ -1,0 +1,66 @@
+@import "src/less/mat-multiple-select-fix.less";
+
+.drag-header {
+  cursor: move;
+}
+
+:host ::ng-deep .mat-horizontal-stepper-header-container {
+  display: var(--matStepperHeaderDisplay);
+}
+
+.gmt-modal-options {
+  section:first-child {
+    margin-block-end: 1rem;
+  }
+
+  section button {
+    margin-inline-end: 1rem;
+  }
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  @gap: 1em;
+  gap: 1em;
+
+  .full-width {
+    flex: 1 1 100%;
+  }
+
+  .half-width {
+    flex: 1 1 calc(50% - @gap / 2);
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .vcenter {
+    align-self: center;
+  }
+}
+
+mat-form-field.disabled {
+  // couldn't make diable attribute work properly so adding a designated class instead
+  ::ng-deep .mat-mdc-text-field-wrapper:not(.mdc-text-field--disabled) {
+    background: var(--base-pale);
+  }
+
+  ::ng-deep
+    .mdc-text-field:not(.mdc-text-field--disabled)
+    .mdc-text-field__input,
+  ::ng-deep .mat-mdc-text-field-wrapper .mat-mdc-form-field-icon-prefix {
+    color: var(--base-medium);
+  }
+}
+
+// Add settlement wizard specific styles
+::ng-deep
+  .cdk-overlay-container
+  .cdk-global-overlay-wrapper.gmt-wizard-overlay-wrapper
+  .settlement-wizard-stepper {
+  .mat-horizontal-stepper-header-container::before {
+    content: "Add Settlement";
+  }
+}

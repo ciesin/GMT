@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3. Tutorial 3 &mdash; GMT User Guide  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4. Tutorial 4" href="40Tutorial4.html" />
+    <link rel="prev" title="2. Tutorial 2" href="20Tutorial2.html" />
+<link href="../../_static/style.css" rel="stylesheet" type="text/css">
+<link rel="manifest" href="./../../manifest.webmanifest">
+<script>
+    // Registering our Service worker
+    if ('serviceWorker' in navigator) {
+        let broadcastChannel = new BroadcastChannel('sw-messages');
+        console.log("sw:","../../sw.js");
+        navigator.serviceWorker.register("../../sw.js")
+        // navigator.serviceWorker.register('sw.js', { scope: "./" })
+        broadcastChannel.addEventListener('message', event => {
+            console.log('main Received', event.data);
+            if (event.data.cacheDone) {
+                localStorage['cacheDone'] = true;
+            }
+            if (event.data.reload) {
+                window.location.reload();
+            }
+        });
+
+        setInterval(async () => {
+            let fetchResp;
+            try {
+                fetchResp = await fetch("../../_static/version", {
+                    method: 'GET',
+                    headers: new Headers({
+                        'pragma': 'no-cache',
+                        'cache-control': 'no-cache',
+                    }),
+                });
+            }catch(error) {
+                console.log("New version detection impossible: ", error);
+            }
+            const serverVersion = await fetchResp.text();
+            const oldVersion = localStorage['version'];
+            const cache = await caches.open('GMT_DOC');
+            const keys = await cache.keys();
+            console.log("keys length:",keys.length);
+            if (serverVersion !== oldVersion || keys.length === 0
+                || ((localStorage['cacheDone']+"") === "false")) //bb: !localStorage['cacheDone'] not working. This is mysterious..
+            {
+                localStorage['version'] = serverVersion;
+                console.log("New version available: ", oldVersion, "=>", serverVersion);
+                localStorage['cacheDone'] = false;
+                broadcastChannel.postMessage({updateCache: true, oldVersion});
+            } else {
+                console.log("Current version :", oldVersion)
+            }
+        },5000);}
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+            <a href="../../index.html">
+            <img src="../../_static/GMT_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Background</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../background/10background.html">1. Background</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="10Tutorial1.html">1. Tutorial 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20Tutorial2.html">2. Tutorial 2</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Tutorial 3</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#purpose">3.1. Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#let-s-get-started">3.2. Let’s Get Started!</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#preparation">3.2.1. Preparation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#review-the-health-facility-list">3.2.2. Review the Health Facility list</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#health-facilities-not-performing-ri">3.2.2.1. Health facilities not performing RI</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#review-the-settlement-list">3.2.3. Review the Settlement list</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#subplace-names">3.2.3.1. Subplace Names</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#splitting-a-settlement">3.2.3.2. Splitting a settlement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#merging-settlements">3.2.3.3. Merging settlements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#uninhabited-settlements">3.2.3.4. Uninhabited settlements</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#perform-microplanning">3.2.4. Perform Microplanning</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="40Tutorial4.html">4. Tutorial 4</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guide to the GMT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guide/10complete_guide.html">1. Guide to the GMT</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standard Operating Procedure</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../SOP/10SOP.html">1. Standard Operating Procedure for the GMT</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GMT User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">3. </span>Tutorial 3</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial-3">
+<h1><span class="section-number">3. </span>Tutorial 3<a class="headerlink" href="#tutorial-3" title="Permalink to this headline"></a></h1>
+<section id="purpose">
+<h2><span class="section-number">3.1. </span>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline"></a></h2>
+<p>The purpose of this third tutorial is to go into the more advanced functionalities of
+the Geospatial Microplanning Toolkit (GMT). Previous knowledge is required - you are
+expected to have worked through <a class="reference internal" href="10Tutorial1.html"><span class="doc">Tutorial 1</span></a> and
+<a class="reference internal" href="20Tutorial2.html"><span class="doc">Tutorial 2</span></a> and that you understand all concepts
+introduced there.</p>
+<p>This tutorial will follow the same principle as the previous two, and
+additionally we will introduce the following:</p>
+<ol class="arabic simple">
+<li><p>Health facilities not considered for routine immunization</p></li>
+<li><p>Subplace names</p></li>
+<li><p>Settlement splitting</p></li>
+<li><p>Settlement merging</p></li>
+<li><p>Uninhabited settlements</p></li>
+<li><p>Using the algorithm to populate the microplan</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="let-s-get-started">
+<h2><span class="section-number">3.2. </span>Let’s Get Started!<a class="headerlink" href="#let-s-get-started" title="Permalink to this headline"></a></h2>
+<section id="preparation">
+<h3><span class="section-number">3.2.1. </span>Preparation<a class="headerlink" href="#preparation" title="Permalink to this headline"></a></h3>
+<p>Obtain the data for Ward “Oke-Ode 3” in LGA “Ifelodun” in the
+State “Kwara” and take the data offline. Navigate to the health facility list. If
+any of those steps pose trouble, consult the steps in Tutorial 1.</p>
+</section>
+<section id="review-the-health-facility-list">
+<h3><span class="section-number">3.2.2. </span>Review the Health Facility list<a class="headerlink" href="#review-the-health-facility-list" title="Permalink to this headline"></a></h3>
+<section id="health-facilities-not-performing-ri">
+<h4><span class="section-number">3.2.2.1. </span>Health facilities not performing RI<a class="headerlink" href="#health-facilities-not-performing-ri" title="Permalink to this headline"></a></h4>
+<p>In our current Ward, we have four health facilities. Let’s assume that not all
+of those health facilities are relevant for routine immunization. In fact, the
+health facility “Alabe Oja Primary Health Center” is not performing routine
+immunization and should thus not be considered for our microplan.</p>
+<img alt="../../_images/oke_ode3.png" class="align-center" src="../../_images/oke_ode3.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>We can mark the health facility as such: enter the health facility detail tab and choose
+“No Service” in the menu “Services”.
+Note that the catchment tab is no longer available for this health facility.</p>
+<img alt="../../_images/no_RI.png" class="align-center" src="../../_images/no_RI.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Navigate back to the health facility list and note that this health facility is now listed in the section “Health
+Facilities not performing RI” at the bottom of the screen.</p>
+<img alt="../../_images/no_RI_list.png" class="align-center" src="../../_images/no_RI_list.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Let’s assume that all the other three health facilities are in order as such.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="review-the-settlement-list">
+<h3><span class="section-number">3.2.3. </span>Review the Settlement list<a class="headerlink" href="#review-the-settlement-list" title="Permalink to this headline"></a></h3>
+<section id="subplace-names">
+<h4><span class="section-number">3.2.3.1. </span>Subplace Names<a class="headerlink" href="#subplace-names" title="Permalink to this headline"></a></h4>
+<p>Let’s take a look at the settlement list.</p>
+<p>Search for “Gaa Olowolagba”. You’ll see that there is a settlement with that name.
+You will also see that it is followed by “sub 3”. To understand what that means,
+zoom first to that settlement on the map.</p>
+<img alt="../../_images/sub_list.png" class="align-center" src="../../_images/sub_list.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>You will see that there is a settlement name assigned to the outline of the settlement.
+The outline of the settlement is shown in the legend as “Settlements - Shapes”, while
+the name of a settlement is shown in the legend as “Settlements - Names”. Those can
+be toggled on or off.</p>
+<img alt="../../_images/settlement_shapes_names.png" class="align-center" src="../../_images/settlement_shapes_names.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>You will note that there is one settlement name “Gaa Olowolagba” associated with
+a shape. You can underlie the satellite imagery if you have connectivity.
+You will see that within this settlement there are three other names. Those are
+called “Subplace Names”. If you click on the “sub 3” next to the settlement name,
+you will see those places listed.</p>
+<img alt="../../_images/sub_names_map.png" class="align-center" src="../../_images/sub_names_map.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Note that you can search for those names in the
+settlement list and this will highlight the number if the search term is found.</p>
+<img alt="../../_images/sub_search.png" class="align-center" src="../../_images/sub_search.png" />
+<p>If you want to understand more about subplace names, you can go to <a class="reference internal" href="../background/10background.html#settlements"><span class="std std-ref">Settlements</span></a>.</p>
+</section>
+<hr class="docutils" />
+<section id="splitting-a-settlement">
+<h4><span class="section-number">3.2.3.2. </span>Splitting a settlement<a class="headerlink" href="#splitting-a-settlement" title="Permalink to this headline"></a></h4>
+<p>Without going into detail here, buildings have been aggregated into settlements
+with certain rules. If you want to understand this better, you can consult
+<a class="reference internal" href="../background/10background.html"><span class="doc">Background</span></a>.</p>
+<p>These settlements may not always correspond to the actual
+outline of a settlement. Sometimes a settlement may have many subplace names which
+are actually all individual settlements. For the sake of microplanning, you may not
+need to actually split a settlement with many subplace names into individual settlements,
+as long as all of the places are part of the same health facility catchment and reached
+using the same routine immunization strategy. However, you may wish to split them into
+individual settlements for correctness nevertheless.</p>
+<p>In our case, let’s imagine that in fact, “Gaa Mohd Jetido” and “Gaa Olowolagba” are
+part of the catchment of “Shagbe Basic Health Center”, while “Gaa Alhaji Saidu Ologoma”
+and “Gaa Sidi Ologoma” are part of the catchment of “Ganmu Community Health Post”.
+Thus, we will have to split the settlements accordingly.</p>
+<p>To do so, choose the “Select” icon on the map.</p>
+<img alt="../../_images/select_icon_map.png" class="align-center" src="../../_images/select_icon_map.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>With the tool active, select the settlement we aim to split. Click now on the scissor icon.</p>
+<img alt="../../_images/scissor.png" class="align-center" src="../../_images/scissor.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Now, you want to split the settlement by drawing a polygon. Note that we will have to
+cut our settlement several times. First, we will isolate “Gaa Olowolagba” as a single
+settlement. Be careful to include the full shape, otherwise some parts will still
+belong to the other cut part. Finish the polygon by double-clicking. If you are not
+happy with your polygon and you have not split yet, you can abort the operation by
+clicking on the scissor again.</p>
+<p>It should look something like that:</p>
+<img alt="../../_images/proper_split.png" class="align-center" src="../../_images/proper_split.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Not like this - include the full shape:</strong></p>
+<img alt="../../_images/wrong_cut.png" class="align-center" src="../../_images/wrong_cut.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Not like that - avoid intersections:</strong></p>
+<img alt="../../_images/cut_wrong.png" class="align-center" src="../../_images/cut_wrong.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>After you finished the operation, you can see that one of the subplace names has
+now been promoted to a primary name in the list - it is in this case “Gaa Alahaji Saidu Ologoma”.
+Note that this contains now still two subplace names.
+If you see it on the map but not on the list on the left, you can choose “Show visible extent
+only” to filter the list to the visible extent of the map only.</p>
+<img alt="../../_images/first_split.png" class="align-center" src="../../_images/first_split.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Next, we want to isolate “Gaa Mohd Jetido”. Repeat the procedure above to split it.
+Repeat this also for the remaining last subplace name.</p>
+<p>As a result, we have now no longer one “Gaa Olowolagba” with three subplace names
+but rather four individual settlements. You can split any type of settlement this
+way.</p>
+<img alt="../../_images/split_finished.png" class="align-center" src="../../_images/split_finished.png" />
+</section>
+<hr class="docutils" />
+<section id="merging-settlements">
+<h4><span class="section-number">3.2.3.3. </span>Merging settlements<a class="headerlink" href="#merging-settlements" title="Permalink to this headline"></a></h4>
+<p>In a similar fashion that some of the buildings have not been split properly
+into settlements through the automated processing, there may be cases where
+buildings have not been assigned to the same settlement, even though they are
+part of the same settlement. In that case, we would like to merge settlements.</p>
+<p>Let’s take a look at HA_31, HA_30 and HA_28. Those are all machine generated
+names. Let’s imagine that we had flagged those places for field data collection, as
+described in Tutorial 2. After coming back from the field data collection, we
+know that those are all part of “Gaa Mila Ikba”.</p>
+<p>We could rename all three to that name. However, that would lead to duplicates in
+the settlement list. That’s not good practice. Instead, we will first rename
+HA_30 to “Gaa Mila Ikba”. Click on HA_30 - be sure to no longer have the “select
+mode” on the map active, if you want to click on the settlement on the map to access
+the settlement. Rename it as we have seen in Tutorial 1.</p>
+<img alt="../../_images/select_active.png" class="align-center" src="../../_images/select_active.png" />
+<img alt="../../_images/select_inactive.png" class="align-center" src="../../_images/select_inactive.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Now, we will merge HA_31 and HA_28 with it. Click on the “Select” icon on the map.
+Select the three settlements - observe that the scissor icon has transformed itself.
+Once you selected the three settlements, you can merge them.</p>
+<img alt="../../_images/merge.png" class="align-center" src="../../_images/merge.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>After the merging, you are directed to another page that will allow you to decide what
+name should remain after the merging. Since you merged three settlements which each had
+a name, you need to decide what name you would like to choose as the one that will be
+shown on the list. Let’s make the machine generated names sub place names (click on the according icon).
+That way, those names are no longer visible in the list.</p>
+<img alt="../../_images/merge_demote.png" class="align-center" src="../../_images/merge_demote.png" />
+</section>
+<hr class="docutils" />
+<section id="uninhabited-settlements">
+<h4><span class="section-number">3.2.3.4. </span>Uninhabited settlements<a class="headerlink" href="#uninhabited-settlements" title="Permalink to this headline"></a></h4>
+<p>It may well be that in some cases, a settlement no longer exists or that the
+buildings are not inhabited. For such cases, there is the possibility to flag
+a settlement as uninhabited - and it would not be considered for microplanning.</p>
+<p>Let’s imagine “Gaa Jatto” is abandoned. Go to the settlement detail tab of it and
+check the box “Uninhabited”. Alternatively, you could set the population to 0.
+You can now give a reason why the settlement is uninhabited.</p>
+<img alt="../../_images/uninhabited.png" class="align-center" src="../../_images/uninhabited.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>If you go back to the settlement list, you will see that the settlement now appears
+under “Uninhabited Settlements” at the bottom of the screen.</p>
+<img alt="../../_images/uninhabited_list.png" class="align-center" src="../../_images/uninhabited_list.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Even though there are still a couple of errors outstanding (for instance, there remain
+many settlements that have machine generated names), let’s move on. If this were
+a real case, you should rename all of those settlements with the correct
+names.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="perform-microplanning">
+<h3><span class="section-number">3.2.4. </span>Perform Microplanning<a class="headerlink" href="#perform-microplanning" title="Permalink to this headline"></a></h3>
+<p>We have already seen how to perform microplanning from within the health facility
+catchment tab. This time, we will use a pre-generated microplan to make our life
+easy.</p>
+<p>Click on the “Map” tab. This tab contains a microplan that has already been
+generated based on distance according to the following rules:
+All inhabited settlements within 2km of a health facility that is performing
+routine immunization have been assigned to that health facility with a “Fixed-Post” strategy.
+All settlements that are further away than 2km from a health facility are assigned
+to its closest health facility that is performing routine immunization, with either
+a “Outreach” (2-5km) or “Mobile” (above 5km) strategy.</p>
+<img alt="../../_images/suggested_mp.png" class="align-center" src="../../_images/suggested_mp.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>You can click on a health facility on the left. You will see a summary of the
+catchment for that health facility. You can also select “All” to select all
+health facilities. Click on “Add to Microplan” to move the selected catchments to
+your microplan.</p>
+<img alt="../../_images/mp_all.png" class="align-center" src="../../_images/mp_all.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Using this strategy, you have automatically created all catchments, including all
+settlements that are in the settlement list for that Ward.</p>
+<p>You can review the catchments again in the settlement or health facility catchment
+details.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>You reached the end of Tutorial 3!</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="20Tutorial2.html" class="btn btn-neutral float-left" title="2. Tutorial 2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="40Tutorial4.html" class="btn btn-neutral float-right" title="4. Tutorial 4" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Novel-T.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

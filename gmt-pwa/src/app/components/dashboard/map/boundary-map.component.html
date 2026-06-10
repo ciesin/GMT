@@ -1,0 +1,22 @@
+<div class="ol-map" #ol_map>
+  <ul class="gmt-map-ctrls">
+    <li>
+      <toggle-indicators
+        (indicatorChange)="changeIndicator($event)"
+      ></toggle-indicators>
+    </li>
+    <li>
+      <map-control-zoom></map-control-zoom>
+    </li>
+    <li>
+      <location (triggerGetLocation)="handleZoomToTableLocation()"></location>
+    </li>
+  </ul>
+
+  <div class="gmt-map-overlay">
+    <boundary-map-legend
+      [selectedIndicator]="selectedIndicator"
+    ></boundary-map-legend>
+    <feature-details></feature-details>
+  </div>
+</div>

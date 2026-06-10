@@ -1,0 +1,9 @@
+<fa-icon icon="location-crosshairs" (click)="handleShowSettlementSiteOnMap($event)"></fa-icon>
+
+<span>{{settlement.properties.name}}</span>
+
+<button *ngIf="editing && userHasPermissionsUpdateHf" mat-button 
+  [disabled]="isLoadingService.loading | async" (click)=restoreExcludedSettlement()>
+  <fa-icon icon="rotate-left"></fa-icon>
+  Restore
+</button>

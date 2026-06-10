@@ -1,0 +1,11 @@
+<mat-tab-group animationDuration="0ms" (selectedTabChange)="onChangeTab($event)" [selectedIndex]="selectedIndex">
+  <mat-tab *ngFor="let tab of tabs">
+    <ng-template mat-tab-label>
+      <fa-icon *ngIf="tab.faIcon" [icon]="tab.faIcon" [ngClass]="tab.name"></fa-icon>
+      <span>{{tab.label}}</span>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
+
+<router-outlet></router-outlet>
+<gmt-new></gmt-new>

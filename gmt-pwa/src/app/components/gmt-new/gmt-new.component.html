@@ -1,0 +1,54 @@
+<ng-container *ngIf="!hide">
+  <button
+    #btn
+    [disabled]="!userCanCreateHf && !userCanCreateSt"
+    [matTooltip]="buttonTooltip"
+    *ngIf="mode === 'compact'"
+    mat-fab
+    [class.disabled]="!userCanCreateHf && !userCanCreateSt"
+    [class.extanded]="extanded"
+    (click)="handleClick()"
+    (mouseenter)="mouseEnter($event)"
+    (mouseleave)="mouseLeave($event)"
+  >
+    <fa-stack>
+      <fa-icon [icon]="['far', 'circle']" stackItemSize="2x"></fa-icon>
+      <fa-icon icon="plus" stackItemSize="1x"></fa-icon>
+    </fa-stack>
+    <span>Create</span>
+  </button>
+
+  <div class="extanded" *ngIf="mode === 'expanded'">
+    <div class="header">
+      <!-- <fa-icon class="close" icon="xmark" (click)="handleClick()"></fa-icon> -->
+      <!--Wrap in matUI button for https://github.com/novelt/GMT/issues/2376-->
+      <button mat-button (click)="handleClick()" class="close">
+        <fa-icon icon="xmark"></fa-icon>
+      </button>
+
+      <div class="title">Create New</div>
+    </div>
+    <button
+       [matTooltip]="buttonTooltip"
+       [disabled]="!userCanCreateHf"
+       mat-menu-item
+       (click)="handleNewHealthFacility()"
+    >
+      <fa-icon icon="house-medical"></fa-icon> Health Facility
+    </button>
+    <button [matTooltip]="buttonTooltip"
+            [disabled]="!userCanCreateHf"
+            mat-menu-item
+            (click)="handleNewOutreach()">
+      <fa-icon icon="house-medical-flag"></fa-icon> Outreach Site
+    </button>
+    <button
+       [matTooltip]="buttonTooltip"
+       [disabled]="!userCanCreateSt"
+       mat-menu-item
+       (click)="handleNewSettlement()"
+    >
+      <fa-icon icon="users"></fa-icon> Settlement
+    </button>
+  </div>
+</ng-container>

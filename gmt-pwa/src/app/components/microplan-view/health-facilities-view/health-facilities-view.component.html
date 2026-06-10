@@ -1,0 +1,23 @@
+<ng-container *ngIf="sortFilterService">
+  <header class="side-heading">
+    <h4><fa-icon icon="magnifying-glass"></fa-icon>Health Facilities</h4>
+  </header>
+  <gmt-microplan-filter
+    searchPlaceholder="Search Facilities"
+    [autocomplete]="sortFilterService.searchAutocompletePropositions"
+    [filters]="hfFilters"
+    (chosenFiltersChanged)="handleChosenFilters($event)"
+    (searchTextChanged)="handleSearchText($event)"
+  ></gmt-microplan-filter>
+  <gmt-microplan-list
+    icon="house-medical"
+    [idDisplayList]="sortFilterService.idDisplayList"
+    [itemComponent]="itemComponent"
+    [addFabSpace]="true"
+    [sortHeaders]="sortHeaders"
+    (sortOrderChanged)="handleSort($event)"
+    (onScroll)="handleScroll($event)"
+  >
+    <!-- <gmt-hf-catchment-card></gmt-hf-catchment-card> -->
+  </gmt-microplan-list>
+</ng-container>

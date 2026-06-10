@@ -1,0 +1,23 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <fa-icon icon="location-crosshairs" (click)="handleShowHfSiteOnMap($event)"></fa-icon>
+      {{(hf!.json!.properties.name.length > 0) ? hf!.json!.properties.name : 'Untitled' }}
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <div class="panel-content">
+    <p>{{messages}}</p>
+  </div>
+<!--  <div>-->
+    <div class="mat-action-row">
+    <button mat-button mat-flat-button color="accent" (click)="redirectToDetails()">
+      <fa-icon icon="location-crosshairs"></fa-icon>
+      <span> GO TO details</span>
+    </button>
+    <button mat-button mat-flat-button color="accent" (click)="enableLocationWizard()" *ngIf="userCanEdit">
+      <fa-icon icon="location-crosshairs"></fa-icon>
+      <span> EDIT location</span>
+    </button>
+  </div>
+<!--  </mat-action-row>-->
+</mat-expansion-panel>

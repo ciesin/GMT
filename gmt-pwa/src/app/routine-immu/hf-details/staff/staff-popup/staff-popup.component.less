@@ -1,0 +1,34 @@
+.hf-staff-content-form {
+  display: flex;
+  flex-wrap: wrap;
+  @gap: 1em;
+  gap: @gap;
+  padding: 1em;
+
+  .full-width {
+    flex: 1 0 100%;
+  }
+
+  .half-width {
+    flex: 1 0 calc(50% - @gap/2);
+  }
+
+}
+
+.cancel {
+  position: absolute;
+  top: .2em;
+  right: .2em;
+  font-size: 1.3em;
+  aspect-ratio: 1 / 1;
+  width: 1em;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+
+  color: var(--accent-base);
+}
+
+:host {
+  --mdc-dialog-subhead-color: var(--base-dark);
+}

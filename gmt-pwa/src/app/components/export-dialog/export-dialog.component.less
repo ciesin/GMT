@@ -1,0 +1,90 @@
+:host {
+  --mdc-checkbox-state-layer-size: 2.2em;
+
+  mat-expansion-panel-header {
+    background: var(--base-white) !important;
+  }
+}
+
+section {
+  margin: 1rem 0;
+
+  &:first-child {
+    margin-block-start: 0;
+  }
+  &:last-child {
+    margin-block-end: 0;
+  }
+
+  h5 {
+    margin-block-end: 0.75rem;
+    padding-bottom: 0.15rem;
+    border-bottom: 1px solid var(--base-pale);
+  }
+}
+
+[mat-dialog-title] {
+  margin-bottom: 1.5em;
+}
+
+mat-dialog-content {
+  padding-bottom: 0.5em;
+}
+
+mat-dialog-actions {
+  padding: 1.5em;
+}
+
+h3 {
+  font-weight: 500;
+  color: var(--base-dark);
+}
+
+mat-checkbox {
+  ::ng-deep label {
+    color: var(--base-dark);
+  }
+
+  &.mat-mdc-checkbox-disabled ::ng-deep label {
+    color: var(--base-60);
+  }
+}
+
+mat-checkbox {
+  margin-left: -0.3em;
+}
+
+// nested checkbox
+div div > mat-checkbox {
+  margin-left: 1.1em;
+}
+
+mat-expansion-panel {
+  margin-bottom: 2em;
+
+  mat-panel-title.mat-expansion-panel-header-title {
+    color: var(--accent-dark);
+  }
+}
+
+.boundary {
+  display: flex;
+  color: var(--base-dark);
+  padding: 0.25em 1em;
+}
+
+.cancel {
+  position: absolute;
+  top: 0.2em;
+  right: 0.2em;
+  aspect-ratio: 1 / 1;
+  width: 1em;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.list-of-wards {
+  max-height: 10em;
+  overflow: auto;
+}

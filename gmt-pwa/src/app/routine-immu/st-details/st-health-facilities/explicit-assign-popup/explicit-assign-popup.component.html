@@ -1,0 +1,61 @@
+<h1
+  matDialogTitle
+  cdkDrag
+  cdkDragRootElement=".cdk-overlay-pane"
+  cdkDragHandle
+  class="drag-header"
+>
+  Explicitly Assign Health Facility
+</h1>
+
+<mat-dialog-content>
+  <fa-icon
+    matDiagClose
+    class="cancel"
+    icon="xmark"
+    (click)="handleCancelDialog()"
+  ></fa-icon>
+
+  <div class="help">
+    <fa-icon icon="info-circle"></fa-icon>
+    Choose a health facility (fixed post or outreach site) to explicitly assign
+    to this settlement. Note that by doing so, the entire population of this
+    settlement will be split evenly among the health facilities that have been
+    explicitly assigned. In other words, the automated distance-based catchment
+    calculation will no longer apply. This means that any health facility not
+    explicitly assigned will not cover this settlement and will not appear in
+    the list of health facilities covering it. It is encouraged to use this
+    feature only when strictly necessary. Note that these explicit assignments
+    can be removed later by clicking
+    <fa-icon icon="minus-circle" class="remove-icon"></fa-icon> and in the list
+    are marked by
+    <fa-icon icon="thumbtack"></fa-icon>
+  </div>
+
+  <form class="form-vertical content-form">
+    <ng-template matStepLabel>Health Facility</ng-template>
+    <mat-form-field subscriptSizing="dynamic" class="full-width">
+      <mat-label>Select Assignment</mat-label>
+      <mat-select [(value)]="selectedAssignment">
+        <mat-option *ngFor="let option of data.options" [value]="option">
+          <fa-icon
+            [icon]="option.is_outreach ? 'house-medical-flag' : 'house-medical'"
+            class="option-icon"
+          ></fa-icon>
+          {{ option.displayName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-flat-button
+    type="submit"
+    [disabled]="!selectedAssignment"
+    (click)="handleSaveAndClose()"
+  >
+    <span>Assign</span>
+  </button>
+</mat-dialog-actions>

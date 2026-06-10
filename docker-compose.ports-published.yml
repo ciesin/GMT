@@ -1,0 +1,36 @@
+services:
+  pwa:
+    ports:
+      - target: ${GMT_PWA_INTERNAL_PORT}
+        published: ${GMT_PWA_PUBLISHED_PORT}
+        mode: ${DOCKER_NETWORK_MODE}
+
+  server:
+    ports:
+      - target: ${NODEJS_INTERNAL_PORT}
+        published: ${NODEJS_PUBLISHED_PORT}
+        mode: ${DOCKER_NETWORK_MODE}
+
+  queues:
+    ports:
+      - target: ${QUEUES_INTERNAL_PORT}
+        published: ${QUEUES_PUBLISHED_PORT}
+        mode: ${DOCKER_NETWORK_MODE}
+
+  importer :
+    ports :
+      - target    : ${IMPORTER_INTERNAL_PORT}
+        published : ${IMPORTER_PUBLISHED_PORT}
+        mode      : ${DOCKER_NETWORK_MODE}
+
+  keycloak:
+    ports:
+      - target: ${KEYCLOAK_INTERNAL_PORT}
+        published: ${KEYCLOAK_PUBLISHED_PORT}
+        mode: ${DOCKER_NETWORK_MODE}
+
+  redis:
+    ports:
+      - target: ${REDIS_INTERNAL_PORT}
+        published: ${REDIS_PUBLISHED_PORT}
+        mode: ${DOCKER_NETWORK_MODE}

@@ -1,0 +1,20 @@
+{
+  "name": "cypress-e2e",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test:dev": "cypress.with-ui.bat dev.subu07.env",
+    "test:test": "cypress.with-ui.bat test.subu07.env",
+    "test:uat": "cypress.with-ui.bat uat.dmz.env"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^11.2.0",
+    "cypress-localstorage-commands": "^2.2.2",
+    "cypress-multi-reporters": "^1.6.1",
+    "mocha-junit-reporter": "^2.2.0",
+    "typescript": "^4.9.3"
+  }
+}

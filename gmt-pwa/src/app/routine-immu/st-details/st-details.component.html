@@ -1,0 +1,94 @@
+<div class="loading" *ngIf="!loaded">
+  <fa-icon class="fa-spin" icon="spinner"></fa-icon>
+  loading...
+</div>
+
+<ng-container *ngIf="loaded">
+  <div class="offline" *ngIf="settlementIsNotFound">
+    The current settlement is not found (maybe you clicked undo button for this
+    settlement creation).
+  </div>
+
+  <ng-container *ngIf="stName && coverageSett">
+    <div class="header">
+      <div class="side-nav-back">
+        <button mat-button (click)="handleClose()" class="back">
+          <fa-icon
+            class="back-to-listing-icon"
+            icon="circle-arrow-left"
+          ></fa-icon>
+          <span class="label">Back to listing</span>
+        </button>
+        <button
+          mat-button
+          (click)="handleShowSettlementSiteOnMap($event)"
+          class="locate"
+        >
+          <fa-icon
+            icon="location-crosshairs"
+            class="accordion-title-icon location-icon"
+          ></fa-icon>
+        </button>
+      </div>
+
+      <header class="side-heading details">
+        <h4 [ngClass]="{ uninhabited: stName.properties.uninhabited }">
+          {{ stName.properties.name }}
+        </h4>
+        <div class="properties small-text">
+          <div class="prop-content">
+            <fa-icon icon="users"></fa-icon>
+            <div *ngIf="!!stName.properties.synonyms.length">
+              AKA:
+              <span *ngFor="let aka of stName.properties.synonyms">{{
+                aka
+              }}</span>
+            </div>
+            <div *ngIf="!stName.properties.synonyms.length">Settlement</div>
+          </div>
+          <div class="gmt-stats">
+            <gmt-catchment
+              mode="progressbar"
+              type="settlement"
+              [total]="coverageSett.pop"
+              [fixedPost]="coverageSett.fixedPost"
+              [outreach]="coverageSett.outreach"
+              [unclaimed]="coverageSett.unclaimed"
+              [settlementProblems]="coverageSett.problematic"
+            >
+            </gmt-catchment>
+            <div class="gmt-stats-text">
+              <span>{{ formatPopulation(coverageSett.pop) }}</span>
+              <!-- span>{{formatPercentage(100 - coverageSett.percUnclaimed)}}</span -->
+            </div>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <mat-accordion displayMode="flat">
+      <mat-expansion-panel class="sub-expansion is-form">
+        <mat-expansion-panel-header class="main-header">
+          <mat-panel-title>
+            <fa-icon icon="circle-info"></fa-icon>
+            Settlement Details
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <st-details-content></st-details-content>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel
+        closeChildExpansionOnClose
+        class="sub-expansion is-form"
+      >
+        <mat-expansion-panel-header class="main-header">
+          <mat-panel-title>
+            <fa-icon icon="house-medical"></fa-icon>
+            {{ "Health Facilities (" + hfListLength + ")" }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <st-health-facilities></st-health-facilities>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ng-container>
+</ng-container>

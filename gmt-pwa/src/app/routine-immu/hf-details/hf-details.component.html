@@ -1,0 +1,188 @@
+<div class="loading" *ngIf="!loaded">
+  <fa-icon class="fa-spin" icon="spinner"></fa-icon>
+  loading...
+</div>
+
+<ng-container *ngIf="loaded">
+
+  <div class="offline" *ngIf="hfIsNotFound">
+    The current health facility is not found (maybe you clicked undo button for
+    this health facility creation).
+  </div>
+
+  <ng-container *ngIf="hf">
+    <div class="header">
+      <div class="side-nav-back">
+        <button mat-button (click)="handleClose()" class="back">
+          <fa-icon
+            class="v-align-middle back-to-listing-icon"
+            icon="circle-arrow-left"
+          ></fa-icon>
+          <span class="label">Back to listing</span>
+        </button>
+        <button
+          mat-button
+          (click)="handleShowHfSiteOnMap($event)"
+          class="locate"
+        >
+          <fa-icon icon="location-crosshairs" class="location-icon"></fa-icon>
+        </button>
+      </div>
+
+      <header class="side-heading details">
+        <h4>{{hf.properties.name}}</h4>
+        <div class="properties small-text">
+          <div class="prop-content">
+            <fa-icon icon="house-medical"></fa-icon>
+            {{ownershipMap(hf.properties.private!)}}
+            {{hf.properties.level_of_care}}, {{hf.properties.maturity_level}}
+          </div>
+          <div class="gmt-stats">
+            <gmt-catchment
+              mode="progressbar"
+              type="hf"
+              [total]="100"
+              [fixedPost]="coverageHf.percFixedPost"
+              [outreach]="coverageHf.percOutreach"
+              [problematic]="coverageHf.percProblematic"
+              [settlementCountFixedPost]="coverageHf.settlementCountFixedPost"
+              [settlementCountOutreach]="coverageHf.settlementCountOutreach"
+              [settlementCountProblematic]="coverageHf.settlementCountProblematic"
+            >
+            </gmt-catchment>
+            <div class="gmt-stats-text">
+              <span>{{formatPopulation(coverageHf.catchmentPopulation.computedPop)}}</span>
+              <fa-icon
+                *ngIf="coverageHf.isCatchmentDone"
+                icon="circle-check"
+              ></fa-icon>
+              <fa-icon
+                *ngIf="!coverageHf.isCatchmentDone"
+                icon="circle-minus"
+              ></fa-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- div class="additional-info">
+          <div class="small-text">
+            <h5 class="small-text">Services</h5>
+            <ul class="services">
+              <li
+                *ngFor="let service of hf.properties.services; last as isLast"
+              >
+                {{service}}<span *ngIf="!isLast">, </span>
+              </li>
+            </ul>
+          </div>
+          <div hidden>
+            <div class="title">HOURS</div>
+            <div
+              *ngIf="hf.properties.operating_hours_start.length + hf.properties.operating_hours_stop.length; else noOperatingHours"
+            >
+              {{hf.properties.operating_hours_start}}
+              {{hf.properties.operating_hours_stop}}
+            </div>
+            <ng-template #noOperatingHours>N/A</ng-template>
+          </div>
+        </div -->
+      </header>
+    </div>
+
+    <mat-accordion displayMode="flat">
+      <mat-expansion-panel class="sub-expansion is-form">
+        <mat-expansion-panel-header class="main-header">
+          <mat-panel-title>
+            <fa-icon icon="circle-info"></fa-icon>
+            Facility Details
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <facility-details-content></facility-details-content>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel closeChildExpansionOnClose class="sub-expansion">
+        <mat-expansion-panel-header class="main-header">
+          <mat-panel-title>
+            <fa-icon icon="user-doctor"></fa-icon>
+            {{'Staff Members (' + staffMembersCount + ')'}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <staff-content></staff-content>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel class="sub-expansion">
+        <mat-expansion-panel-header class="main-header">
+          <mat-panel-title>
+            <fa-icon icon="house-medical-flag"></fa-icon>
+            {{'Outreach Sites (' + outreachIncludedCount + ')'}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="no-entries" *ngIf="outreaches.length === 0">
+          No outreaches
+        </div>
+        <mat-accordion>
+          <outreach-content
+            [outreach]="outreach"
+            *ngFor="let outreach of outreaches"
+          ></outreach-content>
+        </mat-accordion>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel
+        closeChildExpansionOnClose
+        class="sub-expansion is-form"
+      >
+        <mat-expansion-panel-header class="main-header">
+          <mat-panel-title>
+            <fa-icon icon="users"></fa-icon>
+            {{'Settlements (' + includedSettlementsCount + ')' }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ng-container>
+          <gmt-microplan-filter
+            [autocomplete]="sortFilterService.searchAutocompletePropositions"
+            (chosenFiltersChanged)="handleChosenFilters($event)"
+            (searchTextChanged)="handleSearchText($event)"
+            [filters]="stFilters"
+          ></gmt-microplan-filter>
+          <gmt-microplan-list
+            [virtualScroll]="false"
+            [itemComponent]="itemComponent"
+            [idDisplayList]="sortFilterService.idDisplayList"
+            [sortHeaders]="sortHeaders"
+            (sortOrderChanged)="handleSort($event)"
+          ></gmt-microplan-list>
+        </ng-container>
+      </mat-expansion-panel>
+
+      <ng-container *ngIf="excludedSettlementsCount">
+        <mat-expansion-panel closeChildExpansionOnClose class="sub-expansion">
+          <mat-expansion-panel-header class="main-header">
+            <mat-panel-title>
+              <fa-icon icon="users-rays"></fa-icon>
+              {{'Excluded Settlements (' + excludedSettlementsCount + ')'}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p class="description">
+            These settlements have been manually<br />excluded from this Health
+            Facility's catchment.
+          </p>
+          <hf-excluded-settlement-content
+            *ngFor="let id of excludeSortFilterService.idDisplayList"
+            [snId]="id"
+          ></hf-excluded-settlement-content>
+
+          <!-- <gmt-microplan-list [itemComponent]="excludedItemComponent"
+              [idDisplayList]="excludeSortFilterService.idDisplayList" [sortHeaders]="sortHeaders"
+              (sortOrderChanged)="handleSort($event)"></gmt-microplan-list> -->
+        </mat-expansion-panel>
+      </ng-container>
+    </mat-accordion>
+
+    <!--    <gmt-accordion class="hf-accordion"-->
+    <!--                   [title]="'Settlements (' + includedSettlementsCount + ')'"-->
+    <!--                   [titleIcon]="usersIcon"-->
+    <!--                   [contentComponent]="HfSettlementContentComponent"-->
+    <!--    ></gmt-accordion>-->
+  </ng-container>
+</ng-container>

@@ -1,0 +1,25 @@
+<a
+  [routerLink]="immunizationRoute(node.global_id)"
+  matTooltip="Go to routine immunization"
+>
+  <fa-icon icon="share"></fa-icon>
+</a>
+<div class="boundary">
+  <a
+    [routerLink]="immunizationRoute(node.global_id)"
+    matTooltip="Go to routine immunization"
+  >
+    <h5 class="small-text">{{node.label}}</h5>
+    <span class="parent-admins">
+    <span *ngFor="let parent of hierarchy.slice(1)">{{parent}}</span>
+  </span>
+  </a>
+</div>
+<mat-chip *ngIf="modified">Modified</mat-chip>
+<mat-chip *ngIf="!modified" disabled>Unchanged</mat-chip>
+<a
+  (click)="removeOfflineData.emit(node.global_id)"
+  matTooltip="Remove offline data"
+>
+  <fa-icon icon="eject"></fa-icon>
+</a>

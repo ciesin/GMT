@@ -1,0 +1,4 @@
+<input type="text" class="search"
+       placeholder="Search for a State/LGA/Ward"
+       pInputText (ngModelChange)="handleFilterChange($event)"
+       [ngModel]="filterInputText"/>

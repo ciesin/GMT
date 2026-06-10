@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1. Tutorial 1 &mdash; GMT User Guide  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2. Tutorial 2" href="20Tutorial2.html" />
+    <link rel="prev" title="1. Background" href="../background/10background.html" />
+<link href="../../_static/style.css" rel="stylesheet" type="text/css">
+<link rel="manifest" href="./../../manifest.webmanifest">
+<script>
+    // Registering our Service worker
+    if ('serviceWorker' in navigator) {
+        let broadcastChannel = new BroadcastChannel('sw-messages');
+        console.log("sw:","../../sw.js");
+        navigator.serviceWorker.register("../../sw.js")
+        // navigator.serviceWorker.register('sw.js', { scope: "./" })
+        broadcastChannel.addEventListener('message', event => {
+            console.log('main Received', event.data);
+            if (event.data.cacheDone) {
+                localStorage['cacheDone'] = true;
+            }
+            if (event.data.reload) {
+                window.location.reload();
+            }
+        });
+
+        setInterval(async () => {
+            let fetchResp;
+            try {
+                fetchResp = await fetch("../../_static/version", {
+                    method: 'GET',
+                    headers: new Headers({
+                        'pragma': 'no-cache',
+                        'cache-control': 'no-cache',
+                    }),
+                });
+            }catch(error) {
+                console.log("New version detection impossible: ", error);
+            }
+            const serverVersion = await fetchResp.text();
+            const oldVersion = localStorage['version'];
+            const cache = await caches.open('GMT_DOC');
+            const keys = await cache.keys();
+            console.log("keys length:",keys.length);
+            if (serverVersion !== oldVersion || keys.length === 0
+                || ((localStorage['cacheDone']+"") === "false")) //bb: !localStorage['cacheDone'] not working. This is mysterious..
+            {
+                localStorage['version'] = serverVersion;
+                console.log("New version available: ", oldVersion, "=>", serverVersion);
+                localStorage['cacheDone'] = false;
+                broadcastChannel.postMessage({updateCache: true, oldVersion});
+            } else {
+                console.log("Current version :", oldVersion)
+            }
+        },5000);}
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+            <a href="../../index.html">
+            <img src="../../_static/GMT_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Background</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../background/10background.html">1. Background</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Tutorial 1</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#purpose">1.1. Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#let-s-get-started">1.2. Let’s Get Started!</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#access-gmt">1.2.1. Access GMT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#login-access-to-data">1.2.2. Login / Access to data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dashboard-and-taking-data-offline">1.2.3. Dashboard and taking data offline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#review-the-health-facility-list">1.2.4. Review the Health Facility list</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#health-facility-details">1.2.4.1. Health Facility details</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#health-facility-deletion-and-addition">1.2.4.2. Health Facility deletion and addition</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#review-the-settlement-list">1.2.5. Review the Settlement list</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#settlement-details">1.2.5.1. Settlement details</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#perform-microplanning">1.2.6. Perform Microplanning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#included-settlements">1.2.6.1. Included Settlements</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#review-microplanning">1.2.7. Review Microplanning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mark-health-facility-catchment-as-complete">1.2.7.1. Mark health facility catchment as complete</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#synchronize-the-changes-back-to-the-server">1.2.8. Synchronize the changes back to the server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#print-the-pdf-of-the-microplan">1.2.9. Print the PDF of the microplan</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="20Tutorial2.html">2. Tutorial 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="30Tutorial3.html">3. Tutorial 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="40Tutorial4.html">4. Tutorial 4</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guide to the GMT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guide/10complete_guide.html">1. Guide to the GMT</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standard Operating Procedure</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../SOP/10SOP.html">1. Standard Operating Procedure for the GMT</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GMT User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">1. </span>Tutorial 1</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial-1">
+<h1><span class="section-number">1. </span>Tutorial 1<a class="headerlink" href="#tutorial-1" title="Permalink to this headline"></a></h1>
+<section id="purpose">
+<h2><span class="section-number">1.1. </span>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline"></a></h2>
+<p>The purpose of this first tutorial is to understand the most basic functionalities of
+the Geospatial Microplanning Toolkit (GMT). No previous knowledge of this application
+is required.</p>
+<p>To achieve this, the following is introduced:</p>
+<ol class="arabic simple">
+<li><p>Access GMT</p></li>
+<li><p>Login / Access to data</p></li>
+<li><p>Familiarize yourself with the dashboard</p></li>
+<li><p>Obtain the data to do the microplanning</p></li>
+<li><p>Review the health facility list, do minor modifications</p></li>
+<li><p>Review the settlement list, do minor modifications</p></li>
+<li><p>Perform the microplanning</p></li>
+<li><p>Review the microplan</p></li>
+<li><p>Sync changes back to the database</p></li>
+<li><p>Print the microplan</p></li>
+</ol>
+<p>Note: “clicking” in this guide can be substituted by “tapping” as well - for instance
+if you are working on a tablet.</p>
+</section>
+<hr class="docutils" />
+<section id="let-s-get-started">
+<h2><span class="section-number">1.2. </span>Let’s Get Started!<a class="headerlink" href="#let-s-get-started" title="Permalink to this headline"></a></h2>
+<section id="access-gmt">
+<h3><span class="section-number">1.2.1. </span>Access GMT<a class="headerlink" href="#access-gmt" title="Permalink to this headline"></a></h3>
+<p>For the training, in a browser, ideally Google Chrome, navigate to</p>
+<p><a class="reference external" href="https://uat.gmt-pilot.health/">https://uat.gmt-pilot.health/</a></p>
+<p>Note that this is the URL to do <strong>only the training</strong>.</p>
+<p>Once you are in the field doing the real microplans, the URL you should use is:</p>
+<p><a class="reference external" href="https://gmt-pilot.health/">https://gmt-pilot.health/</a></p>
+<p>You should see the following:</p>
+<img alt="../../_images/landing_page.png" class="align-center" src="../../_images/landing_page.png" />
+</section>
+<hr class="docutils" />
+<section id="login-access-to-data">
+<h3><span class="section-number">1.2.2. </span>Login / Access to data<a class="headerlink" href="#login-access-to-data" title="Permalink to this headline"></a></h3>
+<p>If you would just like to consult the data and you have no intention to edit,
+you can simply choose “Direct access to the Map” and you will be directed to choose which
+module you would like to consult.</p>
+<p>If you would like to do any editing, you should provide your credentials here. You will
+be redirected to choose which microplanning module you would like to consult.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you are working on a tablet, you should be adding the application to the
+tablet instead.</p>
+</div>
+<p>Follow the steps shown below to do so:</p>
+<img alt="../../_images/add_GMT.jpg" class="align-center" src="../../_images/add_GMT.jpg" />
+<img alt="../../_images/install_GMT.jpg" class="align-center" src="../../_images/install_GMT.jpg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>If you closed the dialog without clicking on install, you can alternatively use the 3-dot menu in
+Google Chrome. Click on it and select “Install App”.</p>
+<img alt="../../_images/install_app_2.jpg" class="align-center" src="../../_images/install_app_2.jpg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>In either case, you should now see the app icon in your applications:</p>
+<img alt="../../_images/tablet_home.jpg" class="align-center" src="../../_images/tablet_home.jpg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>You should also install the documentation app to have it available offline. With the Chrome Browser,
+navigate to the help:</p>
+<p><a class="reference external" href="https://api-uat.gmt-pilot.health/help/index.html">https://api-uat.gmt-pilot.health/help/index.html</a></p>
+<p>Similarly to the above, you are either prompted directly to install the app, or else you
+can install it via the 3-dot menu from Chrome:</p>
+<img alt="../../_images/install_help.jpg" class="align-center" src="../../_images/install_help.jpg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>After this, you should see both the app for GMT and the app for the help:</p>
+<img alt="../../_images/tablet_home_help.jpg" class="align-center" src="../../_images/tablet_home_help.jpg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>You can close Chrome and continue from the application. Make sure you have the right
+application installed. This is the case if you can see the version of the application on the
+bottom left:</p>
+<img alt="../../_images/make_sure_app.jpg" class="align-center" src="../../_images/make_sure_app.jpg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Choose “Routine Immunization” - you will be redirected to the dashboard.
+We will focus on a microplan for an activity where the target population will
+correspond to 5% of the total population.</p>
+<a class="reference internal image-reference" href="../../_images/module_choice.png"><img alt="../../_images/module_choice.png" class="align-center" src="../../_images/module_choice.png" style="width: 400px;" /></a>
+</section>
+<hr class="docutils" />
+<section id="dashboard-and-taking-data-offline">
+<h3><span class="section-number">1.2.3. </span>Dashboard and taking data offline<a class="headerlink" href="#dashboard-and-taking-data-offline" title="Permalink to this headline"></a></h3>
+<p>You will note that you are logged in when your email address shows on the top right.</p>
+<p>On the dashboard, you will be able to navigate to the wards of your interest. You can
+use the map to navigate by clicking on the areas of interest to you, alternatively use the list on the left or else the search.</p>
+<p>We will be assuming the role of a ward focal person in “Amuzi”, a Ward located in LGA “Ahiazu-Mbaise” in the State “Imo”.</p>
+<p>Let’s use the search: type “ahiaz” in the search bar.</p>
+<p>You should see:</p>
+<img alt="../../_images/search_ahiaz.png" class="align-center" src="../../_images/search_ahiaz.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Click on the name “Amuzi” - note how the list and map change. On the list,
+note that there is one health facility listed for this Ward. Click on a “+” next
+to another Ward to see the health facilities for that respective Ward.</p>
+<img alt="../../_images/PD_HF_wards.png" class="align-center" src="../../_images/PD_HF_wards.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>We will be conducting microplanning in the field where there may not be any connectivity.
+Thus, the application is designed to work also offline. Accordingly, we will need to take the data
+for this Ward offline to be able to see or edit the microplan.
+For that, click on the “Take Offline” button. Once the data has been downloaded, you will
+be able to see a green tickmark indicating that this data is available.</p>
+<p>By clicking on the “Show offline” tickbox, you can see what data is available for editing. In your case, you should only see Ward Amuzi now.</p>
+<img alt="../../_images/show_offline.png" class="align-center" src="../../_images/show_offline.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Click now on the the name “Amuzi” to enter the microplanning screen.</p>
+</section>
+<hr class="docutils" />
+<section id="review-the-health-facility-list">
+<h3><span class="section-number">1.2.4. </span>Review the Health Facility list<a class="headerlink" href="#review-the-health-facility-list" title="Permalink to this headline"></a></h3>
+<p>You will be guided through the interface step by step. Let’s start with the health facility list.
+The current interface has a list on the right and a map on the left.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The global “Edit” button at the top is toggled on per default when you are
+logged in. If you don’t plan to do any edits, you can toggle this button off
+to avoid changing any data inadvertently.</p>
+<img alt="../../_images/microplan_landing_page.png" class="align-center" src="../../_images/microplan_landing_page.png" />
+</div>
+<p>In the first step you should review the health facility list.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Our goal is to identify all health facilities in the current ward that we need
+to consider for microplanning. We also need to make sure they are at the right
+place and they have the right name.</p>
+</div>
+<p>In this Ward, there is one health facility as shown in the health facility list.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note the following:</p>
+<ol class="arabic simple">
+<li><p>The color next to the health facility indicates the color the health facility label has on your microplan map.</p></li>
+<li><p>AKA stands for “Also Known As”, in this case potential other names for that same health facility. We will see this later.</p></li>
+<li><p>Catchment population is currently 0 - we have not defined catchments yet. We will see this later.</p></li>
+<li><p>Health facilities can have error icons listed under the “Error type” column.</p></li>
+</ol>
+</div>
+<p>Since this health facility has not been assigned any settlement at this point, it shows an error at the moment”:</p>
+<img alt="../../_images/HF_list.png" class="align-center" src="../../_images/HF_list.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>We can access all information about this health facility by either clicking on the
+health facility on the map or clicking on the name of the health facility on the list.
+Do either of those two to access the health facility tab.</p>
+<p>Note that the health facilities are depicted with the following icon on the map:</p>
+<a class="reference internal image-reference" href="../../_images/healthfacility.svg"><img alt="../../_images/healthfacility.svg" class="align-center" src="../../_images/healthfacility.svg" width="100" /></a>
+<hr class="docutils" />
+<section id="health-facility-details">
+<h4><span class="section-number">1.2.4.1. </span>Health Facility details<a class="headerlink" href="#health-facility-details" title="Permalink to this headline"></a></h4>
+<p>You landed on the “Catchment” tab. We will look at this later. Instead, click on “Details”.</p>
+<img alt="../../_images/HF_catchment_empty.png" class="align-center" src="../../_images/HF_catchment_empty.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>On the top, you will see the name of the health facility. Click in the name
+field directly to change the name. As an example, rename this health facility to
+“Test Facility”.</p>
+<p>Note: If you are on <a class="reference external" href="https://gmt-pilot.health">https://gmt-pilot.health</a> and you have connectivity, the “Sync”
+icon at the top now changed from being inactive to being active.
+This indicates that you have pending changes. We will get back to this later. This does
+not apply if you are on <a class="reference external" href="https://uat.gmt-pilot.health">https://uat.gmt-pilot.health</a>.</p>
+<img alt="../../_images/HF_detail_rename.png" class="align-center" src="../../_images/HF_detail_rename.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>In the details page you have the option to add other information related to the
+health facility. For now, let’s assume we are done with that. We will cover these
+items in another tutorial.</p>
+<p>Navigate back to the health facility list by closing the window. Note that the
+name of the health facility changed in the list:</p>
+<img alt="../../_images/HF_list_test.png" class="align-center" src="../../_images/HF_list_test.png" />
+</section>
+<hr class="docutils" />
+<section id="health-facility-deletion-and-addition">
+<h4><span class="section-number">1.2.4.2. </span>Health Facility deletion and addition<a class="headerlink" href="#health-facility-deletion-and-addition" title="Permalink to this headline"></a></h4>
+<p>Next, let’s assume that “Test Facility” is in fact no longer there and there is
+another health facility that we are currently missing.</p>
+<p>First, delete “Test Facility” by clicking on the bin icon and confirming the deletion.</p>
+<img alt="../../_images/delete_HF.png" class="align-center" src="../../_images/delete_HF.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>To create a new health facility, click in the search bar and type the name of the facility
+you would like to add. Click on “Add”.</p>
+<img alt="../../_images/add_HF_button.png" class="align-center" src="../../_images/add_HF_button.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Select “Pin” and click on the map to indicate
+the location of the health facility. If the position is correct, click on “Create”.</p>
+<img alt="../../_images/add_HF_123.png" class="align-center" src="../../_images/add_HF_123.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The health facility has been added now and is visible in the health facility list.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>We reached our first goal: at this step, we imagine the health facility list for this Ward is complete -
+all health facilities we need to consider for this Ward are on the list.</p>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="review-the-settlement-list">
+<h3><span class="section-number">1.2.5. </span>Review the Settlement list<a class="headerlink" href="#review-the-settlement-list" title="Permalink to this headline"></a></h3>
+<p>What are we referring to when we say “settlement”? It is a place that health workers refer to
+where they are planning routine immunization activities.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Next, our goal is to identify all settlements in the current ward that we need
+to consider for microplanning. We need to make sure they are at the right place and that they have the
+right name.</p>
+</div>
+<p>To do this, we will look at the settlement list. Click on the “Settlements” button.</p>
+<img alt="../../_images/settlements_button.png" class="align-center" src="../../_images/settlements_button.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are similarities to the health facility list:</p>
+<ol class="arabic simple">
+<li><p>AKA stands for “Also Known As”, in this case potential other names for that settlement. We will see this later.</p></li>
+<li><p>Settlements can have error icons listed under the “Error type” column.</p></li>
+<li><p>Each settlement has a calculated population value, coming from a population model. We can add a field estimate to a settlement, as we will see shortly.</p></li>
+</ol>
+</div>
+<p>Since this settlement has not been assigned to a health facility, it shows the
+error icon “Unclaimed”:</p>
+<img alt="../../_images/settlement_list.png" class="align-center" src="../../_images/settlement_list.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>We can access all information about this settlement by either clicking on the
+settlement on the map or clicking on the name of the settlement on the list.
+Do either of those two to access the settlement tab. Note that the settlements
+are depicted with the following icon on the map:</p>
+<a class="reference internal image-reference" href="../../_images/settlement_map.png"><img alt="../../_images/settlement_map.png" class="align-center" src="../../_images/settlement_map.png" style="width: 100px;" /></a>
+<hr class="docutils" />
+<section id="settlement-details">
+<h4><span class="section-number">1.2.5.1. </span>Settlement details<a class="headerlink" href="#settlement-details" title="Permalink to this headline"></a></h4>
+<p>You landed on the “Catchment” tab. We will look at this later. Instead, click on “Details”.</p>
+<p>On the top, you will see the name of the settlement. Similar to what we saw for the
+health facility, we can click in the name field directly to change the name. Let’s
+assume that there was a typo for this settlement and correct it to “Umowasi”.</p>
+<p>For our example, we will consider that we know the actual population of this
+settlement. We have the possibility to add this information here. Enter the
+field estimated population in the corresponding field - enter 3500.</p>
+<p>If you wonder where the computed population comes from, this is explained in <a class="reference internal" href="../background/10background.html#population"><span class="std std-ref">Population</span></a>.</p>
+<p>Let’s also assume that this settlement is a Polio high-risk settlement - we can
+add this information here as well.</p>
+<img alt="../../_images/settlement_detail.png" class="align-center" src="../../_images/settlement_detail.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Close the settlement tab and note that the settlement name has been corrected
+and the field estimated population has replaced the computed population that was
+shown before.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>We reached our second goal: at this step, we imagine the settlement list for this Ward is complete -
+all settlements we need to consider for this Ward are on the list.</p>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="perform-microplanning">
+<h3><span class="section-number">1.2.6. </span>Perform Microplanning<a class="headerlink" href="#perform-microplanning" title="Permalink to this headline"></a></h3>
+<p>Navigate back to the health facility tab. Click the health facility on the list to
+enter the “Catchment” information for the health facility.</p>
+<p>Note that currently there are no included settlements in the catchment of this
+health facility.</p>
+<img alt="../../_images/HF_not_claiming.png" class="align-center" src="../../_images/HF_not_claiming.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Below, you see the suggested settlements for this health facility. We
+would like to add the settlement that is closest to the health facility. Thus, click
+on “Distance” and sort the table by distance.</p>
+<p>We can see that our settlement is the closest to this health facility. We can double
+check that it’s the correct settlement by clicking on the magnifying glass. Having
+verified that, let’s add it to the health facility catchment using the “+” icon.</p>
+<img alt="../../_images/add_to_catchment.png" class="align-center" src="../../_images/add_to_catchment.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This resulted in a few things:</p>
+<ol class="arabic simple">
+<li><p>The settlement has been added to the list of “Included Settlements”.</p></li>
+<li><p>You could remove it from this list again by clicking on the “x”.</p></li>
+<li><p>The map on the right shows the delineation of the catchment for this health facility.</p></li>
+<li><p>The color of the catchment on the map corresponds to the color of the health facility.</p></li>
+<li><p>The pattern of the catchment is explained in the legend.</p></li>
+</ol>
+</div>
+<img alt="../../_images/catchment_added.png" class="align-center" src="../../_images/catchment_added.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Let’s take a closer look at the “Included Settlements” now.</p>
+<hr class="docutils" />
+<section id="included-settlements">
+<h4><span class="section-number">1.2.6.1. </span>Included Settlements<a class="headerlink" href="#included-settlements" title="Permalink to this headline"></a></h4>
+<p>Let’s first review the intervention strategy for our settlement. We have the options
+“Unknown”, “Fixed-Post”, “Outreach” and “Mobile”. Try to assign different strategies
+for your settlement. Note that with each change, the pattern for the catchment on
+the map changes to reflect that. The default strategy that is chosen when adding a
+settlement always corresponds its distance from the health facility. Meaning that if
+a settlement is within 2km, the default strategy is “Fixed-Post”, if it’s between 2-5km
+the default strategy is “Outreach” and if it’s above 5km it is “Mobile”.</p>
+<p>For “Fixed-Post” strategy:</p>
+<img alt="../../_images/fixed_post.png" class="align-center" src="../../_images/fixed_post.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>For “Outreach” strategy:</p>
+<img alt="../../_images/outreach.png" class="align-center" src="../../_images/outreach.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>For “Mobile” strategy:</p>
+<img alt="../../_images/mobile.png" class="align-center" src="../../_images/mobile.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Since this settlement is within 2km of our health facility, let’s assign it
+the “Fixed-Post” strategy.</p>
+<img alt="../../_images/strategy.png" class="align-center" src="../../_images/strategy.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The catchment total population of this health facility is summarized and corresponds
+to the target population of the settlements assigned to this health facility.
+For now this was fixed at 5% of the total population for the settlement in our catchment.
+In the future, this will be a parameter that can be defined. Let’s not worry about the
+other columns for now - we will look at this later.</p>
+<img alt="../../_images/population_summary.png" class="align-center" src="../../_images/population_summary.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Note that in the “Population” and “Travel” tabs you will find some more information
+about the settlement. We will not go into further detail here.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>We reached our third goal: we assigned the settlement to our health facility.</p>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="review-microplanning">
+<h3><span class="section-number">1.2.7. </span>Review Microplanning<a class="headerlink" href="#review-microplanning" title="Permalink to this headline"></a></h3>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Our next goal will be to review the microplan.</p>
+</div>
+<p>Navigate back to the health facility list by either clicking on “Health Facilities”
+or else clicking on the “x”.</p>
+<p>Note that the error icon has disappeared, since we have added a settlement to
+the catchment of this health facility. Additionally, the catchment population for
+this health facility now shows 3500 - the population we have entered for the
+settlement. If you click on the arrow next to the health facility, you can see
+what settlement is part of the catchment.</p>
+<img alt="../../_images/hf_list_catchment.png" class="align-center" src="../../_images/hf_list_catchment.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>If you navigate to the settlements list, you will also see that the error icon
+for the settlement has disappeared, since the settlement has been added to a
+health facility.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>We reached our fourth goal: We reviewed the health facility and settlement list,
+we reviewed the catchments and our microplan is complete.</p>
+</div>
+<hr class="docutils" />
+<section id="mark-health-facility-catchment-as-complete">
+<h4><span class="section-number">1.2.7.1. </span>Mark health facility catchment as complete<a class="headerlink" href="#mark-health-facility-catchment-as-complete" title="Permalink to this headline"></a></h4>
+<p>Since we are now happy with our microplan for this health facility (and in this case that
+also means for this Ward, since there is only one health facility), we will mark it as
+complete.</p>
+<p>Navigate to the health facility catchment tab. Mark the health facility catchment status as complete.</p>
+<img alt="../../_images/catchment_status.png" class="align-center" src="../../_images/catchment_status.png" />
+</section>
+</section>
+<hr class="docutils" />
+<section id="synchronize-the-changes-back-to-the-server">
+<h3><span class="section-number">1.2.8. </span>Synchronize the changes back to the server<a class="headerlink" href="#synchronize-the-changes-back-to-the-server" title="Permalink to this headline"></a></h3>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Our next goal is to synchronize our changes back to the server. This section is only
+relevant if you are on <a class="reference external" href="https://gmt-pilot.health">https://gmt-pilot.health</a>. It will not work for <a class="reference external" href="https://uat.gmt-pilot.health">https://uat.gmt-pilot.health</a>.
+Read the section nevertheless.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>All of the current work has been saved in our browser locally. If we were to lose our
+device, those changes would be lost at the current stage. In order to update the
+GMT database with our changes, we will have to establish connectivity and synchronize
+our changes back with the server.</p>
+</div>
+<p>First, establish connectivity. To synchronize the changes, there are two ways.</p>
+<p>We could already click on the “Sync” button, which will directly synchronize all changes
+on the device. Let’s hold off and first navigate back to the dashboard using the menu at the top.
+Click on “Ahiazu-Mbaise”.</p>
+<img alt="../../_images/breadcrumbs.png" class="align-center" src="../../_images/breadcrumbs.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Using the “Show offline” filter, you will see that our Ward has been modified. Let’s click
+that “Sync” button now.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>We reached our fifth goal: synchronization has been achieved. Only one step left to finalize this tutorial.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="print-the-pdf-of-the-microplan">
+<h3><span class="section-number">1.2.9. </span>Print the PDF of the microplan<a class="headerlink" href="#print-the-pdf-of-the-microplan" title="Permalink to this headline"></a></h3>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Our final goal for this first tutorial is the printing of the PDF.</p>
+</div>
+<p>To obtain a printable PDF of the microplan for this ward, we can simply select the
+checkbox next to our ward and click on the corresponding “Print” icon at the top.</p>
+<img alt="../../_images/print_pdf.png" class="align-center" src="../../_images/print_pdf.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>You will have several options. If you print several Wards at the same time, you can choose to just have
+one PDF file per Ward (otherwise, it will generate one PDF containing the data for all Wards).
+You can also choose to print a detail page per Health Facility. For our purpose, since we just have
+one Ward anyway that we are working on, let’s just select the last option “Include one detailed page per
+Health Facility”. You can ignore the other options for now.</p>
+<img alt="../../_images/print_options.png" class="align-center" src="../../_images/print_options.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The PDF will be generated automatically.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>You reached the end of Tutorial 1!</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../background/10background.html" class="btn btn-neutral float-left" title="1. Background" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="20Tutorial2.html" class="btn btn-neutral float-right" title="2. Tutorial 2" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Novel-T.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

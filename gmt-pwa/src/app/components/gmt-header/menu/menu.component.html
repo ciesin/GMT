@@ -1,0 +1,44 @@
+<button [matMenuTriggerFor]="mainMenu" aria-label="Main menu">
+  <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu #mainMenu="matMenu">
+  <div class="user-email">
+    <span>{{ userEmail }}</span>
+  </div>
+  <div class="actions-container">
+    <button mat-menu-item *ngIf="loggedIn && isOnline" (click)="logOut()">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+      <div class="comment">
+        All your data will remain on this device even after you log out
+      </div>
+    </button>
+
+    <button mat-menu-item *ngIf="loggedIn">
+      <mat-icon (click)="triggerHelpClick($event)">help</mat-icon>
+      <app-help #helpRef index="home">Help</app-help>
+    </button>
+
+    <button mat-menu-item (click)="sendLogs()">
+      <mat-icon>bug_report</mat-icon>
+      <span>Send logs</span>
+    </button>
+
+    <button
+      mat-menu-item
+      *ngIf="loggedIn && isOnline && userIsUserAdmin"
+      (click)="navigateToUserMgmt()"
+    >
+      <mat-icon>group</mat-icon><span>User management</span>
+    </button>
+
+    <button mat-menu-item (click)="openDevTools()">
+      <mat-icon>lock</mat-icon>
+      <span>Dev tools</span>
+    </button>
+  </div>
+
+  <!--  <button mat-menu-item *ngIf="loggedIn && isOnline && userHasParticipationManagerRole" (click)="enableParticipation()">-->
+  <!--    <span>Enable participation</span>-->
+  <!--  </button>-->
+</mat-menu>

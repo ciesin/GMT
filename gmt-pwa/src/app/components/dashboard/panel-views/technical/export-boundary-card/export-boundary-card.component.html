@@ -1,0 +1,12 @@
+<mat-checkbox #checkbox [disabled]="checked === 'all-original'" [checked]="checked.startsWith('all')"
+	[indeterminate]="checked.startsWith('some')" (change)="checkedChanged($event)" [class]="checked">
+</mat-checkbox>
+<div class="boundary" (click)="handleBoundaryClick(node.global_id)">
+	<span class="parent-admins">
+		<span *ngFor="let parent of hierarchy.slice(1)">{{parent}}</span>
+	</span>
+	<span>{{node.label}}</span>
+</div>
+<a *ngIf="canDrillDown" (click)="this.drillDown.emit(node.global_id)" matTooltip="Expand sub boundaries">
+	<fa-icon icon="angle-right"></fa-icon>
+</a>

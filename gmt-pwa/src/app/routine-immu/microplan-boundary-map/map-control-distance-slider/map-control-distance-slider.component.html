@@ -1,0 +1,23 @@
+<div id="map-control-distance-slider">
+  <div class="slider-text-div">
+    <div class="slider-text">0km</div>
+    <div class="slider-text">5km</div>
+  </div>
+  <!--color='#E00069'-->
+  <mat-slider min="0"
+              max="2"
+              color="accent"
+              discrete="true"
+              [displayWith]="formatLabel.bind(handleValuesMapping)"
+              >
+<!--    (valueChange)="validateAndChangeDistanceInput($event)"-->
+    <input value="0" matSliderStartThumb
+           [(ngModel)]="sliderValueStart"
+           (valueChange)="validateAndChangeDistanceStartInput($event)"
+           (dragEnd)="disableSliderStartIfNeeded($event)">
+    <input value="2" matSliderEndThumb
+           [(ngModel)]="sliderValueEnd"
+           (valueChange)="validateAndChangeDistanceEndInput($event)"
+           (dragEnd)="disableSliderEndIfNeeded($event)">
+  </mat-slider>
+</div>

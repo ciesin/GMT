@@ -1,0 +1,67 @@
+<div gmtPopup class="geoPermissionsEditCardContainer">
+  <img src="assets/icons/close.png" class="closeBtn" (click)="handleClose()">
+  <div class="card">
+    <div class="header">
+      Geographic assignment
+    </div>
+    <div class="gmtCard">
+      Select one or many locations to attribute to these <b>{{(selectedUsers.length == 1)? '1 user': selectedUsers.length + ' users'}} </b>:
+      <p>{{(selectedBoundaryGlobalIds.size == 1)? '1 location ': selectedBoundaryGlobalIds.size + ' locations '}}selected</p>
+      <div class="row">
+        <div class="column-3">
+<!--          List is only useful in countries like Pakistan-->
+          <div *ngFor="let admin0 of displayAdminBoundaryList[0]">
+            <div class="row">
+              <div class="column1">
+                <input type="checkbox" (change)="handleGeoPermissionCheck($event.target, admin0.global_id, 1)"/>
+                <b>{{admin0.label}} </b>
+              </div>
+            </div>
+          </div>
+          <div *ngFor="let admin1 of displayAdminBoundaryList[1]">
+            <div class="row {{(this.expandedBoundary[1] == admin1.global_id)? 'selected': ''}}">
+              <div class="column1">
+                <input type="checkbox" (change)="handleGeoPermissionCheck($event.target, admin1.global_id, 1)"/>
+                <b>{{admin1.label}} </b>
+              </div>
+              <div class="column2">
+                <img src="assets/icons/user-management/arrow-right.svg" (click)="handleExpandTree(admin1, 1)">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column-3">
+          <div class="row"></div>
+          <div class="row"></div>
+          <div *ngFor="let admin2 of displayAdminBoundaryList[2]">
+            <div class="row {{(this.expandedBoundary[2] == admin2.global_id)? 'selected': ''}}">
+              <div class="column1">
+                <input type="checkbox" (change)="handleGeoPermissionCheck($event.target, admin2.global_id, 2)"/>
+                <b>{{admin2.label}} </b>
+              </div>
+              <div class="column2">
+                <img src="assets/icons/user-management/arrow-right.svg" (click)="handleExpandTree(admin2, 2)">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column-3">
+          <div class="row"></div>
+          <div class="row"></div>
+          <div *ngFor="let admin3 of displayAdminBoundaryList[3]">
+            <div class="row">
+              <div class="column1">
+                <input type="checkbox" (change)="handleGeoPermissionCheck($event.target, admin3.global_id, 3)"/>
+                <b>{{admin3.label}} </b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="saveContainer">
+        <div class="gmtTextButton" pButton (click)="handleClose()">Cancel</div>
+        <button class="save" pButton (click)="handleSaveGeoPermissions()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

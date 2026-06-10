@@ -1,0 +1,96 @@
+@import "src/less/mat-multiple-select-fix.less";
+
+:host {
+  > mat-action-row {
+    padding: 1rem !important;
+  }
+}
+
+//Make this less specific to allow the mat-multiple color to override it
+mat-label {
+  color: var(--base-dark);
+}
+
+.hf-details-content-form {
+  display: flex;
+  flex-wrap: wrap;
+  @gap: 1em;
+  gap: 1em;
+  padding: 1em;
+
+  .full-width {
+    flex: 1 1 100%;
+  }
+
+  .half-width {
+    flex: 1 1 calc(50% - @gap / 2);
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .vcenter {
+    align-self: center;
+  }
+}
+
+.hf-details-content-ri {
+  width: 100%;
+  border-color: var(--base-base);
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+
+  .days-container {
+    display: flex;
+
+    .days {
+      flex-grow: 1;
+    }
+
+    .button-container {
+      position: relative; /* Required for absolute positioning */
+      /* button is around 35px */
+      /*width: 40px;*/
+      flex-basis: 40px;
+      flex-grow: 0;
+      flex-shrink: 0;
+
+      button {
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+      }
+    }
+  }
+}
+
+.hf-details-content-ri mat-checkbox.mat-mdc-checkbox label {
+  padding-inline: 0 0.75rem;
+}
+
+.mat-divider.mat-divider-inset {
+  margin-left: 0;
+  padding-bottom: 5px;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--disabled {
+  border: 1px solid var(--base-light);
+}
+
+mat-action-row {
+  border: none;
+}
+
+mat-slide-toggle {
+  ::ng-deep label {
+    color: var(--base-dark);
+    font-weight: 500;
+    font-variant: all-small-caps;
+  }
+}
+
+mat-chip-set.services {
+  margin-top: -0.9em;
+}

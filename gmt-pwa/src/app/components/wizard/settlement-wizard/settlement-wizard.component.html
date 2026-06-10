@@ -1,0 +1,182 @@
+<div>
+  <!--Title is set with css-->
+
+  <!--Wrap in matUI button for https://github.com/novelt/GMT/issues/2376-->
+  <!-- <fa-icon mat-dialog-close icon="close" class="cancel" (click)="handleCancel()"></fa-icon> -->
+  <button mat-dialog-close mat-button (click)="handleCancel()" class="cancel">
+    <fa-icon icon="close"></fa-icon>
+  </button>
+
+  <div mat-dialog-content>
+    <mat-stepper
+      class="settlement-wizard-stepper"
+      #stepper
+      [linear]="true"
+      (selectionChange)="handleStepChange($event)"
+    >
+      <!-- Basic Info: all fields, but population & uninhabited -->
+      <mat-step [stepControl]="basicInformationFormGroup" [editable]="true">
+        <form [formGroup]="basicInformationFormGroup">
+          <ng-template matStepLabel>Properties</ng-template>
+          <mat-form-field subscriptSizing="dynamic" class="half-width">
+            <mat-label>Name</mat-label>
+            <input
+              matInput
+              placeholder="Settlement Name"
+              [formControlName]="FORM_KEY_NAME"
+              required
+            />
+            <div
+              *ngIf="
+                basicInformationFormGroup.get(FORM_KEY_NAME)?.errors
+                  ?.duplicateName
+              "
+            >
+              {{
+                basicInformationFormGroup.get(FORM_KEY_NAME)!.errors![
+                  "duplicateName"
+                ].message
+              }}
+            </div>
+          </mat-form-field>
+
+          <gmt-wizard-list-control
+            [listItems]="additionalInfoFormGroup.get(FORM_KEY_SYNONYM)!.value"
+            label="ALSO KNOWN AS (AKA)"
+            class="half-width"
+          ></gmt-wizard-list-control>
+
+          <div class="fake-mat-form-field full-width" subscriptSizing="dynamic">
+            <mat-label>SPECIAL ATTENTION</mat-label>
+            <mat-select
+              placeholder="--"
+              [formControlName]="FORM_KEY_PROBLEMATIC"
+              multiple
+            >
+              <mat-option
+                *ngFor="let opt of problematicOptions"
+                [value]="opt.value"
+                >{{ opt.label }}</mat-option
+              >
+            </mat-select>
+          </div>
+
+          <div class="wizard-buttons">
+            <!-- <p>Form Status: {{ basicInformationFormGroup.status }} {{ basicInformationFormGroup.get('name').value }}</p> -->
+            <button
+              class="next"
+              mat-flat-button
+              matStepperNext
+              [disabled]="basicInformationFormGroup.status != 'VALID'"
+            >
+              Next
+            </button>
+            <!-- <button mat-button mat-dialog-close="true">Cancel</button> -->
+          </div>
+        </form>
+      </mat-step>
+      <mat-step
+        [editable]="true"
+        label="location"
+        [stepControl]="locationFormGroup"
+      >
+        <!--This is choosing boundary or location-->
+        <ng-container *ngIf="!isSetPoint && !isDrawBoundaries">
+          <div class="gmt-modal-options">
+            <section class="gmt-modal-opt-point">
+              <button
+                mat-flat-button
+                class="next"
+                (click)="handleChangeSetPointMode(true)"
+              >
+                <fa-icon icon="location-pin"></fa-icon>
+                <span class="label">Set Point</span>
+              </button>
+              Add settlement as a point on the map (recommended).
+            </section>
+            <section class="gmt-modal-opt-polygon">
+              <button
+                class="next"
+                mat-flat-button
+                (click)="handleDrawBoundaries()"
+              >
+                <fa-icon icon="draw-polygon"></fa-icon>
+                <span class="label">Draw Boundaries</span>
+              </button>
+              Define the settlment boundaries (advanced).
+            </section>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="isSetPoint">
+          <!--If we are choosing location-->
+          <gmt-wizard-location-control
+            [dialog]="dialogRef"
+            [lonLat]="[
+              locationFormGroup.get('longitude')!.value!,
+              locationFormGroup.get('latitude')!.value!
+            ]"
+            (lonLatChange)="handleLonLatChange($event)"
+            [hidden]="!isSetPoint"
+          ></gmt-wizard-location-control>
+        </ng-container>
+        <!--And finally if we are drawing the boundaries-->
+
+        <!--Use visibility since we need this component to be rendered so we can have
+                the viewchild reference-->
+        <gmt-wizard-polygon-edit
+          [isVisible]="isDrawBoundaries"
+          #polygonEditNewSettlementBoundary
+          stepDescription="Draw the new settlement boundary on the map.  "
+          (nextClicked)="handleDrawnShape($event)"
+        >
+        </gmt-wizard-polygon-edit>
+      </mat-step>
+
+      <mat-step [stepControl]="additionalInfoFormGroup" [editable]="true">
+        <form [formGroup]="additionalInfoFormGroup" class="form-vertical">
+          <ng-template matStepLabel>Population</ng-template>
+
+          <mat-form-field subscriptSizing="dynamic" class="half-width">
+            <fa-icon matPrefix icon="users"></fa-icon>
+            <mat-label>ESTIMATED POP</mat-label>
+            <input
+              matInput
+              type="number"
+              placeholder="Estimated Pop."
+              [formControlName]="FORM_KEY_ESTIMATED_POP"
+            />
+          </mat-form-field>
+
+          <mat-form-field subscriptSizing="dynamic" class="half-width disabled">
+            <fa-icon matPrefix icon="users"></fa-icon>
+            <mat-label>COMPUTED POP</mat-label>
+            <input
+              matInput
+              placeholder="Computed Pop."
+              [formControlName]="FORM_KEY_COMPUTED_POP"
+              [disabled]="true"
+              [readonly]="true"
+            />
+          </mat-form-field>
+          <!--https://github.com/novelt/GMT/issues/2885#issuecomment-2962383025-->
+          <!--                    <div class="full-width">-->
+          <!--                        <mat-slide-toggle formControlName="uninhabited">-->
+          <!--                            Uninhabited-->
+          <!--                        </mat-slide-toggle>-->
+          <!--                    </div>-->
+        </form>
+
+        <div class="wizard-buttons">
+          <button
+            class="done"
+            mat-flat-button
+            (click)="handleCloseDialog()"
+            [disabled]="isLoadingService.loading | async"
+          >
+            Done
+          </button>
+        </div>
+      </mat-step>
+    </mat-stepper>
+  </div>
+</div>

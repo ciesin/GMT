@@ -1,0 +1,105 @@
+@import "../map-control.component.less";
+@import "../../../../components/catchment-card/catchment/catchment.component.less";
+@import "../../../../../less/settlement.less";
+
+#feature-details-container {
+  width: 20rem;
+  max-width: 95%;
+  z-index: 1000;
+
+  .mat-mdc-card-content {
+    color: var(--base-black);
+  }
+
+  .mat-mdc-card-content ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+
+    li {
+      flex: 1 0 40%;
+      margin: 0.5rem 0;
+      width: 50%;
+      font-size: 0.9rem;
+    }
+
+    em {
+      font-weight: 500;
+      font-style: normal;
+      margin-inline-end: 0.5rem;
+
+      &::after {
+        content: ": ";
+      }
+    }
+  }
+
+  .mat-mdc-card-header * {
+    color: var(--base-dark);
+
+    .uninhabited {
+      //shared style ; needs to be more specific than the color applied above
+      .uninhabited-name;
+    }
+  }
+  .mat-mdc-card-subtitle * {
+    color: var(--base-black);
+  }
+  .mat-mdc-card-actions * {
+    color: var(--base-pure-white);
+    text-shadow: 1px 1px 1px rgba(var(--base-dark-rgb), 0.65);
+  }
+
+  .mat-mdc-card-header {
+    padding-block: 0.5rem;
+    border-bottom: 1px dotted var(--base-dark);
+    margin-block-end: 0.5rem;
+    background-color: rgba(var(--base-medium-rgb), 0.25);
+  }
+
+  .mat-mdc-card {
+    background-color: var(--base-pale);
+    border: 1px solid var(--base-base);
+  }
+
+  .mat-mdc-card-actions {
+    margin-block-start: 0.5rem;
+    padding: 0 0.5em;
+    background-color: rgba(var(--base-dark-rgb), 0.9);
+    justify-content: space-between;
+
+    .gmt-stats-text {
+      flex-direction: row;
+    }
+  }
+
+  .mat-mdc-card-title {
+    display: flex;
+    justify-content: space-between;
+    line-height: 1.3;
+  }
+
+  .mat-mdc-card-subtitle {
+    display: flex;
+
+    fa-icon {
+      margin-right: 0.5rem;
+    }
+  }
+
+  .catchment-content {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .close-button {
+    padding: 0 1rem;
+    margin-inline-end: -1rem;
+    color: va(--accent-base);
+    text-shadow: 1px 1px 1px rgba(var(--base-light-rgb), 0.65);
+  }
+
+
+}

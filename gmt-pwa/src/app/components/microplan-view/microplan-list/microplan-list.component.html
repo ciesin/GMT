@@ -1,0 +1,53 @@
+<div *ngIf="noHeader === null" matSort (matSortChange)="sortData($event)" [matSortActive]="activeSort.active "
+	[matSortDirection]="activeSort.direction ">
+	<fa-icon [icon]="icon" *ngIf="icon"></fa-icon>
+	<ng-container *ngFor="let sortHeader of sortHeaders">
+
+		<div *ngIf="isSortHeader(sortHeader)" [mat-sort-header]="sortHeader.active">{{sortHeader.label}}</div>
+		<mat-form-field class="sort-header" *ngIf="!isSortHeader(sortHeader)" subscriptSizing="dynamic">
+			<mat-select placeholder="sort population" (selectionChange)="handleSortChoice($event)"
+				panelClass="sort-header" [value]="[activeSort.active , activeSort.direction ].join(',')">
+				<ng-container *ngFor="let sortOption of sortHeader">
+					<mat-option (onSelectionChange)="disableSort($event)" value="{{[sortOption.active, 'asc']}}">
+						{{sortOption.label}} <fa-icon icon="arrow-up"></fa-icon>
+						<span hidden>{{ '&uarr;' // this hidden arrow is displayed when option is chosen }}</span>
+					</mat-option>
+					<mat-option (onSelectionChange)="disableSort($event)" value="{{[sortOption.active, 'desc']}}">
+						{{sortOption.label}} <fa-icon icon="arrow-down"></fa-icon>
+						<span hidden>{{ '&darr;' // this hidden arrow is displayed when option is chosen }}</span>
+					</mat-option>
+				</ng-container>
+			</mat-select>
+			<fa-icon matSuffix icon="caret-down"></fa-icon>
+		</mat-form-field>
+	</ng-container>
+</div>
+
+<!--Placing before lists below otherwise it renders near the bottom-->
+<ng-container *ngIf="!idDisplayList || idDisplayList.length == 0">
+  <div style="margin-left: 10px">No items to display</div>
+</ng-container>
+
+<ng-container *ngIf="virtualScroll">
+  <!--We want this always visible so the scrollViewport viewchild gets set even if the list is empty-->
+	<mat-accordion cdkVirtualScrollingElement displayMode="flat">
+		<cdk-virtual-scroll-viewport #scrollViewport itemSize="55">
+			<ng-container *cdkVirtualFor="let id of idDisplayList; trackBy:identify">
+				<ng-container
+					*ngComponentOutlet="itemComponent; injector: createInjector(idPrefix + id)!"></ng-container>
+			</ng-container>
+		<div class="fab-space" *ngIf="addFabSpace === true"></div>
+		</cdk-virtual-scroll-viewport>
+	</mat-accordion>
+</ng-container>
+
+<ng-container *ngIf="!virtualScroll">
+	<mat-accordion displayMode="flat">
+		<ng-container *ngFor="let id of idDisplayList; trackBy:identify">
+			<ng-container *ngComponentOutlet="itemComponent; injector: createInjector(idPrefix + id)!"></ng-container>
+		</ng-container>
+	</mat-accordion>
+</ng-container>
+
+
+

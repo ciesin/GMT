@@ -1,0 +1,11 @@
+from enum import StrEnum
+
+
+class GeomTypes(StrEnum):
+    POLYGON = "POLYGON"
+    MULTIPOLYGON = "MULTIPOLYGON"
+    POINT = "POINT"
+    NONE = "NONE"
+    GEOMETRY_TYPE_NONE = "NONE"
+    MULTILINESTRING = "MULTILINESTRING"
+    LINESTRING = "LINESTRING"

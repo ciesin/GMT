@@ -1,0 +1,100 @@
+<h4 mat-dialog-title><fa-icon icon="key"></fa-icon> Generate new token</h4>
+
+<button mat-dialog-close mat-button class="cancel">
+  <fa-icon icon="close"></fa-icon>
+</button>
+
+<div class="content">
+  <form class="content-form" [formGroup]="formGroup" *ngIf="!tokenGenerated">
+    <mat-form-field subscriptSizing="dynamic" class="full-width">
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Give your token a name"
+        [formControlName]="FORM_KEY_NAME"
+      />
+      <mat-error
+        *ngIf="
+          generatePressed && formGroup.get(FORM_KEY_NAME)?.hasError('required')
+        "
+      >
+        Name is required.
+      </mat-error>
+      <mat-error
+        *ngIf="formGroup.get(FORM_KEY_NAME)?.hasError('tokenNameExists')"
+      >
+        A token with this name already exists.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field subscriptSizing="dynamic" class="full-width">
+      <mat-label>Expiration</mat-label>
+      <mat-select
+        [formControlName]="FORM_KEY_EXPIRE_DATE"
+        placeholder="Choose when the token will expire"
+        (selectionChange)="onExpireDateChange($event)"
+      >
+        <mat-option *ngFor="let date of expirationDates" [value]="date">
+          {{ date.label }}
+        </mat-option>
+      </mat-select>
+      <fa-icon matSuffix icon="caret-down"></fa-icon>
+      <mat-error
+        *ngIf="
+          generatePressed &&
+          formGroup.get(FORM_KEY_EXPIRE_DATE)?.hasError('required')
+        "
+      >
+        Expiration date is required.
+      </mat-error>
+    </mat-form-field>
+
+    <div class="expireMessage">{{ expireMessage }}</div>
+  </form>
+
+  <div *ngIf="tokenGenerated">
+    <div class="token-desc">
+      Here's your personal access token to access information through the API.
+      Do not share your personal access token with anyone you don’t want
+      accessing sensitive information
+    </div>
+
+    <div class="token-container">
+      <div class="token-title">
+        <fa-icon icon="lock"></fa-icon>
+        <div>MY TOKEN</div>
+      </div>
+
+      <div class="token-box">
+        <div class="token">{{ token }}</div>
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="copyToClipboard(token)"
+          aria-label="Copy token"
+        >
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </div>
+
+      <div class="token-hint">
+        Copy this token. We won’t show it again, store it somewhere secure
+      </div>
+    </div>
+  </div>
+</div>
+<mat-dialog-actions align="end">
+  <button
+    mat-flat-button
+    (click)="handleGenerateToken()"
+    *ngIf="!tokenGenerated"
+  >
+    <fa-icon icon="key"></fa-icon>
+    <span class="label">Generate new Token</span>
+  </button>
+  <button mat-flat-button *ngIf="tokenGenerated" (click)="handleCopyAndClose()">
+    <fa-icon icon="copy"></fa-icon>
+    <span class="label">Copy and close</span>
+  </button>
+</mat-dialog-actions>

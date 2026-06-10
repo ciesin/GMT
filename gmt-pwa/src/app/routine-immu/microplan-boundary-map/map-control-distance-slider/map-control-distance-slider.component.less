@@ -1,0 +1,26 @@
+@import "src/shared";
+
+#map-control-distance-slider {
+  position: absolute;
+  bottom: 1.5em;
+  left: .5em;
+  z-index: 1;
+  width: 15rem;
+  background: rgba(0,60,136,0.3);
+  padding: 0.1rem 0.8rem 0 0.8rem;
+
+  .slider-text-div{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    .slider-text {
+      font-size: 1.3rem;
+      color: white;
+      font-weight: bold;
+    }
+  }
+
+  mat-slider {
+    width: 13rem;
+  }
+}

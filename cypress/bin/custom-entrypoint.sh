@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -e
+
+. /config/$ENV_FILE
+. /config/secrets.$ENV_FILE
+
+export CYPRESS_BASEURL=$PWA_URL/
+export CYPRESS_BASE_URL=$PWA_URL/
+export CYPRESS_EDITOR_USER=$GMT_EDITOR_USER
+export CYPRESS_EDITOR_PWD=$GMT_USER_PASSWORD
+export CYPRESS_AUTHURL=$KEYCLOAK_INSTANCE_EXTERNAL_PROTOCOL://$KEYCLOAK_DOMAIN/$KEYCLOAK_AUTH_URL_PREFIX
+
+mkdir -p /e2e/results
+
+chmod -R 777 /e2e/results
+exec ${@}

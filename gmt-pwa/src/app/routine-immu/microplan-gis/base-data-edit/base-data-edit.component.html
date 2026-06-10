@@ -1,0 +1,67 @@
+  <div class="issue" *ngIf="problemsService.noHFs || problemsService.noSettlements">
+    <h3 *ngIf="problemsService.noHFs">
+      <fa-icon class="v-align-middle accordion-title-icon" icon="warning"></fa-icon>
+      No Health Facilities in Ward
+    </h3>
+    <h3 *ngIf="problemsService.noSettlements">
+      <fa-icon class="v-align-middle accordion-title-icon" icon="warning"></fa-icon>
+      No Settlements in Ward
+    </h3>
+    <div>To add a Health Facility or Settlement,
+      use the
+      <span class="nobreak"><fa-icon class="v-align-middle accordion-title-icon" icon="circle-plus"></fa-icon>
+        button</span>
+    </div>
+  </div>
+  <mat-accordion displayMode="flat">
+      <mat-expansion-panel closeChildExpansionOnClose class="sub-expansion" [expanded]="activeTab === hfsTab"
+      (opened)="hfsPanelOpenState = true" (closed)="hfsPanelOpenState = false">
+        <mat-expansion-panel-header class="main-header" (click)="hfsPanelStateChange()">
+          <mat-panel-title>
+            <fa-icon class="v-align-middle accordion-title-icon" icon="house-medical"></fa-icon>
+            Health facilit{{ (hfSortFilterService && hfSortFilterService.idDisplayList.length == 1) ? 'y': 'ies' }} ({{hfsListLength}})
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="list-container" [style.height]="shouldUseVirtualScrollingHF(40) ? '40vh': 'auto'">
+          <gmt-microplan-list *ngIf="hfSortFilterService && hfSortFilterService.idDisplayList.length > 0"
+                              [itemComponent]="hfEditComponent" [idDisplayList]="hfSortFilterService.idDisplayList" [virtualScroll]="shouldUseVirtualScrollingHF(40)"
+            [sortHeaders]="hfSortHeaders" [hasEditPermissions]="userCanEditHf" [additionalData]="hfIssues"
+            (sortOrderChanged)="handleHfSort($event)" noHeader></gmt-microplan-list>
+            <ng-container *ngIf="!problemsService.noHFs && hfSortFilterService && !hfSortFilterService.idDisplayList.length">
+              <div class="issue">No Health facility base data issues</div>
+            </ng-container>
+        </div>
+      </mat-expansion-panel>
+
+       <mat-expansion-panel closeChildExpansionOnClose class="sub-expansion" [expanded]="activeTab === settlementsTab"
+      (opened)="settlementsPanelOpenState = true" (closed)="settlementsPanelOpenState = false">
+        <mat-expansion-panel-header class="main-header" (click)="settlementsPanelStateChange()">
+          <mat-panel-title>
+            <fa-icon class="v-align-middle accordion-title-icon" icon="users"></fa-icon>
+            Settlement{{ (stSortFilterService && stSortFilterService.idDisplayList.length == 1) ? '': 's'}} ({{settlementsListLength}})
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="list-container" [style.height]="shouldUseVirtualScrollingSt(40) ? '40vh': 'auto'">
+          <ng-container *ngIf="stSortFilterService && problemsService.stBaseIssues.size > 0 && (stSortFilterService?.idDisplayList?.length || 0)> 0">
+            <gmt-microplan-list [virtualScroll]="shouldUseVirtualScrollingSt(40)"
+                                [itemComponent]="settlementEditComponent"
+                                [idDisplayList]="stSortFilterService.idDisplayList"
+                                [sortHeaders]="stSortHeaders"
+                                [hasEditPermissions]="userCanEditSt"
+                                [additionalData]="problemsService.stBaseIssues"
+                                (sortOrderChanged)="handleStSort($event)" noHeader>
+            </gmt-microplan-list>
+          </ng-container>
+          <ng-container *ngIf="!problemsService.noSettlements && !problemsService.settlementsLoading && stSortFilterService && !stSortFilterService.idDisplayList.length">
+            <div class="issue">No settlement base data issues</div>
+          </ng-container>
+        </div>
+      </mat-expansion-panel>
+  </mat-accordion>
+
+  <div class="loading" *ngIf="problemsService.settlementsLoading">
+    <fa-icon class="fa-spin" icon="spinner"></fa-icon>
+    loading settlement issues...
+  </div>

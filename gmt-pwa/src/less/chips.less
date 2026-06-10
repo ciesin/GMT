@@ -1,0 +1,32 @@
+
+.chips() {
+  margin-top: 1vh;
+  display: flex;
+  flex-wrap: wrap;
+
+  .chip {
+    background-color: @color-d2w-5;
+    border-radius: 1vh;
+    margin-right: 1rem;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+
+    .tag {
+      padding: 1vh;
+    }
+
+    .delete {
+      width: 2.5rem;
+      cursor: pointer;
+      margin: 0.2rem 0.6rem;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+}
+.gmt-chips{
+  .chips();
+}

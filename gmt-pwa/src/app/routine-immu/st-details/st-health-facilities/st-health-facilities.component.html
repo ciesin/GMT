@@ -1,0 +1,28 @@
+<ng-container *ngIf="sortFilterService.idDisplayList">
+  <button
+    *ngIf="explicitAssignmentOptions.length > 0 && userHasEditRights"
+    mat-button
+    (click)="handleAddExplicitAssignment()"
+  >
+    <fa-icon icon="share"></fa-icon>
+    Add explicit assignment
+  </button>
+  <gmt-microplan-filter
+    [autocomplete]="sortFilterService.searchAutocompletePropositions"
+    (searchTextChanged)="handleSearchText($event)"
+    (chosenFiltersChanged)="handleChosenFilters($event)"
+    [filters]="hfFilters"
+  ></gmt-microplan-filter>
+  <div class="list-container">
+    <!--Use idPrefix to give an id that forces refreshing of the components when switching between 2 settlements that refer to
+    same hf id-->
+    <gmt-microplan-list
+      [itemComponent]="itemComponent"
+      [idDisplayList]="sortFilterService.idDisplayList"
+      [sortHeaders]="sortHeaders"
+      [virtualScroll]="false"
+      [idPrefix]="snId + ','"
+      (sortOrderChanged)="handleSort($event)"
+    ></gmt-microplan-list>
+  </div>
+</ng-container>

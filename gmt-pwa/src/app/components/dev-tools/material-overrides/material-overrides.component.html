@@ -1,0 +1,302 @@
+<section>
+	<h3>Inputs:</h3>
+
+	<div class="row">
+
+		<mat-form-field class="search">
+			<mat-label>Search</mat-label>
+			<fa-icon matPrefix icon="magnifying-glass"></fa-icon>
+			<input matInput #searchInput type="text" placeholder="search">
+			<fa-icon matSuffix [icon]="['far', 'circle-xmark']"></fa-icon>
+			<mat-autocomplete #auto="matAutocomplete">
+				<mat-option>
+					option 1
+				</mat-option>
+				<mat-option>
+					option 2
+				</mat-option>
+				<mat-option>
+					option 3
+				</mat-option>
+			</mat-autocomplete>
+		</mat-form-field>
+	</div>
+
+	<div class="row">
+
+		<mat-form-field>
+			<mat-label>Inhabited/Uninhabited</mat-label>
+			<mat-select placeholder="Very long placeholder">
+				<mat-option value="--">--</mat-option>
+				<mat-option value="both">both</mat-option>
+				<mat-option value="inhabited">inhabited</mat-option>
+				<mat-option value="uninhabited">uninhabited</mat-option>
+			</mat-select>
+			<!--
+				Select will require this suffix otherwise they will not have caret.
+				That is the only way I found to get the wanted design for select.
+				I tried creating a directive to add that automatically but did not succeed,
+				the directive taking action after material's component.
+		    -->
+			<fa-icon matSuffix icon="caret-down"></fa-icon>
+			<mat-hint>Hint</mat-hint>
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Inhabited/Uninhabited</mat-label>
+			<mat-select placeholder="placeholder">
+				<mat-option value="--">--</mat-option>
+				<mat-option value="both">both</mat-option>
+				<mat-option value="inhabited">inhabited</mat-option>
+				<mat-option value="uninhabited">uninhabited</mat-option>
+			</mat-select>
+			<fa-icon matSuffix icon="caret-down"></fa-icon>
+			<mat-hint>Hint</mat-hint>
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Inhabited/Uninhabited</mat-label>
+			<mat-select placeholder="placeholder" disabled>
+				<mat-option value="--">--</mat-option>
+				<mat-option value="both">both</mat-option>
+				<mat-option value="inhabited">inhabited</mat-option>
+				<mat-option value="uninhabited">uninhabited</mat-option>
+			</mat-select>
+			<fa-icon matSuffix icon="caret-down"></fa-icon>
+			<mat-hint>Hint</mat-hint>
+		</mat-form-field>
+	</div>
+
+	<div class="row">
+		<div>
+			<!--
+				Sometimes you will have to contain inputs inside their own container to keep input height fixed.
+				This is because we need to override height:auto.
+		    -->
+			<mat-form-field class="example-full-width">
+				<mat-label>Email</mat-label>
+				<input type="email" matInput placeholder="Ex. pat@example.com">
+				<mat-hint>Errors appear instantly!</mat-hint>
+				<mat-error>
+					Please enter a valid email address
+				</mat-error>
+			</mat-form-field>
+		</div>
+
+		<form class="example-form">
+			<mat-form-field class="example-full-width">
+				<mat-label>Estimated pop.</mat-label>
+				<fa-icon matPrefix icon="users"></fa-icon>
+				<input type="number" matInput placeholder="0">
+				<fa-icon matSuffix icon="pen">mode_edit</fa-icon>
+			</mat-form-field>
+		</form>
+
+
+		<mat-form-field class="example-full-width">
+			<mat-label>Leave a comment</mat-label>
+			<textarea matInput placeholder="Ex. It makes me feel..." rows="4"></textarea>
+			<mat-error>
+				Error message
+			</mat-error>
+		</mat-form-field>
+	</div>
+</section>
+
+<section>
+	<h3>Chips:</h3>
+
+
+	<mat-chip-set class="row">
+		<mat-chip>classic
+			<button matChipRemove>
+				<fa-icon icon="circle-xmark"></fa-icon>
+			</button>
+		</mat-chip>
+		<mat-chip highlighted>highlighted
+			<button matChipRemove>
+				<fa-icon icon="circle-xmark"></fa-icon>
+			</button>
+		</mat-chip>
+		<mat-chip disabled>disabled
+			<button matChipRemove>
+				<fa-icon icon="circle-xmark"></fa-icon>
+			</button>
+		</mat-chip>
+	</mat-chip-set>
+	<mat-chip-set class="row">
+		<mat-chip highlighted color="primary">primary
+			<button matChipRemove>
+				<fa-icon icon="circle-xmark"></fa-icon>
+			</button>
+		</mat-chip>
+		<mat-chip highlighted color="accent">accent
+			<button matChipRemove>
+				<fa-icon icon="circle-xmark"></fa-icon>
+			</button>
+		</mat-chip>
+		<mat-chip highlighted color="warn">warn
+			<button matChipRemove>
+				<fa-icon icon="circle-xmark"></fa-icon>
+			</button>
+		</mat-chip>
+		<mat-chip highlighted disabled color="primary">primary
+			<button matChipRemove>
+				<fa-icon icon="circle-xmark"></fa-icon>
+			</button>
+		</mat-chip>
+		<mat-chip highlighted disabled color="accent">accent
+			<button matChipRemove>
+				<fa-icon icon="circle-xmark"></fa-icon>
+			</button>
+		</mat-chip>
+		<mat-chip highlighted disabled color="warn">warn
+			<button matChipRemove>
+				<fa-icon icon="circle-xmark"></fa-icon>
+			</button>
+		</mat-chip>
+	</mat-chip-set>
+	<mat-chip-listbox class="row">
+		<mat-chip-option selected>selected
+			<button matChipRemove>
+				<fa-icon icon="circle-xmark"></fa-icon>
+			</button>
+		</mat-chip-option>
+		<mat-chip-option>unselected
+			<button matChipRemove>
+				<fa-icon icon="circle-xmark"></fa-icon>
+			</button>
+		</mat-chip-option>
+	</mat-chip-listbox>
+</section>
+
+<section>
+	<h3>Expansion panels:</h3>
+
+	<div class="row">
+		<mat-expansion-panel class="row">
+			<mat-expansion-panel-header class="main-header">
+				<mat-panel-title>
+					<fa-icon icon="filter"></fa-icon>
+					Search filters (deprecated)
+				</mat-panel-title>
+			</mat-expansion-panel-header>
+
+			<div class="filters-container">
+				<mat-form-field>
+					<mat-label>Inhabited/Uninhabited</mat-label>
+					<mat-select placeholder="Very long placeholder">
+						<mat-option value="--">--</mat-option>
+						<mat-option value="both">both</mat-option>
+						<mat-option value="inhabited">inhabited</mat-option>
+						<mat-option value="uninhabited">uninhabited</mat-option>
+					</mat-select>
+					<fa-icon matSuffix icon="caret-down"></fa-icon>
+					<mat-hint>Hint</mat-hint>
+				</mat-form-field>
+				<mat-form-field>
+					<mat-label>Inhabited/Uninhabited</mat-label>
+					<mat-select placeholder="placeholder">
+						<mat-option value="--">--</mat-option>
+						<mat-option value="both">both</mat-option>
+						<mat-option value="inhabited">inhabited</mat-option>
+						<mat-option value="uninhabited">uninhabited</mat-option>
+					</mat-select>
+					<fa-icon matSuffix icon="caret-down"></fa-icon>
+					<mat-hint>Hint</mat-hint>
+				</mat-form-field>
+				<mat-form-field>
+					<mat-label>Inhabited/Uninhabited</mat-label>
+					<mat-select placeholder="placeholder" disabled>
+						<mat-option value="--">--</mat-option>
+						<mat-option value="both">both</mat-option>
+						<mat-option value="inhabited">inhabited</mat-option>
+						<mat-option value="uninhabited">uninhabited</mat-option>
+					</mat-select>
+					<fa-icon matSuffix icon="caret-down"></fa-icon>
+					<mat-hint>Hint</mat-hint>
+				</mat-form-field>
+			</div>
+		</mat-expansion-panel>
+	</div>
+	<div class="row">
+		<mat-expansion-panel>
+			<mat-expansion-panel-header class="main-header">
+				<mat-panel-title>
+					<fa-icon [icon]="oldIcon"></fa-icon>
+					Root panel title
+				</mat-panel-title>
+			</mat-expansion-panel-header>
+
+			Placeholder
+			<mat-accordion displayMode="flat"> <!-- Don't forget displayMode="flat" to avoid spacing when expanded -->
+				<mat-expansion-panel *ngFor="let _ of [].constructor(5)" class="sub-expansion">
+					<!-- use 'sub-expansion' class to-->
+					<mat-expansion-panel-header class="main-header">
+						<mat-panel-title>
+							<fa-icon [icon]="pregnantIcon"></fa-icon>
+							child panel title
+						</mat-panel-title>
+					</mat-expansion-panel-header>
+
+					Placeholder
+					<mat-accordion displayMode="flat">
+						<mat-expansion-panel *ngFor="let _ of [].constructor(3)" class="sub-sub-expansion">
+							<mat-expansion-panel-header class="main-header">
+								<mat-panel-title>
+									<fa-icon [icon]="babyIcon"></fa-icon>
+									grand child panel title
+								</mat-panel-title>
+							</mat-expansion-panel-header>
+
+							placeholder
+						</mat-expansion-panel>
+					</mat-accordion>
+				</mat-expansion-panel>
+			</mat-accordion>
+		</mat-expansion-panel>
+	</div>
+</section>
+
+<section>
+	<h3>Buttons:</h3>
+
+	<div class="row">
+		<button mat-button color="primary">Primary</button>
+		<button mat-button color="accent">Accent</button>
+		<button mat-button color="warn">Warn</button>
+		<button mat-button disabled>Disabled</button>
+		<a mat-button href="." target="_blank">Link</a>
+	</div>
+	<div class="row">
+		<button mat-flat-button>Basic</button>
+		<button mat-flat-button color="primary">Primary</button>
+		<button mat-flat-button color="accent">Accent</button>
+		<button mat-flat-button color="warn">Warn</button>
+		<button mat-flat-button disabled>Disabled</button>
+		<a mat-flat-button href="." target="_blank">Link</a>
+	</div>
+	<div class="row">
+		<!-- button with pre label should be written like the following -->
+		<button mat-flat-button>
+			<fa-icon icon="location-crosshairs"></fa-icon>
+			<span class="pre-label">pre-label</span>
+			<span class="label">button label</span>
+		</button>
+		<button mat-flat-button disabled>
+			<fa-icon icon="location-crosshairs"></fa-icon>
+			<span class="pre-label">pre-label</span>
+			<span class="label">button label</span>
+		</button>
+	</div>
+	<div class="row">
+		<button mat-button>
+			<fa-icon icon="location-crosshairs"></fa-icon>
+			<span class="pre-label">pre-label</span>
+			<span class="label">button label</span>
+		</button>
+		<button mat-button disabled>
+			<fa-icon icon="location-crosshairs"></fa-icon>
+			<span class="pre-label">pre-label</span>
+			<span class="label">button label</span>
+		</button>
+	</div>
+</section>

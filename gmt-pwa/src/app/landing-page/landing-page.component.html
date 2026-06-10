@@ -1,0 +1,70 @@
+<div [class.show]="show" class="root" >
+  <div class="wrapper" id="welcome">
+    <div class="container">
+      <img class="imgTitle" src="../../assets/images/GMT_logo.svg"/>
+      <div class="subTitle" (click)="scrollToInfos()">
+            What is GMT for?
+      </div>
+      <div *ngIf="loggedIn === false" class="notLoggedInWarning">
+        You must be online and logged in to access the page
+      </div>
+      <div *ngIf="loggedIn" class="cards">
+        <a class="card" routerLink="{{routes.immunization}}">
+          <img class="imgTitle" src="../../assets/icons/RI.svg"/>
+          <div class="cardTitle">
+            Routine
+          </div>
+          <div class="cardTitle">
+            Immunization
+          </div>
+        </a>
+        <div class="card disable" routerLink="{{routes.polio}}">
+          <div class="polioLogo"></div>
+          <div class="cardTitle">
+            Non Polio
+          </div>
+          <div class="cardTitle">
+            SIA
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="info" id="infos">
+    <div class="card">
+      <div class="top">
+        <img src="assets/icons/remove.svg" (click)="scrollToWelcome()">
+        <div class="title">
+          What is GMT for ?
+        </div>
+      </div>
+      <div class="content">
+
+      <p>
+        The Geospatial Microplanning Toolkit (GMT) facilitates the creation of digital microplans in a user friendly
+        way,
+        allowing both attributive and geospatial delineation of catchment areas.
+      </p>
+      <p>
+        At its core is geospatial settlement and health facility data. Health facility and settlement details can easily
+        be
+        modified. In cases where information is incomplete, data collected from the field - for instance using the GTS
+        or
+        ODK forms - can be drag-and-dropped into the application, which automatically updates the dataset.
+        Depending on the user profile, microplans can be edited, surveyed or visualized. For certain user groups, a
+        dashboard summarizes microplan creation progress as well as data completeness. Various types of exports are
+        available for the different users to aid decision making.
+      </p>
+      <p>
+        All interactions with the microplan and modifications to settlements and health facilities can be performed
+        offline.
+        The application runs in in a standard web browser and no additional software is required. It is intuitive to use
+        and
+        requires little training.
+      </p>
+      </div>
+    </div>
+
+
+  </div>
+</div>

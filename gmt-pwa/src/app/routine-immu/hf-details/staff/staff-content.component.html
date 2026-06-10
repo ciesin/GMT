@@ -1,0 +1,77 @@
+<div class="no-entries" *ngIf="hf && hf.properties.staff_names.length === 0">
+  No staff members
+</div>
+
+<mat-accordion *ngIf="hf?.properties" displayMode="flat">
+  <!--to keep expansion state as name changes, we don't want loop to be on the name but rather the index-->
+  <mat-expansion-panel
+    *ngFor="
+      let f of [].constructor(hf.properties.staff_names.length);
+      let i = index
+    "
+    [attr.data-index]="i"
+    class="sub-sub-expansion is-form"
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ hf.properties.staff_names[i] }},
+        {{ getStaffPosition(i) }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <form
+      [formGroup]="staffInfoFormGroup"
+      class="form-vertical hf-staff-content-form"
+    >
+      <!-- <ng-template matStepLabel>Details</ng-template> -->
+      <mat-form-field subscriptSizing="dynamic" class="full-width">
+        <mat-label>FULL NAME</mat-label>
+        <!--           formControlName="name" -->
+        <input
+          matInput
+          placeholder="Staff Full Name"
+          [disabled]="true"
+          [value]="hf.properties.staff_names[i]"
+          readonly
+        />
+      </mat-form-field>
+
+      <mat-form-field subscriptSizing="dynamic" class="half-width">
+        <mat-label>POSITION</mat-label>
+        <input
+          matInput
+          readonly
+          [disabled]="true"
+          [value]="getStaffPosition(i)"
+        />
+      </mat-form-field>
+      <mat-form-field subscriptSizing="dynamic" class="half-width">
+        <mat-label>TYPE</mat-label>
+        <mat-select [disabled]="true" [value]="hf.properties.staff_types[i]">
+          <mat-option
+            *ngFor="let type of staffTypeOptions"
+            [value]="type.value"
+          >
+            {{ type.label }}
+          </mat-option>
+        </mat-select>
+        <fa-icon matSuffix icon="caret-down"></fa-icon>
+      </mat-form-field>
+
+      <mat-action-row *ngIf="userCanEdit">
+        <button mat-flat-button color="accent" (click)="editStaffMember(i)">
+          <fa-icon icon="pen"></fa-icon>
+          <span> Edit</span>
+        </button>
+        <button mat-flat-button color="accent" (click)="deleteStaffMember(i)">
+          <fa-icon icon="trash-can"></fa-icon>
+          <span> Delete</span>
+        </button>
+      </mat-action-row>
+    </form>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<div class="add-new-staff-container" *ngIf="userCanEdit">
+  <button mat-flat-button (click)="addStaffMember()">Add</button>
+</div>

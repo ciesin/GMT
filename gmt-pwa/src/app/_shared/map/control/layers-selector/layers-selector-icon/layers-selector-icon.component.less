@@ -1,0 +1,12 @@
+@import "../../map-control.component.less";
+@import "src/shared";
+
+.legend-container-layers-selector {
+  &.open .arrow {
+    transform: rotate(0deg);
+  }
+
+  &:not(.open) .arrow {
+    transform: rotate(180deg);
+  }
+}

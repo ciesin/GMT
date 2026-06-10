@@ -1,0 +1,89 @@
+::ng-deep #body mat-dialog-content h1.mdc-dialog__title {
+  padding-left: 0;
+  margin-left: 0;
+  margin-top: -5px;
+  padding-top: 0;
+
+  &::before {
+    content: none; // This removes the content
+    color: unset; // Reset color
+    background-color: unset; // Reset background color
+    border: none; // Remove border
+    display: none; // Hide the pseudo-element
+    padding: 0; // Reset padding
+  }
+}
+
+
+
+.cancel {
+	position: absolute;
+	top: .2em;
+	right: .2em;
+	font-size: 1.6em;
+	aspect-ratio: 1 / 1;
+	width: 1em;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+pre {
+  white-space: break-spaces;
+  text-align: justify;
+}
+
+.boundary-modif-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+
+  border-bottom: 1px solid rgba(210, 228, 234, 1);
+
+  .boundary-label-group {
+    text-align: left;
+  }
+
+  .modif-label {
+    align-self: center;
+    /*background: rgba(24, 79, 103, 1);*/
+  }
+}
+
+.top-margin {
+  margin-top: 10px;
+}
+
+/*in progress*/
+.spinner {
+  margin-right: 5px;
+}
+
+.step-panel-title .fa-check {
+  color: green;
+}
+
+
+.sync-message {
+  .fa-check {
+    color: green;
+  }
+
+  .fa-xmark {
+    color: red;
+  }
+}
+
+//To avoid the expanded panel changing the icon colors
+::ng-deep #body mat-expansion-panel.mat-expansion-panel mat-expansion-panel-header.mat-expansion-panel-header.mat-expanded .mat-expansion-panel-header-title fa-icon.fa-check {
+  color: green;
+}
+
+::ng-deep #body mat-expansion-panel.mat-expansion-panel mat-expansion-panel-header.mat-expansion-panel-header.mat-expanded .mat-expansion-panel-header-title fa-icon.fa-xmark {
+  color: red;
+}
+
+::ng-deep mat-dialog-content mat-expansion-panel.mat-expansion-panel mat-expansion-panel-header.mat-expansion-panel-header .mat-expansion-panel-header-title {
+  overflow: initial;
+}

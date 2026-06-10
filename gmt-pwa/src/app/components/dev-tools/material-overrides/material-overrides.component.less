@@ -1,0 +1,40 @@
+/*
+Only css to display the page should be placed here.
+
+⚠ Material overrides should be placed in gmt-pwa/src/material-overrides.less
+
+*/
+
+
+:host {
+	display: block;
+	padding: 1em 2em;
+	background: #eee;
+	background: repeating-linear-gradient(-45deg,
+			#fdfdfd,
+			#fdfdfd 10px,
+			transparent 10px,
+			transparent 20px);
+
+
+	section {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2em;
+		margin-bottom: 4em;
+
+		h3 {
+			flex-basis: 100%;
+		}
+
+		&>.row {
+			flex-basis: 100%;
+
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1em;
+		}
+
+
+	}
+}

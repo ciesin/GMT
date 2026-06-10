@@ -1,0 +1,47 @@
+@import "src/less/settlement.less";
+
+:host {
+  background: var(--base-pale); // required for the sticky header
+  overflow: auto;
+}
+
+.properties > span:not(:last-child),
+.problematic > span:not(:last-child) {
+  &::after {
+    content: ", ";
+  }
+}
+
+.header .additional-info {
+  grid-template-columns: 1fr 1fr;
+  gap: 1em;
+
+  .problematic {
+    color: var(--settlements-special);
+  }
+
+  .unclaimed {
+    color: var(--catchment-unclaimed);
+  }
+
+  fa-icon {
+    margin: 0 0.5ch;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+::ng-deep #body {
+  h4.uninhabited {
+    //needs to be more specific than the h4 style in styles.less
+    //import shared style
+    .uninhabited-name;
+  }
+}
+

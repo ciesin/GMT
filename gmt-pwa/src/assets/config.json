@@ -1,0 +1,62 @@
+{
+  "production": false,
+  "disable_sync": false,
+  "google_analytics_tracking_code": "",
+  "api_url": "http://localhost:4243",
+  "geoserver_url": "http://localhost:4244/geoserver/gmt/wms",
+  "app_version": "latest-dev",
+  "environment": "dev",
+  "developer_mode": true,
+  "env_color": "#00FF00",
+  "doc": {
+      "root": "http://localhost:4243/help"
+    },
+  "keycloak": {
+    "url": "http://localhost:4248/auth",
+    "realm": "/realms/gmt",
+    "token_endpoint": "/realms/gmt/protocol/openid-connect/token",
+    "clientId": "dashboard",
+    "scope": "openid"
+  },
+  "generic": {
+    "operational_boundary_level": 3,
+    "boundary_level_labels": "National|State|LGA|Ward",
+    "default_language": "en",
+    "suggested_location_accuracy_m": 10,
+    "dev_tools_pin_code": "1848"
+  },
+  "catchment": {
+    "min_fixed_post_buffer_m": 2000,
+    "max_fixed_post_buffer_m": 5000,
+    "target_population_perc": 0.123
+  },
+  "coverage_weight": {
+    "strategy": {
+      "fixed_post": 0.5,
+      "outreach": 0.5
+    },
+    "frequency": {
+      "unknown": 30,
+      "oncePerMonth": 1,
+      "twicePerMonth": 2,
+      "threePerMonth": 3,
+      "oncePerWeek": 4,
+      "twicePerWeek": 8,
+      "threePerWeek": 12,
+      "fourPerWeek": 16,
+      "fivePerWeek": 20,
+      "sixPerWeek": 24,
+      "daily": 30,
+      "other": 15
+    },
+    "boundary": {
+      "in": 0.5,
+      "out": 0.5
+    },
+    "distance": "0,100;500,90;1000,50;1950,10;2000,5",
+    "min_square_perc": 0.20,
+
+    "min_sett_percentage": 0.15,
+    "min_sett_pop": 10000
+  }
+}

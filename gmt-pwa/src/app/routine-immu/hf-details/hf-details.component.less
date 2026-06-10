@@ -1,0 +1,37 @@
+:host {
+  background: var(--base-pale); // required for the sticky header
+  overflow: auto;
+}
+
+// .back-to-listing {
+//   padding-left: 1.5rem;
+//   display: inline-block;
+
+//   .back-to-listing-icon {
+//     color: var(--accent-base);
+//     vertical-align: middle;
+//   }
+// }
+
+gmt-microplan-filter {
+  padding: 1rem;
+
+  ::ng-deep mat-chip-set {
+    padding: 0;
+  }
+}
+
+p.description {
+  margin: 0;
+  padding: 0.9em;
+  color: var(--base-dark);
+  background: var(--base-pure-white);
+  text-align: center;
+}
+
+.no-entries {
+  margin: 0;
+  padding: 1em;
+  color: var(--base-dark);
+  background: var(--base-pure-white);
+}

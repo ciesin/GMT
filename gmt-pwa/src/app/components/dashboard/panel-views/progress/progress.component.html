@@ -1,0 +1,66 @@
+<ng-container>
+  <div
+    class="side-nav-back"
+    *ngIf="boundaryNavigationService.currentLevel != 0"
+  >
+    <div class="back-to-listing">
+      <button mat-button color="accent" (click)="redirectOneLevelBack()">
+        <fa-icon
+          class="v-align-middle back-to-listing-icon"
+          icon="circle-arrow-left"
+        ></fa-icon>
+        {{boundaryNavigationService.currentLevel > 1?'ALL LGAs': 'ALL STATES'}}
+      </button>
+    </div>
+  </div>
+
+  <header
+    class="admin-level side-heading"
+    *ngIf="boundaryNavigationService.currentLevel != 0; else rootLevelHeader"
+  >
+    <h4>{{boundaryNavigationService.hierarchy.at(-1)}}</h4>
+    <div class="bounds-trail small-text">
+      <fa-icon icon="draw-polygon"></fa-icon>
+      <span *ngIf="boundaryNavigationService.currentLevel==1">
+        State, Nigeria
+      </span>
+      <span *ngIf="boundaryNavigationService.currentLevel==2">
+        LGA in {{boundaryNavigationService.hierarchy[0]}}, Nigeria
+      </span>
+      <span *ngIf="boundaryNavigationService.currentLevel==3">
+        LGA in {{boundaryNavigationService.hierarchy[0]}}, Nigeria
+      </span>
+    </div>
+  </header>
+
+  <gmt-microplan-filter
+    [searchPlaceholder]="'Search within ' + (boundaryNavigationService.hierarchy.at(-1) || 'Nigeria')"
+    [autocomplete]="autocompletePropositions"
+    [filters]="searchFilters"
+    [searchText]="safeSearchText()"
+    [chosenFilters]="safeChosenFilters()"
+    (searchTextChanged)="handleSearchText($event)"
+    (chosenFiltersChanged)="handleChosenFilters($event)"
+    (autocompleteSelection)="handleAutocompleteSelection($event)"
+  ></gmt-microplan-filter>
+  <gmt-microplan-list
+    *ngIf="sortFilterService && !!sortFilterService.idDisplayList.length; else noBoundaries"
+    icon="draw-polygon"
+    [idPrefix]="boundaryNavigationService.hierarchy.join(':') + ','"
+    [idDisplayList]="sortFilterService.idDisplayList"
+    [itemComponent]="itemComponent"
+    [sortHeaders]="sortHeaders"
+    (sortOrderChanged)="handleSort($event)"
+    [virtualScroll]="false"
+  >
+  </gmt-microplan-list>
+  <ng-template #noBoundaries
+    ><div class="no-list-entries">No boundaries to display</div></ng-template
+  >
+</ng-container>
+
+<ng-template #rootLevelHeader>
+  <header class="side-heading">
+    <h4><fa-icon icon="magnifying-glass"></fa-icon>Boundaries in Nigeria</h4>
+  </header>
+</ng-template>

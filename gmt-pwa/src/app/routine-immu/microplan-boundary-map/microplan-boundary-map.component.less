@@ -1,0 +1,50 @@
+@import url("../../_shared/map/panel/base-map.component.less");
+@import url("../../_shared/map/control/map-control.component.less");
+@import url("../../../shared.less");
+
+#ol-control-strategy {
+  top: 0.5em;
+  right: 8.7em;
+}
+
+.microplan-selection {
+  display: inline-block;
+  width: 20rem;
+}
+
+#recomputeAll {
+  //position: absolute;
+  //background-color: #C5C5C5;
+  //left: 15em;
+  //top: 1.4vh;
+}
+
+.gpsLocateButton {
+  position: absolute;
+  bottom: 9rem;
+  left: 1rem;
+  z-index: 1;
+
+  width: 4rem;
+  height: 4rem;
+  border: @color-blue-table 0.1rem solid;
+  box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.32);
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+
+  img {
+    height: 2.4rem;
+  }
+}
+
+//DEBUG show mouse control
+/*
+#mouse-position {
+  position: relative;
+  //top: 200px;
+  left: 300px;
+  font-size: xx-large;
+}*/

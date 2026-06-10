@@ -1,0 +1,45 @@
+<div
+  id="map-control-selector"
+  class="ol-map-button">
+    <p-button
+      id="map-control-selector-label"
+      label="All"
+      styleClass="p-button-plain"
+      *ngIf="selectAll && allowMultiSelect"
+      (onClick)="selectAllFeatures()"
+      #all
+    ></p-button>
+    <div class="button-mouse" *ngIf="selectClick"  id="map-control-selector-click" #click
+         (click)="switchTools('click')" [ngClass]="{'activated': getToolState('click') }">
+<!--      <img src="assets/icons/map/icon-mouse.svg" class="p-button-plain">-->
+      <fa-icon icon="arrow-pointer" class="p-button-plain"></fa-icon>
+    </div>
+    <!--
+    <p-button
+      id="map-control-selector-click"
+      icon="pi pi-pencil"
+      *ngIf="selectClick"
+      [styleClass]="getToolState('click') ? 'p-button-secondary' : 'p-button-plain'"
+      (onClick)="switchTools('click')"
+      >
+    </p-button>
+    -->
+
+    <p-button
+      id="map-control-selector-rectangle"
+      icon="pi pi-tablet"
+      *ngIf="selectRectangle && allowMultiSelect"
+      [styleClass]="getToolState('rectangle') ? 'p-button-secondary' : 'p-button-plain'"
+      (onClick)="switchTools('rectangle')"
+      #rectangle
+    ></p-button>
+
+     <p-button
+       id="map-control-selector-polygon"
+       icon="pi pi-cloud"
+       *ngIf="selectPolygon && allowMultiSelect"
+       [styleClass]="getToolState('polygon') ? 'p-button-secondary' : 'p-button-plain'"
+       (onClick)="switchTools('polygon')"
+       #polygon
+     ></p-button>
+</div>

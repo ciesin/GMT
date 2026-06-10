@@ -1,0 +1,19 @@
+<div class="host" [id]="hostId" (click)="$event.stopPropagation();toggle()">
+  <ng-container [ngSwitch]="selectedKey">
+    <div class="selectedItem" *ngSwitchDefault [innerHTML]="chooseLabel"></div>
+    <div class="selectedItem" *ngSwitchCase="false" [innerHTML]="options.false.selectedHtml || options.false.optionHtml"></div>
+    <div class="selectedItem" *ngSwitchCase="true" [innerHTML]="options.true.selectedHtml || options.true.optionHtml"></div>
+  </ng-container>
+  <img *ngIf="popup===null" src="assets/icons/arrow-down.svg"/>
+  <img *ngIf="popup!==null" src="assets/icons/arrow-up.svg"/>
+</div>
+
+
+<div [id]="popupId" class="dropdown">
+  <div class="item" (click)="select(false)" [innerHTML]="options.false.optionHtml">
+  </div>
+  <div class="item" (click)="select(true)" [innerHTML]="options.true.optionHtml">
+  </div>
+</div>
+
+

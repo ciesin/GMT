@@ -1,0 +1,32 @@
+<mat-expansion-panel
+  closeChildExpansionOnClose
+  class="sub-expansion"
+  [expanded]="activeTab === geometryDataTab"
+  (opened)="mainPanelOpenState = true"
+  (closed)="mainPanelOpenState = false">
+  <mat-expansion-panel-header class="main-header" (click)="panelStateChange()">
+    <mat-panel-title>
+      <fa-icon class="v-align-middle accordion-title-icon" icon="vector-square"></fa-icon>
+      Geometry data Completion ({{listLength}})
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <ng-template #noIssues>
+    <div>No Geometry issues</div>
+  </ng-template>
+
+  <ng-container *ngIf="!!stSortFilterService?.idDisplayList?.length; else noIssues">
+    <div class="list-container" [style.height]="shouldUseVirtualScrollingSt(40) ? '40vh': 'auto'">
+      <gmt-microplan-list [itemComponent]="settlementEditComponent" [idDisplayList]="stSortFilterService.idDisplayList" [virtualScroll]="shouldUseVirtualScrollingSt(40)"
+        [hasEditPermissions]="userCanEditSt" [additionalData]="stIssues" noHeader></gmt-microplan-list>
+    </div>
+  </ng-container>
+  <!--    <ng-container *ngIf="hfSortFilterService && hfSortFilterService.idDisplayList.length > 0">-->
+  <!--      <div class="list-container">-->
+  <!--        <gmt-microplan-list [itemComponent]="hfEditComponent"-->
+  <!--                            [idDisplayList]="hfSortFilterService.idDisplayList"-->
+  <!--                            [hasEditPermissions]="userCanEditHf"-->
+  <!--                            [additionalData]="hfIssues"-->
+  <!--        ></gmt-microplan-list>-->
+  <!--      </div>-->
+  <!--    </ng-container>-->
+</mat-expansion-panel>

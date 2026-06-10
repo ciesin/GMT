@@ -1,0 +1,131 @@
+@import "src/shared";
+
+gmt-header {
+  position: fixed;
+  top: 0;
+
+  z-index: @zi-root-header;
+
+  opacity: .25;
+  right: 5rem;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+main {
+  height: 100vh;
+  width: 100vw;
+}
+
+p-confirmDialog {
+  z-index: @zi-root-confirmDialog;
+}
+p-toast {
+  z-index: @zi-root-toast;
+}
+
+footer {
+  background-color: @color-second-light;
+  padding: 0.2vh 1vh;
+  width: 100vw;
+  font-size: 1.2vh;
+  z-index: @zi-root-footer;
+  flex: 1;
+  display: flex;
+  align-items: center;
+
+  position: fixed;
+  bottom: 0;
+
+  opacity: 0;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.loading {
+  cursor: wait;
+}
+
+:host ::ng-deep .p-toast.smallClass {
+  .p-toast-message {
+    background-color: white;
+  }
+
+  .p-toast-message-content {
+    padding: 0.2rem;
+  }
+
+  .p-toast-detail {
+    margin: 0;
+  }
+
+  .p-toast-summary {
+    color: #107c10;
+  }
+}
+
+:host ::ng-deep .p-toast.errorClass {
+  bottom: 0;
+  left: 1.0rem;
+  right: 1.0rem;
+  transform: unset;
+  width: unset;
+  opacity: 1;
+
+  .p-toast-message.p-toast-message-error {
+    background: #121a30;
+    border-width: 0 0 0 0.60rem;
+    color: #e00069;
+
+    .p-toast-icon-close {
+      color: #858a99;
+      font-weight: bold;
+      font-size:1.2em;
+    }
+
+    .error-detail-link {
+      font-size: 0.7em;
+      font-weight: normal;
+      cursor: pointer;
+      color: #858a99;
+    }
+
+    .error-detail-title {
+      color: white;
+      font-weight: bold;
+      font-size: 1.5em;
+      margin: 0.2rem 0 0.2rem 0;
+
+      .pi-exclamation-triangle {
+        color: #e00069;
+        padding-right: 0.50rem;
+        font-weight: bold;
+        font-size: 1.3em;
+      }
+    }
+
+    .error-detail-panel {
+      background-color: black;
+      padding: 0.30rem 0.50rem 0.30rem 2.0rem;
+      color: white;
+    }
+  }
+}
+
+mat-progress-bar {
+  position: fixed;
+  // top: 4em; // just bellow header
+  // font-size: 1.6em;
+  top: 0;
+  left: 0;
+  z-index: calc(99999 + 1); // infront of loading
+  width: 100vw;
+  background: var(--base-pure-white);
+
+  &[hidden] {
+    display: none !important; // Force hidden state
+  }
+}

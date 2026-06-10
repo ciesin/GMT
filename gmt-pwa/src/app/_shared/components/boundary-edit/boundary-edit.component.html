@@ -1,0 +1,88 @@
+<!--Wrap in matUI button for https://github.com/novelt/GMT/issues/2376-->
+<!-- <fa-icon
+  mat-dialog-close
+  icon="close"
+  class="cancel"
+  (click)="handleCancelDialog()"
+></fa-icon> -->
+<button
+  mat-dialog-close
+  mat-button
+  (click)="handleCancelDialog()"
+  class="cancel"
+>
+  <fa-icon icon="close"></fa-icon>
+</button>
+
+<div mat-dialog-content>
+  <mat-stepper class="boundary-edit" #stepper [linear]="true">
+    <mat-step
+      [editable]="true"
+      label="Draw Shape"
+      [completed]="isDrawingCompleted"
+    >
+      <gmt-wizard-polygon-edit
+        [isVisible]="true"
+        #polygonEdit
+        stepDescription="Draw a shape that will modify the operational boundary.  "
+        (nextClicked)="initializeCommentStep($event)"
+      >
+      </gmt-wizard-polygon-edit>
+    </mat-step>
+    <mat-step
+      [editable]="true"
+      label="Describe"
+      [stepControl]="descriptionFormGroup"
+    >
+      <form [formGroup]="descriptionFormGroup">
+        <!--            <fa-icon icon="pen"></fa-icon>-->
+        <mat-radio-group
+          class="full-width"
+          [formControlName]="FORM_KEY_POLYGON_MERGE_MODE_UNION"
+        >
+          <!--              [(ngModel)]="unionBoundaryEdit"-->
+          <mat-radio-button [value]="true">
+            <mat-icon
+              class="v-align-middle"
+              svgIcon="boundary-edit-union"
+            ></mat-icon>
+            Union
+          </mat-radio-button>
+          <mat-radio-button [value]="false">
+            <mat-icon
+              class="v-align-middle"
+              svgIcon="boundary-edit-difference"
+            ></mat-icon>
+            Difference
+          </mat-radio-button>
+        </mat-radio-group>
+        <mat-form-field class="full-width">
+          <mat-label>USER COMMENT</mat-label>
+          <textarea
+            [formControlName]="FORM_KEY_COMMENT"
+            matInput
+            rows="5"
+            placeholder="User context on what to do with this specific boundary issue..."
+          ></textarea>
+        </mat-form-field>
+
+        <div class="wizard-buttons">
+          <!-- <button mat-button matStepperPrevious (click)="initializeDrawingStep()">
+            <fa-icon icon="arrow-left"></fa-icon>
+            <span> Back</span>
+          </button> -->
+          <div>
+            {{
+              "" // empty div to get space-between to move save button to the
+            right
+            }}
+          </div>
+          <button mat-flat-button [disabled]="loading" (click)="saveEdits()">
+            <fa-icon icon="circle-check"></fa-icon>
+            <span>Finish</span>
+          </button>
+        </div>
+      </form>
+    </mat-step>
+  </mat-stepper>
+</div>

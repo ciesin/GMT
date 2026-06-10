@@ -1,0 +1,24 @@
+<!-- <gmt-header *ngIf="showHeader()" [style]="{'background-color': config.env_color}">
+</gmt-header> -->
+
+<mat-progress-bar
+  mode="determinate"
+  color="accent"
+  [value]="progress.progressPercentage"
+  [hidden]="!progress.showProgressBar"
+></mat-progress-bar>
+<main id="main" [ngClass]="{ loading: this.isLoadingService.isLoading() }">
+  <!-- Content from the DB: <div>{{(db_data$ | async)?.row_0.description}}</div> -->
+  <router-outlet></router-outlet>
+</main>
+
+<footer>v: {{ config.environment }} - {{ config.app_version }}</footer>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise"
+  [fullScreen]="true"
+>
+  <p style="color: white">Loading...</p>
+</ngx-spinner>

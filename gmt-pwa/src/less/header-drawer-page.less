@@ -1,0 +1,133 @@
+@import "src/shared";
+
+:host ::ng-deep {
+  mat-drawer {
+    border: none;
+    background: linear-gradient(var(--base-pale), var(--base-light) 40%);
+    width: 400px;
+    min-width: 370px;
+    max-width: 40vw;
+  }
+
+  mat-drawer-container {
+    height: 100%;
+
+    position: relative;
+
+    mat-drawer-content > .header {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      // font-size: 1.25rem;
+      z-index: 20;
+      // z-index: @zi-root-header;
+      display: flex;
+
+      .toggle-panel,
+      app-menu > button {
+        cursor: pointer;
+        padding: 0.8em;
+        border: none;
+        font-size: 1rem;
+        color: var(--accent-base);
+        background: var(--base-black);
+
+        &:hover {
+          color: var(--accent-medium);
+          background-color: var(--base-dark);
+        }
+
+        fa-icon,
+        mat-icon {
+          display: inline-block;
+          width: 22px;
+        }
+      }
+
+      gmt-header {
+        flex: 1;
+      }
+    }
+  }
+
+  mat-tab-group {
+    display: flex;
+    flex-direction: column;
+
+    // header
+    mat-tab-header {
+      background: var(--base-base);
+      padding: 1.55em 0.5em 0;
+
+      font-size: 1.6rem;
+
+      .mat-mdc-tab-list {
+        flex-grow: 0;
+      }
+
+      .mat-mdc-tab {
+        border-radius: 0.25em 0.25em 0 0;
+        padding: 0 1em;
+        min-width: unset;
+
+        .mdc-tab__text-label {
+          color: var(--base-pale);
+          font-size: 1.15em;
+          display: inline-flex;
+          align-items: center;
+          gap: 0 0.4em;
+
+          user-select: none; // prevent text selection of label
+        }
+
+        &.mdc-tab--active {
+          background-color: var(--base-pale);
+
+          .mdc-tab__text-label {
+            color: var(--base-dark);
+
+            fa-icon {
+              font-size: 1.5em;
+
+              &.hf,
+              &.progress {
+                color: var(--catchment-fixed);
+              }
+
+              &.mobile {
+                color: var(--catchment-mobile);
+              }
+
+              &.settlements {
+                color: var(--settlements-base);
+
+                svg path {
+                  stroke: rgba(var(--accent-medium-rgb), 0.75);
+                  stroke-width: 20;
+                }
+              }
+
+              &.problematic,
+              &.attention {
+                color: var(--settlements-special);
+              }
+
+              &.technical {
+                color: var(--base-dark);
+              }
+            }
+          }
+        }
+
+        .mdc-tab-indicator {
+          display: none;
+        }
+      }
+    }
+
+    // content
+    .mat-mdc-tab-body-wrapper {
+      flex: 1 1 auto;
+    }
+  }
+}

@@ -1,0 +1,160 @@
+Guide to the GMT
+++++++++++++++++
+
+Neighboring Wards
+=================
+
+Catchments in neighboring Wards
+--------------------------------
+
+It is possible for a health facility to claim settlements in neighboring Wards.
+Visually, this is no different from usual catchments, except that the catchment now
+spans a Ward boundary. When you add a settlement from another Ward to a health facility,
+you will also see in the suggested settlement list that it is within another Ward.
+
+.. image:: /content/_images/outside_ward.png
+          :align: center
+|
+When doing the microplan now for the neighboring Ward, the settlement will be visually
+linked with the health facility it was claimed by with a red dashed line:
+
+.. image:: /content/_images/neighboring_ward.png
+          :align: center
+
+----------------------------
+
+Assigning a health facility or a settlement to another Ward
+------------------------------------------------------------
+
+It is possible to attribute a health facility or settlement to another Ward.
+You can do this in the settlement or health facility detail page.
+
+.. image:: /content/_images/ward_attribution.png
+          :align: center
+|
+However, doing this will not have any further impact in the application. The Ward
+boundaries will remain as such. They will have to be changed elsewhere.
+
+----------------------------------------------
+
+Settlement Parts
+================
+
+Two names that reside within the same settlement polygon have this icon next
+to them in the settlement list:
+
+.. image:: /content/_images/multi_prim_name_list_guide.png
+          :align: center
+
+---------------------------------------------
+
+Balancing Population
+====================
+
+In a case where you have multiple primary names for one polygon, you will need to
+assign each name a certain amount of the population residing within the polygon. When
+you add the name to the polygon, you will be asked to balance the population either by
+providing absolute numbers or else providing percentages.
+
+You can always change this later by clicking those icons:
+
+.. image:: /content/_images/multi_prim_name_list_balance.png
+          :align: center
+
+--------------------------------------------
+
+Multiple Claimed Settlements
+============================
+
+Whenever a settlement is claimed by several health facilities, it will appear
+as "Multiple Claimed". It will frequently be the case in urban areas, where there
+are many health facilities within 2km of an area. In those cases, it is unclear how
+the population will be choosing which health facility they would go to. In such a case,
+a health facility will have to indicate what percentage of a settlement it is claiming (since
+if, for instance, two health facilities claim 100% of one settlement, it would be claimed
+for 200% - that would be incorrect). Per default, it is always assumed that a health facility
+claims a settlement fully (i.e. 100%).
+
+The percentages can be adjusted in the health facility catchment tab:
+
+.. image:: /content/_images/catchment_percentage.png
+          :align: center
+|
+The percentage can also be adjusted from the settlements tab:
+
+.. image:: /content/_images/percentage_adjust.png
+      :align: center
+
+If the population percentage of a multiple claimed settlement corresponds to 100%, this
+settlement will still have an orange warning icon to indicate it's multiple claimed.
+If the population percentage of a multiple claimed settlement **does not** correspond to 100%, this
+settlement will have an error icon. If the percentage is below 100%, it will appear as multiple claimed
+as well as unclaimed. If the percentage is above 100%, the "Multiple claimed" icon will be red.
+
+If claimed above 100%:
+
+.. image:: /content/_images/multiple_claimed_above.png
+      :align: center
+|
+If claimed below 100%:
+
+.. image:: /content/_images/multiple_claimed_below.png
+      :align: center
+|
+If claimed exactly at 100%:
+
+.. image:: /content/_images/multi_claim_exact.png
+      :align: center
+
+-------------------------------------------------
+
+Error Icons
+===========
+
+The following error icons exist:
+
+**Machine Name**
+This settlement has an automatically generated name. You should give it a real name.
+
+.. image:: /content/_images/name_pb.svg
+      :width: 100
+      :align: center
+|
+**No location**
+This settlement / health facility has no location.
+
+.. image:: /content/_images/no_geometry.svg
+      :width: 100
+      :align: center
+|
+**Unclaimed**
+This settlement has not been claimed by a health facility or it has not been claimed fully (i.e. 100%).
+
+.. image:: /content/_images/unclaimed.svg
+      :width: 100
+      :align: center
+|
+
+**Multiple claimed**
+Orange as a warning if a settlement is claimed by several health facilities and it is not overclaimed.
+The icon is red if the settlement is claimed above 100%.
+
+.. image:: /content/_images/multiple_claimed.svg
+      :width: 100
+      :align: center
+|
+
+**No settlement**
+This health facility has not been assigned any settlement.
+
+.. image:: /content/_images/no_settlement_part.svg
+      :width: 100
+      :align: center
+|
+**Population not 100%**
+This icon indicates that a settlement has not been assigned the full extent of the polygon. You will have to
+assign it the full 100% or balance the population accordingly, if there are several primary names in that polygon.
+
+.. image:: /content/_images/pop_not_100.svg
+      :width: 100
+      :align: center

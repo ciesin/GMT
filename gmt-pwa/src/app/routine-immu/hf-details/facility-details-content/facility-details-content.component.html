@@ -1,0 +1,208 @@
+<form
+  *ngIf="hf?.properties"
+  [formGroup]="additionalInfoFormGroup"
+  class="hf-details-content-form"
+>
+  <mat-form-field subscriptSizing="dynamic" class="full-width">
+    <mat-label>NAME</mat-label>
+    <input
+      matInput
+      type="text"
+      placeholder="Name"
+      name="health_facility"
+      [formControlName]="FORM_KEY_NAME"
+      (ngModelChange)="nameChange($event)"
+    />
+  </mat-form-field>
+  <gmt-wizard-list-control
+    class="full-width"
+    [listItems]="additionalInfoFormGroup.get(FORM_KEY_SYNONYM)!.value"
+    (listItemsOutput)="synonymChange($event)"
+    label="ALSO KNOWN AS (AKA)"
+    [canEdit]="controlsEnabled"
+  ></gmt-wizard-list-control>
+  <mat-form-field subscriptSizing="dynamic" class="full-width">
+    <mat-label>COMMENTS</mat-label>
+    <input
+      matInput
+      type="text"
+      placeholder="Comments"
+      name="health_facility_comments"
+      [formControlName]="FORM_KEY_COMMENTS"
+      (ngModelChange)="commentsChange($event)"
+    />
+  </mat-form-field>
+  <mat-form-field
+    subscriptSizing="dynamic"
+    *ngIf="!isOutreach"
+    class="half-width"
+  >
+    <mat-label>MP STATUS</mat-label>
+    <mat-select
+      [formControlName]="FORM_KEY_MP_STATUS"
+      (ngModelChange)="catchmentStatusChange($event)"
+    >
+      <!--                      [value]="hf.properties.mp_status"-->
+      <mat-option
+        *ngFor="let mpStatusOption of mpStatusOptions"
+        [value]="mpStatusOption.value"
+        [disabled]="
+          [mpStatusNotStarted, mpStatusUnknown].includes(mpStatusOption.value)
+        "
+      >
+        {{ mpStatusOption.label }}
+      </mat-option>
+    </mat-select>
+    <fa-icon matSuffix icon="caret-down"></fa-icon>
+  </mat-form-field>
+  <mat-form-field subscriptSizing="dynamic" class="half-width">
+    <mat-label>OWNERSHIP</mat-label>
+    <mat-select
+      placeholder="--"
+      [formControlName]="FORM_KEY_OWNERSHIP"
+      (ngModelChange)="ownershipChange($event)"
+    >
+      <!--                      [value]="hf.properties.private ? OWNERSHIP_PRIVATE: OWNERSHIP_PUBLIC"-->
+      <mat-option
+        *ngFor="let ownership of ownershipOptions"
+        [value]="ownership.value"
+      >
+        {{ ownership.label }}
+      </mat-option>
+    </mat-select>
+    <fa-icon matSuffix icon="caret-down"></fa-icon>
+  </mat-form-field>
+  <mat-form-field subscriptSizing="dynamic" class="half-width">
+    <mat-label>TYPE</mat-label>
+    <mat-select
+      placeholder="--"
+      [formControlName]="FORM_KEY_LEVEL_OF_CARE"
+      (ngModelChange)="typeChange($event)"
+    >
+      <mat-option *ngFor="let type of hfTypesOptions" [value]="type.value">
+        {{ type.label }}
+      </mat-option>
+    </mat-select>
+    <fa-icon matSuffix icon="caret-down"></fa-icon>
+  </mat-form-field>
+  <!-- <mat-form-field subscriptSizing="dynamic" [ngClass]="{'half-width': additionalInfoFormGroup.get(FORM_KEY_LEVEL_OF_CARE).value === 'PRIMARY', 'hidden': additionalInfoFormGroup.get(FORM_KEY_LEVEL_OF_CARE).value !== 'PRIMARY'}"> -->
+  <mat-form-field
+    subscriptSizing="dynamic"
+    [ngClass]="
+      additionalInfoFormGroup.get(FORM_KEY_LEVEL_OF_CARE)!.value === 'Primary'
+        ? 'half-width'
+        : 'hidden'
+    "
+  >
+    <mat-label>PRIMARY TYPE</mat-label>
+    <mat-select
+      placeholder="--"
+      [formControlName]="FORM_KEY_PRIMARY_TYPE"
+      (ngModelChange)="primaryTypeChange($event)"
+    >
+      <mat-option
+        *ngFor="let primaryType of hfPrimaryTypeOptions"
+        [value]="primaryType.value"
+      >
+        {{ primaryType.label }}
+      </mat-option>
+    </mat-select>
+    <fa-icon matSuffix icon="caret-down"></fa-icon>
+  </mat-form-field>
+  <!--the mat-form-field div causes a nasty bug
+  https://github.com/novelt/GMT/issues/2583-->
+
+  <!--As we inline edit services, not using reactive forms, which requires standalone true-->
+  <div class="fake-mat-form-field full-width" subscriptSizing="dynamic">
+    <mat-label>SERVICES*</mat-label>
+    <mat-select
+      [disabled]="!controlsEnabled"
+      [placeholder]="'Select Services for this Facility'"
+      [ngModelOptions]="{ standalone: true }"
+      [ngModel]="hf.properties.services"
+      (ngModelChange)="serviceChange($event)"
+      multiple
+    >
+      <mat-option
+        *ngFor="let serviceOpt of servicesOptions"
+        [value]="serviceOpt.value"
+      >
+        {{ serviceOpt.label }}
+      </mat-option>
+    </mat-select>
+  </div>
+
+  <mat-chip-set class="full-width services">
+    <mat-chip-row
+      *ngFor="let service of hf.properties.services"
+      [disabled]="!controlsEnabled"
+    >
+      {{ service }}
+      <button matChipRemove (click)="unselectService(service)">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip-row>
+  </mat-chip-set>
+  <!--Check a day to see if its enabled or not, only show if RI is selected-->
+  <div class="hf-details-content-ri" *ngIf="!daysDisabled">
+    <span>Days of Routine Immunization</span>
+
+    <!-- Hidden as per https://github.com/novelt/GMT/issues/2272#issuecomment-1526816627 -->
+    <!--    <mat-form-field subscriptSizing="dynamic" class="half-width">-->
+    <!--      <mat-label>FREQUENCY</mat-label>-->
+    <!--      <mat-select [formControlName]="FORM_KEY_FREQUENCY" (ngModelChange)="frequencyChange($event)">-->
+    <!--        <mat-option *ngFor="let opt of frequencyOptions" [value]="opt.value">{{opt.label}}</mat-option>-->
+    <!--      </mat-select>-->
+    <!--      <fa-icon matSuffix icon="caret-down"></fa-icon>-->
+    <!--    </mat-form-field>-->
+    <div class="days-container">
+      <days
+        [selectedDays]="selectedDays"
+        (selectedDaysChange)="dayOptionChange($event)"
+        [disabled]="daysDisabled"
+      ></days>
+
+      <!--User has auto calc now -->
+      <!--      <div class="button-container">-->
+      <!--        <button mat-button color="accent" (click)="handleRecalc()">-->
+      <!--          <span>Apply</span>-->
+      <!--        </button>-->
+      <!--      </div>-->
+    </div>
+  </div>
+  <div *ngIf="controlsEnabled" class="half-width vcenter">
+    <mat-slide-toggle
+      [checked]="outsideBoundary"
+      (change)="outsideBoundarySwitchChange($event.checked)"
+    >
+      Different Ward
+    </mat-slide-toggle>
+  </div>
+  <mat-form-field subscriptSizing="dynamic" class="half-width">
+    <mat-label>WARD</mat-label>
+    <mat-select
+      [formControlName]="FORM_KEY_BOUNDARY"
+      (ngModelChange)="boundaryChange($event)"
+    >
+      <mat-option
+        *ngFor="let surroundingBoundary of surroundingBoundaryOptions"
+        [value]="surroundingBoundary.boundaryId"
+      >
+        {{ surroundingBoundary.label }}
+      </mat-option>
+    </mat-select>
+    <fa-icon matSuffix icon="caret-down"></fa-icon>
+  </mat-form-field>
+</form>
+
+<mat-action-row *ngIf="controlsEnabled">
+  <button mat-button (click)="handleDelete()">
+    <fa-icon icon="trash-can"></fa-icon>
+    <span class="label">Delete</span>
+  </button>
+  <button mat-flat-button (click)="enableLocationWizard()">
+    <fa-icon icon="location-crosshairs"></fa-icon>
+    <span class="pre-label">edit</span>
+    <span class="label">Location</span>
+  </button>
+</mat-action-row>

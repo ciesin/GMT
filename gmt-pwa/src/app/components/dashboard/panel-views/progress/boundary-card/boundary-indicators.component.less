@@ -1,0 +1,154 @@
+h5 {
+  font-size: 0.9rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--base-light);
+  display: block;
+}
+
+.title-container {
+  display: flex;
+  flex-direction: column;
+
+  .fine-print {
+    line-height: 1;
+  }
+}
+
+section {
+  margin-bottom: 1.5rem;
+}
+
+.detail-container {
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+
+  h6 {
+    font-weight: normal !important;
+  }
+
+  .value {
+    color: var(--base-black);
+    justify-content: left;
+  }
+
+  .barchart-container {
+    // this should match translate(x,y) value on g.bar-chart.chart
+    margin: -10px -20px;
+  }
+  .piechart-container {
+    // this should be less than 1/2 translate(x,y) value on g.pie-chart.chart
+    margin: -20px;
+    display: flex;
+
+    .legend-container {
+      margin-top: 20px;
+      fa-icon {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}
+
+.bottom .detail-container {
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+}
+
+.todo {
+  background-color: yellow;
+}
+
+.two-col {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  color: var(--base-dark);
+  gap: 1rem;
+
+  > div {
+    width: 50%;
+  }
+}
+
+.indicators-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+// .bottom {
+//   line-height: normal;
+//   color: var(--base-dark);
+//   width: 100%;
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-between;
+// }
+
+.empty {
+  margin: 10px 20px;
+  height: 10px;
+  background-color: var(--base-pale);
+}
+
+.light {
+  color: var(--base-light);
+}
+
+.attention {
+  width: 95%;
+  & > div {
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .box {
+    height: 1rem;
+    width: 1rem;
+    min-width: 1rem;
+    margin: 0 0.5rem;
+  }
+
+  .special-attention {
+    background-color: #c44c1c;
+  }
+
+  .missing-base-data {
+    background-color: #68a1e1;
+  }
+
+  .boundary-corrections {
+    background-color: #edc25f;
+  }
+
+  .population-discrepancies {
+    background-color: #8785e2;
+  }
+}
+
+.legend-container {
+  flex-direction: column;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+
+  & > div {
+    display: flex;
+
+    .value {
+      margin-right: 0.5rem;
+      width: 40%;
+      text-align: right;
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "realm": "gmt",
+  "auth-server-url": "$KEYCLOAK_EXTERNAL_BASE_URL",
+  "ssl-required": "external",
+  "resource": "queues",
+  "public-client": true
+}

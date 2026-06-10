@@ -1,0 +1,293 @@
+<div class="indicators-wrapper" *ngIf="boundaryItem">
+  <div class="two-col">
+    <div class="left-col">
+      <section>
+        <div class="title-container">
+          <!-- fa-icon icon="house-medical"></fa-icon -->
+          <h5>Health Facilities</h5>
+          <span class="fine-print"
+            >{{ (boundaryItem.properties.num_fp || 0) | number}}</span
+          >
+        </div>
+        <!-- div class="detail-container vspacer">
+          <h6>Microplan Status</h6>
+          <div class="piechart-container">
+            <ngx-charts-pie-chart
+              [view]="[90, 90]"
+              [animations]="false"
+              [tooltipDisabled]="true"
+              [results]="mpStatusData.series"
+              [scheme]="mpStatusData.color"
+            ></ngx-charts-pie-chart>
+            <div class="legend-container">
+              <div [style.color]="mpStatusData.color.domain[0]">
+                <fa-icon icon="check-circle"></fa-icon>Complete
+              </div>
+              <div [style.color]="mpStatusData.color.domain[1]">
+                <fa-icon icon="play-circle"></fa-icon>In progress
+              </div>
+              <div [style.color]="mpStatusData.color.domain[2]">
+                <fa-icon icon="minus-circle"></fa-icon>Not started
+              </div>
+            </div>
+          </div>
+        </div -->
+        <div class="detail-container vspacer">
+          <h6>Level of Care</h6>
+          <div class="barchart-container">
+            <ngx-charts-bar-horizontal-stacked
+              *ngIf="hasData(levelCareData.series); else emptyBarChart"
+              [view]="[210, 30]"
+              [animations]="false"
+              [tooltipDisabled]="true"
+              [results]="[levelCareData]"
+              [scheme]="levelCareData.color"
+              [barPadding]="0"
+            >
+            </ngx-charts-bar-horizontal-stacked>
+          </div>
+          <div class="legend-container">
+            <ng-container
+              *ngFor="let obj of levelCareData.series;let idx=index;"
+            >
+              <div *ngIf="obj.value && obj.value>0">
+                <span class="value">{{ (obj.value||0) | number}}</span
+                ><span
+                  class="label"
+                  [style.color]="levelCareData.color.domain[idx]"
+                  >{{obj.name}}</span
+                >
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="detail-container vspacer">
+          <h6>Organization</h6>
+          <div class="barchart-container">
+            <ngx-charts-bar-horizontal-stacked
+              *ngIf="hasData(organizationData.series); else emptyBarChart"
+              [view]="[210, 30]"
+              [animations]="false"
+              [tooltipDisabled]="true"
+              [results]="[organizationData]"
+              [scheme]="organizationData.color"
+              [barPadding]="0"
+            >
+            </ngx-charts-bar-horizontal-stacked>
+          </div>
+          <div class="legend-container">
+            <ng-container
+              *ngFor="let obj of organizationData.series;let idx=index;"
+            >
+              <div>
+                <span class="value">{{obj.value}}</span
+                ><span
+                  class="label"
+                  [style.color]="organizationData.color.domain[idx]"
+                  >{{obj.name}}</span
+                >
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="detail-container vspacer">
+          <h6>Performs RI</h6>
+          <div class="barchart-container">
+            <ngx-charts-bar-horizontal-stacked
+              *ngIf="hasData(riData.series); else emptyBarChart"
+              [view]="[210, 30]"
+              [animations]="false"
+              [tooltipDisabled]="true"
+              [results]="[riData]"
+              [scheme]="riData.color"
+              [barPadding]="0"
+            >
+            </ngx-charts-bar-horizontal-stacked>
+          </div>
+          <div class="legend-container">
+            <ng-container *ngFor="let obj of riData.series;let idx=index;">
+              <div>
+                <span class="value">{{obj.value}}</span
+                ><span class="label" [style.color]="riData.color.domain[idx]"
+                  >{{obj.name}}</span
+                >
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="right-col">
+      <section>
+        <div class="title-container">
+          <h5>Target Pop.</h5>
+          <span class="fine-print">
+            {{formatPopulation(targetPop)}} of
+            {{formatPopulation(boundaryItem.properties.boundary_pop)}}
+          </span>
+        </div>
+
+        <div class="detail-container vspacer">
+          <h6>Catchment</h6>
+          <div class="barchart-container">
+            <ngx-charts-bar-horizontal-stacked
+              *ngIf="hasData(catchmentData.series); else emptyBarChart"
+              [view]="[210, 30]"
+              [animations]="false"
+              [tooltipDisabled]="true"
+              [results]="[catchmentData]"
+              [scheme]="catchmentData.color"
+              [barPadding]="0"
+            >
+            </ngx-charts-bar-horizontal-stacked>
+          </div>
+          <div class="legend-container">
+            <ng-container
+              *ngFor="let obj of catchmentData.series;let idx=index;"
+            >
+              <div>
+                <span class="value">{{formatPopulationAsInt(obj.value)}}</span
+                ><span
+                  class="label"
+                  [style.color]="catchmentData.color.domain[idx]"
+                  >{{obj.name}}</span
+                >
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="title-container vspacer">
+          <h5>Settlements</h5>
+          <span class="fine-print"
+            >{{boundaryItem.properties.num_set_total | number}}</span
+          >
+        </div>
+
+        <div class="detail-container vspacer">
+          <div class="barchart-container">
+            <ngx-charts-bar-horizontal-stacked
+              *ngIf="hasData(stlPropertiesData.series); else emptyBarChart"
+              [view]="[210, 30]"
+              [animations]="false"
+              [tooltipDisabled]="true"
+              [results]="[stlPropertiesData]"
+              [scheme]="stlPropertiesData.color"
+              [barPadding]="0"
+            >
+            </ngx-charts-bar-horizontal-stacked>
+          </div>
+          <div class="legend-container">
+            <ng-container
+              *ngFor="let obj of stlPropertiesData.series;let idx=index;"
+            >
+              <div *ngIf="obj.name && obj.name!=''">
+                <span class="value">{{obj.value | number}}</span
+                ><span
+                  class="label"
+                  [style.color]="stlPropertiesData.color.domain[idx]"
+                  >{{obj.name}}</span
+                >
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </section>
+
+      <div class="title-container vspacer">
+        <div class="row">
+          <h5>Overview</h5>
+          <!--        <span class="todo">-->
+          <!--          <fa-icon icon="star"></fa-icon>-->
+          <!--          <fa-icon icon="star"></fa-icon>-->
+          <!--          <fa-icon icon="star"></fa-icon>-->
+          <!--          <fa-icon icon="star"></fa-icon>-->
+          <!--        </span>-->
+        </div>
+      </div>
+      <div class="legend-container">
+        <!--      <div>-->
+        <!--        <span class="stars">Policy</span>-->
+        <!--        <span class="todo">-->
+        <!--          <fa-icon icon="star"></fa-icon>-->
+        <!--          <fa-icon icon="star"></fa-icon>-->
+        <!--          <fa-icon icon="star"></fa-icon>-->
+        <!--          <fa-icon icon="star"></fa-icon>-->
+        <!--        </span>-->
+        <!--      </div>-->
+        <div>
+          <span class="value">
+            <fa-icon icon="star"></fa-icon>
+            <fa-icon [class.light]="quality<=0.2" icon="star"></fa-icon>
+            <fa-icon [class.light]="quality<=0.5" icon="star"></fa-icon>
+            <fa-icon [class.light]="quality<=0.8" icon="star"></fa-icon>
+          </span>
+          <span class="stars label">{{dataQualityLabel}}</span>
+        </div>
+        <div>
+          <span class="value">
+            <fa-icon icon="star"></fa-icon>
+            <fa-icon [class.light]="coverage<=0.2" icon="star"></fa-icon>
+            <fa-icon [class.light]="coverage<=0.5" icon="star"></fa-icon>
+            <fa-icon [class.light]="coverage<=0.8" icon="star"></fa-icon>
+          </span>
+          <span class="stars label">{{coverageLabel}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <h5>Data Quality</h5>
+    <div class="detail-container">
+      <div
+        class="barchart-container attention"
+        *ngIf="hasData(issuesData.series); else emptyIssues"
+      >
+        <ngx-charts-bar-vertical
+          [scheme]="issuesData.color"
+          [results]="issuesData.series"
+          [xAxis]="false"
+          [showDataLabel]="true"
+          [view]="[210, 150]"
+          [yAxis]="false"
+          [legend]="false"
+          [showXAxisLabel]="false"
+          [showYAxisLabel]="false"
+        >
+        </ngx-charts-bar-vertical>
+      </div>
+      <div class="attention" *ngIf="hasData(issuesData.series)">
+        <div>
+          <span class="box special-attention"></span>
+          <span class="attention-label">SPECIAL ATTENTION</span>
+        </div>
+        <div>
+          <span class="box missing-base-data"></span>
+          <span class="attention-label">MISSING BASE DATA</span>
+        </div>
+        <div>
+          <span class="box boundary-corrections"></span>
+          <span class="attention-label">BOUNDARY CORRECTIONS</span>
+        </div>
+        <div>
+          <span class="box population-discrepancies"></span>
+          <span class="attention-label">POPULATION DISCREPANCIES</span>
+        </div>
+      </div>
+
+      <ng-template #emptyBarChart>
+        <div class="empty"></div>
+      </ng-template>
+
+      <ng-template #emptyIssues>
+        <div>No Issues</div>
+      </ng-template>
+    </div>
+  </div>
+</div>

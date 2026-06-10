@@ -1,0 +1,33 @@
+:host {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0 0.85em;
+  padding: 0.5rem 1rem;
+  color: var(--base-dark);
+  background: var(--base-pure-white);
+  border-top: solid 1px var(--base-pale);
+  border-bottom: solid 1px var(--base-light);
+
+  .boundary {
+    h5 {
+      font-weight: 500 !important;
+    }
+    a {
+      text-decoration: none;
+    }
+  }
+}
+
+fa-icon {
+  color: var(--accent-base);
+
+  &[icon="eject"] {
+    cursor: pointer;
+  }
+}
+
+mat-chip {
+  font-size: 0.9em;
+  --mdc-chip-container-height: 2em;
+}

@@ -1,0 +1,26 @@
+@import "../map-control.component.less";
+
+.base-layer-switcher-container {
+  &.open .content {
+    display: flex;
+    background-color: white;
+    z-index: 100;
+  }
+
+  .content {
+    width: 20rem;
+    height: 24px;
+    position: absolute;
+    top: 26.7rem;
+    left: 4.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+    display: none;
+    padding: 0.5vh;
+    font-size: 1.5vh;
+  }
+}
+
+::ng-deep .map-menu + .cdk-overlay-connected-position-bounding-box {
+  margin-left: 2rem;
+  margin-top: -2em;
+}

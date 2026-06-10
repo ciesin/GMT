@@ -1,0 +1,44 @@
+@import "src/less/mat-multiple-select-fix.less";
+
+:host {
+  > mat-action-row {
+    padding: 1rem !important;
+  }
+}
+
+form {
+  padding: 1em;
+
+  .control-container {
+    display: flex;
+    flex-wrap: wrap;
+    @gap: 1em;
+    gap: 1em;
+
+    &:not(:first-child) {
+      margin-top: @gap;
+    }
+
+    .full-width {
+      flex: 1 1 100%;
+    }
+
+    .half-width {
+      flex: 1 1 calc(50% - @gap / 2);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .vcenter {
+      align-self: center;
+    }
+  }
+}
+
+.edit-uninhabited-reason-icon {
+  margin-right: 3px;
+  display: inline;
+  cursor: pointer;
+}

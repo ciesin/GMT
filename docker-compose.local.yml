@@ -1,0 +1,196 @@
+services:
+  pwa:
+    build:
+      context: ./gmt-pwa
+      target: dev
+      # target: prod
+    container_name: gmt_pwa
+    environment:
+      NG_HMR_TEMPLATES: 1
+    command: $ANGULAR_START_COMMAND
+    volumes :
+    - "./gmt-pwa:/usr/src/app"
+    # avoid needing to manually install npm modules
+    - "pwa_node_modules:/usr/src/app/node_modules"
+
+  server:
+    build:
+      context: ./nodejs-server
+      target: dev
+    image: gmt_server
+    container_name: gmt_server
+    command: ["npm", "start"]
+    volumes:
+    - "./nodejs-server:/usr/src/app"
+    # avoid needing to manually install npm modules
+    - "server_node_modules:/usr/src/app/node_modules"
+    - "./importer/data:/data"
+    depends_on:
+        - redis
+
+  queues:
+      # access dashboard at http://localhost:4225/admin/queues or docker exec -it gmt_queues /bin/bash
+      container_name: gmt_queues
+      image: gmt_server
+      command: "npm run start-queues"
+      volumes:
+        - "./nodejs-server:/usr/src/app"
+        - "/usr/src/app/node_modules"
+#        - "./importer/data/export:/data/export"
+      depends_on:
+          - redis
+      restart: always
+
+  redis:
+      container_name: gmt_redis
+      image: redis
+      volumes:
+        - "/mnt/gmt/${ENV_NAME}/redis_data:/data:rw"
+
+  redis-ui:
+    # only for local development to help inspect redis database
+    # service access with http://localhost:8088
+    container_name: gmt_redis_commander
+    image: rediscommander/redis-commander
+    restart: always
+    networks:
+      gmt-net:
+    environment:
+      - REDIS_HOSTS=local:gmt_redis:6379
+    ports:
+      - 8088:8081
+
+  db-manager:
+    build:
+      context: ./db-manager
+    container_name: gmt_db-manager
+    volumes:
+    - ./db-manager/scripts/sql/init:/init-scripts
+    - ./db-manager/scripts/sql/migrations:/migrations
+    - ./db-manager/scripts/tools:/tools
+
+  importer :
+    build :
+      context : ./importer
+    container_name: gmt_importer
+    environment:
+      "FLASK_DEBUG": "1"
+
+      DB_ADMIN_USER: '${DB_ADMIN_USER}'
+      DB_ADMIN_PASSWORD: '${DB_ADMIN_PASSWORD}'
+
+      GMT_LOCAL_PGPASS_PATH: '${GMT_LOCAL_PGPASS_PATH}'
+
+      COVERAGE_WEIGHT_STRATEGY_FIXED_POST: '${COVERAGE_WEIGHT_STRATEGY_FIXED_POST}'
+      COVERAGE_WEIGHT_STRATEGY_OUTREACH: '${COVERAGE_WEIGHT_STRATEGY_OUTREACH}'
+
+      COVERAGE_WEIGHT_FREQUENCY_UNKNOWN: '${COVERAGE_WEIGHT_FREQUENCY_UNKNOWN}'
+      COVERAGE_WEIGHT_FREQUENCY_ONCE_PER_MONTH: '${COVERAGE_WEIGHT_FREQUENCY_ONCE_PER_MONTH}'
+      COVERAGE_WEIGHT_FREQUENCY_TWICE_PER_MONTH: '${COVERAGE_WEIGHT_FREQUENCY_TWICE_PER_MONTH}'
+      COVERAGE_WEIGHT_FREQUENCY_THREE_PER_MONTH: '${COVERAGE_WEIGHT_FREQUENCY_THREE_PER_MONTH}'
+      COVERAGE_WEIGHT_FREQUENCY_ONCE_PER_WEEK: '${COVERAGE_WEIGHT_FREQUENCY_ONCE_PER_WEEK}'
+      COVERAGE_WEIGHT_FREQUENCY_TWICE_PER_WEEK: '${COVERAGE_WEIGHT_FREQUENCY_TWICE_PER_WEEK}'
+      COVERAGE_WEIGHT_FREQUENCY_THREE_PER_WEEK: '${COVERAGE_WEIGHT_FREQUENCY_THREE_PER_WEEK}'
+      COVERAGE_WEIGHT_FREQUENCY_FOUR_PER_WEEK: '${COVERAGE_WEIGHT_FREQUENCY_FOUR_PER_WEEK}'
+      COVERAGE_WEIGHT_FREQUENCY_FIVE_PER_WEEK: '${COVERAGE_WEIGHT_FREQUENCY_FIVE_PER_WEEK}'
+      COVERAGE_WEIGHT_FREQUENCY_SIX_PER_WEEK: '${COVERAGE_WEIGHT_FREQUENCY_SIX_PER_WEEK}'
+      COVERAGE_WEIGHT_FREQUENCY_DAILY: '${COVERAGE_WEIGHT_FREQUENCY_DAILY}'
+      COVERAGE_WEIGHT_FREQUENCY_OTHER: '${COVERAGE_WEIGHT_FREQUENCY_OTHER}'
+      COVERAGE_WEIGHT_FREQUENCY_WEEKLY: '${COVERAGE_WEIGHT_FREQUENCY_WEEKLY}'
+
+      COVERAGE_WEIGHT_BOUNDARY_INSIDE: '${COVERAGE_WEIGHT_BOUNDARY_INSIDE}'
+      COVERAGE_WEIGHT_BOUNDARY_OUTSIDE: '${COVERAGE_WEIGHT_BOUNDARY_OUTSIDE}'
+
+      COVERAGE_WEIGHT_DISTANCE_BREAKPOINTS: '${COVERAGE_WEIGHT_DISTANCE_BREAKPOINTS}'
+
+      COVERAGE_WEIGHT_MIN_PERCENTAGE: '${COVERAGE_WEIGHT_MIN_PERCENTAGE}'
+
+      COVERAGE_WEIGHT_MIN_SETT_PERCENTAGE: '${COVERAGE_WEIGHT_MIN_SETT_PERCENTAGE}'
+      COVERAGE_WEIGHT_MIN_SETT_POP: '${COVERAGE_WEIGHT_MIN_SETT_POP}'
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+    - "home_dir:/root"
+    - "./importer/src:/src"
+    - "./importer/rust:/rust"
+    - "./importer/config_files:/config_files"
+    - "./importer/data:/data"
+    - "./importer/scripts:/scripts"
+
+  python-script:
+    build:
+      context: ./python-script
+    container_name: gmt_python-script
+    volumes:
+      - "script_home_dir:/root"
+      - "./importer/src:/src"
+      - "./importer/rust:/rust"
+      - "./importer/config_files:/config_files"
+      - "./importer/data:/data"
+      - "./importer/scripts:/scripts"
+    networks:
+      gmt-net:
+
+  keycloak:
+    build:
+      context: ./keycloak
+    container_name: gmt_keycloak
+    depends_on:
+      db:
+        condition: service_healthy
+    #volumes:
+    #- "./keycloak/startup-scripts:/opt/jboss/startup-scripts/"
+    #  - ./keycloak/gmt-theme:/opt/jboss/keycloak/themes/gmt-theme
+
+  mailhog:
+      # used by keycloak to remind the password locally
+      # UI accessible on http://localhost:8027/
+      image: mailhog/mailhog
+      container_name: gmt_mailhog
+#      logging:
+#          driver: 'none'  # disable saving logs
+      ports:
+          - 1027:1025 # smtp server
+          - 8027:8025 # web ui
+      networks:
+        gmt-net:
+
+  # access service http://localhost:8089/
+  loadtest_master:
+    image: locustio/locust:2.13.1
+    container_name: "gmt_loadtest_master"
+    ports:
+     - "8089:8089"
+    volumes:
+      - ./tests:/mnt/locust
+#    command: -f /mnt/locust/not_logged_in_test.py --master -H http://server:3000
+    command: -f /mnt/locust/logged_in_test.py --master -H http://server:3000
+    networks:
+      gmt-net:
+
+  loadtest_worker:
+#    profiles: ["loadtest"] docker-compose --profile loadtest up # start the webapp and nginx service
+    image: locustio/locust:2.13.1
+    container_name: "gmt_loadtest_worker"
+    volumes:
+      - ./tests:/mnt/locust
+#    command: -f /mnt/locust/not_logged_in_test.py --worker --master-host loadtest_master
+    command: -f /mnt/locust/logged_in_test.py --worker --master-host loadtest_master
+    networks:
+      gmt-net:
+
+volumes:
+  # this is to remember bashrc, history, etc.
+  home_dir:
+
+  script_home_dir:
+
+  gmt-pgadmin:
+
+  pwa_node_modules:
+  server_node_modules:
+
+networks:
+  gmt-net:
+    external: false

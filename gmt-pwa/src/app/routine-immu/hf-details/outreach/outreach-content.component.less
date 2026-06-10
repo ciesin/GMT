@@ -1,0 +1,123 @@
+@import "src/less/mat-multiple-select-fix.less";
+
+:host {
+  display: block;
+  background: var(--base-pure-white);
+}
+
+.outreach-details-content-form {
+  display: flex;
+  flex-wrap: wrap;
+  @gap: 1em;
+  gap: @gap;
+
+  padding: .5em 1em;
+
+  .full-width {
+    flex: 1 0 100%;
+  }
+
+  .half-width {
+    flex: 1 0 calc(50% - @gap/2);
+  }
+}
+
+mat-action-row {
+  box-sizing: border-box;
+}
+
+// days of operation label
+//div>mat-label {
+//  color: var(--base-dark);
+//  font-weight: 500;
+//  font-variant: all-small-caps;
+//}
+
+.days {
+  display: flex;
+  flex-wrap: wrap;
+
+  mat-checkbox {
+    flex: 0 0 20%;
+  }
+}
+
+@days-button-container-width: 60px;
+@days-button-right-margin: 0px;
+
+.frequency-panel-non-weekly, .frequency-panel {
+  //border-color: black;
+  border-color: var(--base-base);
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+  width: 100%;
+  //to make 100% on the child work
+  position: relative;
+
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .content {
+    flex-grow: 0;
+    flex-shrink: 0;
+    /*disable less handling of calc -- https://stackoverflow.com/questions/14279328/is-there-a-way-to-use-variables-in-less-for-the-operator-like-calc100*/
+    flex-basis: ~"calc(100% - (@{days-button-container-width} + @{days-button-right-margin}))";
+    width: ~"calc(100% - (@{days-button-container-width} + @{days-button-right-margin}))";
+  }
+  .button-container {
+      position: relative; /* Required for absolute positioning */
+      flex-basis: calc(@days-button-container-width + @days-button-right-margin);
+      flex-grow: 0;
+      flex-shrink: 0;
+
+      button {
+        position: absolute;
+        right: @days-button-right-margin;
+      }
+    }
+}
+
+/*Only the styles unique to frequency panel
+without weekly days of operation checkboxes*/
+.frequency-panel-non-weekly {
+  display: flex;
+
+  .button-container {
+    button {
+      /*to make the text centered*/
+      bottom: 7px;
+    }
+  }
+}
+
+/*Only the styles unique to frequency panel
+with weekly days of operation checkboxes*/
+.frequency-panel {
+  .flex-container {
+    display: flex;
+
+    .content {
+      .days-container {
+        display: flex;
+        flex-grow: 1;
+
+        ::ng-deep mat-checkbox label {
+          padding-left: 0px;
+        }
+
+        .days {
+          flex-grow: 1;
+        }
+      }
+    }
+
+    .button-container {
+      button {
+        bottom: 0px;
+      }
+    }
+  }
+}

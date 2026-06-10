@@ -1,0 +1,97 @@
+<div class="header">
+  catchment tech view Boundary: [{{ boundaryGuid }}]
+  <select [formControl]="fcSelectLayer">
+    @for (layer of selLayers; track layer) {
+    <option [value]="layer.value">{{ layer.label }}</option>
+    }
+  </select>
+
+  <button mat-button (click)="handleCalculateSpCatchment()">
+    Calculate SP Catchment
+  </button>
+
+  <label>
+    <input type="checkbox" [(ngModel)]="selectSpParent" />
+    Select SP Parent
+  </label>
+
+  <!--select by guid-->
+  <label> sp guids </label>
+
+  <select (change)="onSelectSettlement($event)">
+    @for (s of settlementList; track s.spGuid) {
+    <option [value]="s.spGuid">{{ s.label }}</option>
+    }
+  </select>
+  Message: {{ message }}
+  <!--Shared map component between investigate, details, and datasets map
+--></div>
+
+<div class="content">
+  <div class="map_legend_container">
+    <div class="map" [id]="map_html_id"></div>
+
+    <!--Uses absolute offset positioning-->
+    <div [id]="map_lat_lon_html_id" class="mouse-position-4326"></div>
+
+    <div class="scalebar-position">
+      <div class="scalebar-container">
+        <div [id]="map_scalebar_html_id" class="scalebar"></div>
+      </div>
+    </div>
+  </div>
+  <div class="right-pane">
+    <div class="pane-header">Hf</div>
+
+    <able-json-table
+      *ngIf="hf"
+      [data]="[hf]"
+      [colList]="[
+        'properties.global_id',
+        'properties.name',
+        'properties.frequency',
+        'properties.mp_status',
+        'properties.parent'
+      ]"
+    >
+    </able-json-table>
+
+    <div class="pane-header">Hf Catchment</div>
+    <div class="catchment-list">
+      <able-json-table
+        [data]="hfCatchmentItems"
+        [colList]="hfCatchmentItemsColList"
+      >
+      </able-json-table>
+    </div>
+    <div class="pane-header">sn</div>
+
+    <able-json-table
+      *ngIf="sn"
+      [data]="[sn]"
+      [colList]="[
+        'properties.global_id',
+        'properties.name',
+        'properties.uninhabited',
+        'properties.estimated_pop'
+      ]"
+    >
+    </able-json-table>
+
+    <div class="pane-header">sp</div>
+    <able-json-table
+      *ngIf="spProps"
+      [data]="[spProps]"
+      [colList]="['global_id', 'split_type', 'split_parent', 'computed_pop']"
+    >
+    </able-json-table>
+    <div class="pane-header">Sp Catchment</div>
+    <div class="catchment-list">
+      <able-json-table
+        [data]="spCatchmentItems"
+        [colList]="spCatchmentItemsColList"
+      >
+      </able-json-table>
+    </div>
+  </div>
+</div>

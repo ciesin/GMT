@@ -1,0 +1,4 @@
+services:
+  sphinx:
+    build:
+      context: "${SPHINX_ROOT_PATH}"

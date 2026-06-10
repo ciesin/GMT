@@ -1,0 +1,105 @@
+
+.gmtTable() {
+  /* adding this because we don't want to affect other p-tables, like in microplan-settlement-subplace*/
+  > div > div > table > thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    th {
+      background-color: white;
+      padding: 1vh !important;
+      overflow: hidden !important;
+      box-shadow: inset 0 0.1rem 0 @color-d2w-3, inset 0 -0.1rem 0 @color-d2w-3;
+
+      .cell {
+        display: flex;
+        align-items: center;
+        font-size: 1.5vh;
+        font-family: 'Montserrat', Arial, sans-serif;
+        color: @color-d2w-2 !important;
+        height: auto;
+        font-weight: normal !important;
+      }
+
+      .p-sortable-column-icon {
+        margin-left: 0 !important;
+        vertical-align: baseline !important;
+        font-size: 1.5vh !important;
+        margin-right: 0.5vh;
+
+        i {
+          line-height: 1.5vh !important;
+          font-size: 1.5vh !important;
+          vertical-align: baseline !important;
+        }
+      ;
+
+        &::before {
+          font-size: 1.5vh;
+          margin: 0 !important;
+        }
+      }
+
+      input {
+        .checkbox(@color-primary, 1.5);
+      }
+    }
+  }
+
+  td {
+    padding: 1vh !important;
+
+    & > .wrapper {
+      display: flex;
+      align-items: center;
+    }
+    ::ng-deep .rowSelection {
+      .p-checkbox-box, .p-checkbox-box:hover {
+        .checkbox(@color-primary, 1.5);
+        background: white !important;
+        border: 0.1rem solid @color-d2w-3 !important;
+        outline: none !important;
+        box-shadow: none !important;
+      }
+
+      .p-checkbox-box.p-highlight {
+        border: @color-d2w-6 !important;
+        background: @color-primary !important;
+      }
+
+      .p-checkbox-box.p-highlight::after {
+        display: block;
+        content: '\2713';
+        color: #ffffff;
+        font-size: 1.4vh;
+        padding-left: 0.1vh;
+        font-weight: bold;
+        line-height: 1.7vh;
+      }
+    }
+  }
+  .selected {
+    background-color: #f6d5ec !important;
+  }
+  img.btn, img.icon {
+    width: 3.5vh;
+    margin-left: 1vh;
+    cursor: pointer;
+    filter: contrast(50%);
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.gmtTableWrapper {
+    margin: 5vw 7vh;
+    height: 50vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-grow: 1;
+    border-bottom: 0.1rem solid @color-second-light;
+    .scrollbar();
+  }

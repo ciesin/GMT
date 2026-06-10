@@ -1,0 +1,24 @@
+<div class="controlContainer legendContainerUndo">
+  <div
+    id="undo-container"
+    class="menuButton"
+    (click)="undoLastAction()"
+    [class]="undoActionIsPossible ? 'enabled' : 'disabled'"
+    tabindex="0"
+  >
+    <!--        [matTooltip]="undoTooltipText"-->
+    <fa-icon class="legendIcon" icon="rotate-left"></fa-icon>
+  </div>
+</div>
+<div class="controlContainer legendContainerRedo">
+  <div
+    id="redo-container"
+    class="menuButton"
+    (click)="redoLastAction()"
+    [class]="redoActionIsPossible ? 'enabled' : 'disabled'"
+    tabindex="0"
+  >
+    <!--        [matTooltip]="redoTooltipText"-->
+    <fa-icon class="legendIcon" icon="rotate-right"></fa-icon>
+  </div>
+</div>

@@ -1,0 +1,127 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 1rem;
+  padding-top: 0;
+  padding-block-end: 1.25rem;
+  background-color: rgba(var(--base-pure-white-rgb), 0.75);
+}
+
+::ng-deep .search-row {
+  display: flex;
+
+  & > mat-form-field {
+    flex: 1;
+    margin-top: 0; // no label
+
+    .mat-mdc-text-field-wrapper {
+      border-top-right-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+      box-shadow: 0px 0px 1px 0px rgba(var(--base-base-rgb), 0.25);
+    }
+  }
+  & > button {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+
+    .label fa-icon {
+      margin: 0 !important;
+    }
+  }
+}
+
+.filters-container:not([hidden]) {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 0.75rem 0 0;
+
+  justify-items: stretch;
+  align-items: start;
+}
+
+:host ::ng-deep > mat-form-field {
+  //search box
+  .mat-mdc-text-field-wrapper {
+    background: var(--base-pure-white);
+    border: solid 1px var(--base-medium);
+    border-radius: 0.3em;
+
+    @search-font-size: 1.6rem;
+    font-size: @search-font-size;
+
+    // focus overlay
+    .mat-mdc-form-field-focus-overlay {
+      background: var(--base-pure-white);
+    }
+
+    // bottom line
+    .mdc-line-ripple {
+      display: none;
+    }
+
+    // search icon
+    .mat-mdc-form-field-icon-prefix {
+      color: var(--base-base);
+      font-size: 1.6rem;
+      padding: 0 0.75em;
+    }
+
+    // search text
+    .mat-mdc-form-field-infix {
+      font-size: @search-font-size;
+      padding: 0.65em 0.65em 0.65em 0;
+
+      min-height: auto;
+
+      label {
+        top: 50%;
+
+        line-height: normal;
+        font-size: @search-font-size;
+        color: var(--base-medium);
+
+        &.mdc-floating-label--float-above {
+          transform: translateY(-110%) scale(0.75);
+        }
+      }
+    }
+  }
+}
+
+:host ::ng-deep {
+  mat-expansion-panel {
+    box-shadow: none;
+
+    &:not([class*="mat-elevation-z"]) {
+      box-shadow: none;
+    }
+  }
+}
+
+.boundary {
+  flex-grow: 1;
+
+  display: inline-flex;
+  flex-direction: column;
+
+  font-size: 0.95em;
+
+  .parent-admins {
+    font-size: 0.85em;
+    text-transform: uppercase;
+    display: inline-flex;
+
+    & > *:not(:last-child) {
+      &::after {
+        content: ">";
+        margin: 0 0.2em;
+      }
+    }
+  }
+
+  & > * {
+    line-height: 1.35em;
+  }
+}

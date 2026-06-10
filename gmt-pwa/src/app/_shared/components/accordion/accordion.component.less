@@ -1,0 +1,23 @@
+:host {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+
+  width: 100%;
+  //height: 100%;
+
+  .accordion-title-icon {
+    margin-right: 2rem;
+    color: var(--base-dark);
+  }
+
+  .accordion-body {
+    overflow: auto;
+  }
+
+  .mat-expansion-panel-header.mat-expanded,
+  .mat-expansion-panel-header.mat-expanded:hover {
+    background: var(--accent-light);
+    margin-bottom: 0.5rem;
+  }
+}

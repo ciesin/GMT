@@ -1,0 +1,60 @@
+@import "src/shared";
+
+.rolesEditCardContainer {
+  .gmtCardContainer();
+  display: flex;
+  width: 90%;
+  max-width: 70rem;
+  // font-size: 2rem;
+  font-family: @font-family;
+  color: @color-d2w-2;
+
+  .header {
+    // font-size: 3rem;
+    margin-bottom: 2rem;
+
+    .closeBtn {
+      margin-left: 1rem;
+      width: 2rem;
+    }
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 2rem 0 2rem 0;
+
+    .column1 {
+      flex: 33%;
+    }
+
+    .column2 {
+      flex: 60%;
+    }
+
+    .column3 {
+      flex: 7%;
+    }
+
+    input[type='checkbox'] {
+      .checkbox(@color-second-darkest, 2.5);
+    }
+  }
+
+  .saveContainer {
+    display: flex;
+    justify-content: right;
+    margin-right: 2rem;
+
+    .gmtTextButton {
+      .gmtTextButton();
+    }
+
+    .save {
+      .primaryButton();
+      margin-top: 1rem;
+    }
+  }
+}

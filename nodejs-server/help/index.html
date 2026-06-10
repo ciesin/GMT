@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Help for the Geospatial Microplanning Toolkit &mdash; GMT User Guide  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="1. Background" href="content/background/10background.html" />
+<link href="_static/style.css" rel="stylesheet" type="text/css">
+<link rel="manifest" href="./manifest.webmanifest">
+<script>
+    // Registering our Service worker
+    if ('serviceWorker' in navigator) {
+        let broadcastChannel = new BroadcastChannel('sw-messages');
+        console.log("sw:","sw.js");
+        navigator.serviceWorker.register("sw.js")
+        // navigator.serviceWorker.register('sw.js', { scope: "./" })
+        broadcastChannel.addEventListener('message', event => {
+            console.log('main Received', event.data);
+            if (event.data.cacheDone) {
+                localStorage['cacheDone'] = true;
+            }
+            if (event.data.reload) {
+                window.location.reload();
+            }
+        });
+
+        setInterval(async () => {
+            let fetchResp;
+            try {
+                fetchResp = await fetch("_static/version", {
+                    method: 'GET',
+                    headers: new Headers({
+                        'pragma': 'no-cache',
+                        'cache-control': 'no-cache',
+                    }),
+                });
+            }catch(error) {
+                console.log("New version detection impossible: ", error);
+            }
+            const serverVersion = await fetchResp.text();
+            const oldVersion = localStorage['version'];
+            const cache = await caches.open('GMT_DOC');
+            const keys = await cache.keys();
+            console.log("keys length:",keys.length);
+            if (serverVersion !== oldVersion || keys.length === 0
+                || ((localStorage['cacheDone']+"") === "false")) //bb: !localStorage['cacheDone'] not working. This is mysterious..
+            {
+                localStorage['version'] = serverVersion;
+                console.log("New version available: ", oldVersion, "=>", serverVersion);
+                localStorage['cacheDone'] = false;
+                broadcastChannel.postMessage({updateCache: true, oldVersion});
+            } else {
+                console.log("Current version :", oldVersion)
+            }
+        },5000);}
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+            <a href="#">
+            <img src="_static/GMT_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Background</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="content/background/10background.html">1. Background</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="content/tutorials/10Tutorial1.html">1. Tutorial 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/tutorials/20Tutorial2.html">2. Tutorial 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/tutorials/30Tutorial3.html">3. Tutorial 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/tutorials/40Tutorial4.html">4. Tutorial 4</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guide to the GMT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="content/guide/10complete_guide.html">1. Guide to the GMT</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standard Operating Procedure</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="content/SOP/10SOP.html">1. Standard Operating Procedure for the GMT</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">GMT User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>Help for the Geospatial Microplanning Toolkit</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="help-for-the-geospatial-microplanning-toolkit">
+<h1>Help for the Geospatial Microplanning Toolkit<a class="headerlink" href="#help-for-the-geospatial-microplanning-toolkit" title="Permalink to this headline"></a></h1>
+<p>This help is  divided into four main sections:</p>
+<ol class="arabic simple">
+<li><p>A section with background information</p></li>
+<li><p>A tutorial section</p></li>
+<li><p>A guide to the application</p></li>
+<li><p>A section recommending standard operating procedures (SOPs)</p></li>
+</ol>
+<p>The background section explains concepts used here and sheds some insights into
+some of the technical aspects behind the data used in this application.</p>
+<p>In the tutorial section, the user can approach the application step by step
+and learn the different aspects of it. It is recommended to start by this section.</p>
+<p>The guide is aimed to be utilized for reference when there are specific
+questions or certain functionalities need to be consulted in detail. This section
+also contains more details about the underlying technical aspects. The section is
+not complete at this point.</p>
+<p>The SOP section recommends a general approach to perform the microplanning in this
+application.</p>
+<p>If you have any questions or feedback about this application or the user guide, please
+do not hesitate to contact <a class="reference external" href="mailto:gmt&#37;&#52;&#48;novel-t&#46;ch">gmt<span>&#64;</span>novel-t<span>&#46;</span>ch</a>.</p>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="content/background/10background.html" class="btn btn-neutral float-right" title="1. Background" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Novel-T.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

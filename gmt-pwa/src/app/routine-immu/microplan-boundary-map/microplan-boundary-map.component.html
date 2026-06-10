@@ -1,0 +1,81 @@
+<div class="ol-map" #ol_map>
+  <ul class="gmt-map-ctrls">
+    <li>
+      <map-control-layers-selector-icon></map-control-layers-selector-icon>
+    </li>
+    <li>
+      <map-control-zoom></map-control-zoom>
+    </li>
+    <li>
+      <map-control-baselayer-switcher></map-control-baselayer-switcher>
+      <location (triggerGetLocation)="handleZoomToTableLocation()"></location>
+    </li>
+    <li>
+      <map-control-selector></map-control-selector>
+      <undo-redo></undo-redo>
+    </li>
+  </ul>
+
+  <div class="gmt-map-overlay">
+    <!-- show-single-catchment></show-single-catchment -->
+    <draw-polygon></draw-polygon>
+    <feature-details></feature-details>
+
+    <div class="gmt-map-legend">
+      <ul class="gmt-map-ctrls">
+        <li>
+          <div class="controlContainer {{(visibleLayers.includes(HF_LAYER))? 'selected': ''}}">
+            <div class="menuButton" (click)="handleLayerVisibilityChange({ id: HF_LAYER, visible: !visibleLayers.includes(HF_LAYER) })">
+              <mat-icon svgIcon="hf"></mat-icon>
+              <mat-icon svgIcon="outreach"></mat-icon>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div id="layer-toggle-catchments" class="controlContainer {{(visibleLayers.includes(CATCHMENT_LAYER))? 'selected': ''}}">
+            <div class="menuButton" (click)="handleLayerVisibilityChange({ id: CATCHMENT_LAYER, visible: !visibleLayers.includes(CATCHMENT_LAYER) })">
+              <mat-icon svgIcon="catchment"></mat-icon>
+            </div>
+          </div>
+          <div
+            class="controlContainer {{singleCatchment ? 'selected': ''}} {{disableSingleCatchment? 'disabled': ''}} legendContainerZoomOut"
+          >
+            <div class="menuButton" (click)="handleSingleCatchmentChange()">
+              <mat-icon svgIcon="catchment_single"></mat-icon>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="controlContainer {{(visibleLayers.includes(ST_NAME_LAYER))? 'selected': ''}} legendContainerZoomOut">
+            <div class="menuButton" (click)="handleLayerVisibilityChange({ id: ST_NAME_LAYER, visible: !visibleLayers.includes(ST_NAME_LAYER) })">
+              <mat-icon svgIcon="settlement"></mat-icon>
+            </div>
+          </div>
+          <div class="controlContainer legendContainerZoomOut {{(visibleLayers.includes(ST_GEOMETRY_LAYER))? 'selected': ''}}">
+            <div class="menuButton" (click)="handleLayerVisibilityChange({ id: ST_GEOMETRY_LAYER, visible: !visibleLayers.includes(ST_GEOMETRY_LAYER) })">
+              <mat-icon svgIcon="boundaries"></mat-icon>
+            </div>
+          </div>
+          <div class="controlContainer legendContainerZoomOut {{(visibleLayers.includes(POP_RASTER_GENERIC))? 'selected': ''}}">
+            <div class="menuButton" (click)="changePopLayersVisibility()">
+              <img src="../assets/icons/map-markers/pop_legend.svg" />
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <location-selector></location-selector>
+  <map-control-distance-slider
+    *ngIf="distanceGuidesAreEnabled"
+    [distanceMetersInput]="distanceMetersInput"
+    (distanceMeters)="handleDistanceMetersSliderChange($event)"
+  ></map-control-distance-slider>
+<!--  <map-control-layers-selector-->
+<!--    class="gmt-map-legend-old"-->
+<!--    [isLegendOpen]="legendOpen"-->
+<!--    (legendOpenChange)="legendOpenChange($event)"-->
+<!--    (mapLayerVisibilityChange)="handleLayerVisibilityChange($event)"-->
+<!--  ></map-control-layers-selector>-->
+</div>

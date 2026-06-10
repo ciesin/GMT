@@ -1,0 +1,66 @@
+.actions {
+  text-align: right;
+  padding: 1em;
+}
+:host {
+  .container-with-padding {
+    padding: 1rem;
+  }
+}
+
+mat-form-field {
+  margin-block: 2rem 1rem;
+  width: 100%;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  @gap: 1em;
+  gap: 1em;
+  margin-top: 0.7em;
+
+  mat-label {
+    color: var(--base-dark);
+  }
+
+  .full-width {
+    flex: 1 1 100%;
+  }
+
+  .half-width {
+    flex: 1 1 calc(50% - @gap / 2);
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .vcenter {
+    align-self: center;
+  }
+}
+
+.issue-action {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1em;
+}
+// just to override card.less style for the second level of expansion panel
+mat-expansion-panel.sub-expansion {
+  ::ng-deep.mat-expansion-panel-content {
+    .mat-expansion-panel-body {
+      padding: 0rem;
+    }
+  }
+}
+mat-expansion-panel.sub-sub-expansion {
+  ::ng-deep.mat-expansion-panel-content {
+    .mat-expansion-panel-body {
+      padding: 1rem;
+    }
+  }
+}
+.mat-action-row {
+  padding-right: 1rem !important;
+}

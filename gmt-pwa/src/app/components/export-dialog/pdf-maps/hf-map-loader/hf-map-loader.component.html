@@ -1,0 +1,53 @@
+Demo page to show pdf maps
+
+<div id="overview-parent" style="display:block;height:400px">
+    <gmt-pdf-overview-map
+    width="300"
+    height="200"
+    [boundaryGuid]="boundaryGuid"
+    parentHtmlId="overview-parent"
+    ></gmt-pdf-overview-map>
+
+</div>
+
+<!-- 
+
+<div id="boundary-parent" style="display:block;height:1200px">
+    <gmt-pdf-mobile-map 
+    width="800"
+    height="600"
+    parentHtmlId="boundary-parent"
+    [boundaryGuid]="boundaryGuid"></gmt-pdf-mobile-map>
+</div>  -->
+
+<!-- 
+<div id="boundary-parent" style="display:block;height:1200px">
+    gmt-pdf-hf-map 
+    width="800"
+    height="600"
+    parentHtmlId="boundary-parent"
+    [boundaryGuid]="boundaryGuid"></gmt-pdf-hf-map>
+</div> -->
+
+<div id="hf-detail-parent" style="display:block;height:1200px">
+    <gmt-pdf-hf-map 
+    width="800"
+    height="600"
+    [boundaryGuid]="boundaryGuid"
+    parentHtmlId="hf-detail-parent"
+    hfGuid="ce7eb496-19c1-4ba4-9b1e-492e18ffed3f"
+    ></gmt-pdf-hf-map>
+</div> 
+
+<!-- 
+<div id="hf-detail-parent2" style="display:block;height:1200px">
+    <gmt-pdf-hf-map 
+    width="800"
+    height="600"
+    [boundaryGuid]="boundaryGuid"
+    parentHtmlId="hf-detail-parent2"
+    hfGuid="3d4f0ec7-5237-46b1-90c1-720ccdb31adf"
+    ></gmt-pdf-hf-map>
+</div> -->
+
+

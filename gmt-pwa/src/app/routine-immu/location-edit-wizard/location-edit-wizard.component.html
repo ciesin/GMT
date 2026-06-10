@@ -1,0 +1,21 @@
+<h1 mat-dialog-title cdkDragHandle class="drag-header">EDIT Location</h1>
+
+<!--Wrap in matUI button for https://github.com/novelt/GMT/issues/2376-->
+<!--<fa-icon mat-dialog-close icon="close" class="cancel" (click)="handleWizardCancel()"></fa-icon>
+-->
+<button
+  mat-button
+  mat-dialog-close
+  class="cancel"
+  (click)="handleWizardCancel()"
+>
+  <fa-icon icon="close"></fa-icon>
+</button>
+
+<div mat-dialog-content id="wizard-control-div">
+  <gmt-wizard-location-control
+    [dialog]="dialogRef"
+    [lonLat]="[currentLocation!.lon, currentLocation!.lat]"
+    (lonLatChange)="handleLocationChange($event)"
+  ></gmt-wizard-location-control>
+</div>

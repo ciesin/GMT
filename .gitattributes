@@ -1,0 +1,6 @@
+# Always use LF
+# Force LF everywhere
+* text eol=lf
+
+*.png binary
+*.jpg binary

@@ -1,0 +1,18 @@
+<mat-action-list>
+	<mat-slide-toggle color="primary" [checked]="isEdit" [disabled]="isEdit === undefined" (click)="handleEditChange(!isEdit)">
+		Edit mode
+	</mat-slide-toggle>
+	<button mat-list-item (click)="clearIndexDB()">Clear IndexDB</button>
+	<button mat-list-item (click)="clearCrudActions()">Clear CRUDs</button>
+	<button mat-list-item (click)="refreshOfflineData()">Refresh Offline Data</button>
+	<button mat-list-item (click)="handleTestOfflineStorageLimits()">Offline storage test</button>
+	<button mat-list-item (click)="refreshPwa()">Refresh PWA</button>
+	<button mat-list-item (click)="refreshIndicators()">Refresh Indicators</button>
+  <button mat-list-item (click)="refreshStateExports()">Refresh State Exports</button>
+  <button mat-list-item (click)="refreshAllCatchments()">Refresh All Catchments</button>
+
+
+
+<!--  <button mat-list-item *ngIf="userHasParticipationManagerRole" (click)="resetParticipationFlags()">Set all participating flags to False</button>-->
+  <!-- <button mat-list-item (click)="fetchBoundary()">Fetch boundary</button> -->
+</mat-action-list>

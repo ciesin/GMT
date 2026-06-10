@@ -1,0 +1,15 @@
+<div class="location-step-contents">
+  <div class="wizard-text">
+    Move/zoom map till marker is at precise location, before setting final
+    location. You can use GPS to set marker to your devices current location.
+  </div>
+  <div class="button-container">
+    <button mat-button (click)="handleGPS()" [disabled]="!hasGPS">
+      <fa-icon icon="location-crosshairs"></fa-icon>Use GPS
+    </button>
+    <!-- <button *ngIf="!choosingLocation" mat-button (click)="handleStartChooseLocation()" >Manual Location</button> -->
+    <button mat-flat-button (click)="handleStopChooseLocation()">
+      <fa-icon icon="circle-check"></fa-icon>Set Location
+    </button>
+  </div>
+</div>

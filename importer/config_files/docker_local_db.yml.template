@@ -1,0 +1,6 @@
+database:
+  db_name: ${DB_NAME}
+  host: ${DB_HOST}
+  password: ${DB_PWD}
+  port: ${DB_PORT}
+  username: ${DB_USER}

@@ -1,0 +1,53 @@
+// override material border radius
+// expandable panel is contained inside its own Component container thus breaking `first-of-type` and `last-of-type`
+:host {
+  display: block; // This is *very* important or it will behave weirdly!
+
+  mat-expansion-panel {
+    &:first-of-type {
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+    }
+
+    &:last-of-type {
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+}
+
+mat-expansion-panel {
+  mat-expansion-panel-header.mat-expansion-panel-header {
+    // title icons
+    mat-panel-title fa-icon:not(:last-child) {
+      margin-right: 0.5rem;
+    }
+  }
+
+  // content
+  ::ng-deep.mat-expansion-panel-content {
+    .mat-expansion-panel-body {
+      padding: 1rem;
+    }
+
+    // buttons
+    .mat-action-row {
+      text-align: right;
+
+      button {
+        margin: auto 0;
+
+        color: var(--accent-medium);
+
+        &.main {
+          border: solid 1px var(--accent-light);
+          background: var(--accent-pale);
+        }
+      }
+    }
+  }
+}
+
+.mat-expansion-panel-header-description {
+  flex-grow: 0.4;
+}

@@ -1,0 +1,25 @@
+<div>
+  <div *ngIf="data.message.severity" class="severity">
+    {{data.message.severity}}
+  </div>
+  <div *ngIf="data.message.summary" class="summary">
+    {{data.message.summary}}
+  </div>
+  <div *ngIf="data.message.detail" class="detail">
+    <pre>{{data.message.detail}}</pre>
+    <button
+      mat-icon-button
+      aria-label="Copy to clipboard"
+      matTooltip="copy to clipboard"
+      (click)="copy()"
+    >
+      <fa-icon icon="copy"></fa-icon>
+    </button>
+    <fa-icon
+      icon="xmark"
+      class="cancel"
+      mat-button
+      (click)="snackBarRef.dismiss()"
+    ></fa-icon>
+  </div>
+</div>

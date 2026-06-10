@@ -1,0 +1,51 @@
+div.fake-mat-form-field {
+  margin-top: 0;
+
+  &.full-width {
+    width: 100%;
+  }
+
+  ::ng-deep mat-label {
+    font-size: 0.675rem;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    //color: rgba(24,82,103,0.6);
+    //color: var(--base-dark);
+    color: var(--base-base);
+    line-height: normal;
+
+    //will-change: transform;
+    //transform-origin: left top;
+    //text-shadow: 0 0 3px rgba(0, 0, 0, 0.05); /* Adjust the blur radius and color as needed */
+
+    margin-left: 3px;
+
+  }
+
+  ::ng-deep mat-select {
+    background: var(--base-pure-white);
+    border: solid 1px var(--base-medium);
+    border-radius: 4px;
+
+    .mat-mdc-select-placeholder {
+      color: var(--base-medium);
+      font-size: 0.8em;
+      font-weight: 100;
+      // text-transform: capitalize;
+    }
+
+    .mat-mdc-select-value {
+      padding-left: 10px;
+    }
+
+    .mat-mdc-select-arrow-wrapper {
+      padding: 0 10px;
+      border-left: solid;
+      border-width: 1px;
+      border-color: var(--base-medium);
+      height: 29px;
+      position: relative;
+      top: -1px;
+    }
+  }
+}

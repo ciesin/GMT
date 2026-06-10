@@ -1,0 +1,35 @@
+.location-step-contents {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: end; /* vertical alignment of items */
+  justify-content: space-between;
+  cursor: pointer;
+  min-height: 4rem;
+
+  .label-text {
+    color: black;
+    align-items: center; /* vertical alignment of items */
+    .label {
+      font-weight: bold;
+    }
+
+    .disabled {
+      color: gray;
+      cursor: default;
+    }
+  }
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.coords {
+  font-size: small;
+  color: gray;
+}
+
+.wizard-text {
+  width: 60%;
+}

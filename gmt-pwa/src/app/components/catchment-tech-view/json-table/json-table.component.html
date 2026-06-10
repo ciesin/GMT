@@ -1,0 +1,31 @@
+<!-- data.component.html -->
+<table style="border-collapse: collapse; width: 100%">
+  <thead>
+    <tr>
+      <th
+        *ngFor="let col of colList"
+        (click)="toggleSort(col)"
+        style="cursor: pointer"
+      >
+        {{ formatCol(col) }}
+        <span *ngIf="sortKey === col">
+          {{ sortAsc ? "▲" : "▼" }}
+        </span>
+      </th>
+      <th>Raw Json</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="border-b-2 border-gray-200" *ngFor="let row of sortedData">
+      <td class="border border-gray-300" *ngFor="let col of colList">
+        {{ formatValue(row, col) }}
+      </td>
+      <td>
+        <button (click)="showOther(row)">View</button>
+        <ng-container *ngIf="row.jsonVisible">
+          {{ row.data | json }}
+        </ng-container>
+      </td>
+    </tr>
+  </tbody>
+</table>

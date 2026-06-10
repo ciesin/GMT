@@ -1,0 +1,65 @@
+<div class="dialog-header">
+  <h4>Uninhabited Reason Required</h4>
+
+  <button mat-dialog-close mat-button class="cancel">
+    <fa-icon icon="close"></fa-icon>
+  </button>
+</div>
+
+<div class="content">
+  <form class="content-form" [formGroup]="formGroup">
+    <!--    <div class="full-width">-->
+    <!--      <mat-slide-toggle [formControlName]="FORM_KEY_UNINHABITED">-->
+    <!--        Uninhabited-->
+    <!--      </mat-slide-toggle>-->
+    <!--    </div>-->
+
+    <mat-form-field subscriptSizing="dynamic" class="full-width">
+      <mat-label>Uninhabited reason</mat-label>
+      <mat-select [formControlName]="FORM_KEY_UNINHABITED_REASON">
+        <mat-option
+          *ngFor="let uninhabitedReason of uninhabitedReasonsOptions"
+          [value]="uninhabitedReason.value"
+        >
+          {{ uninhabitedReason.label }}
+        </mat-option>
+      </mat-select>
+      <fa-icon matSuffix icon="caret-down"></fa-icon>
+      <mat-error
+        *ngIf="formGroup.get(FORM_KEY_UNINHABITED_REASON)?.hasError('required')"
+      >
+        Uninhabited reason is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field
+      subscriptSizing="dynamic"
+      class="full-width"
+      *ngIf="formGroup.get(FORM_KEY_UNINHABITED_REASON)?.value == 'Other'"
+    >
+      <mat-label>Other detail</mat-label>
+
+      <textarea
+        matInput
+        type="text"
+        placeholder="Please specify reason the settlement in uninhabited"
+        [formControlName]="FORM_KEY_OTHER_DETAIL"
+        cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="5"
+      ></textarea>
+      <mat-error
+        *ngIf="formGroup.get(FORM_KEY_OTHER_DETAIL)?.hasError('required')"
+      >
+        Other detail is required.
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<mat-dialog-actions align="end">
+  <button mat-flat-button (click)="handleSaveAndClose()">
+    <fa-icon icon="floppy-disk"></fa-icon>
+    <span class="label">Save and close</span>
+  </button>
+</mat-dialog-actions>

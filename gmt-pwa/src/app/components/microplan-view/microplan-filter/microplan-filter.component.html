@@ -1,0 +1,53 @@
+<div class="search-row">
+	<mat-form-field class="search" subscriptSizing="dynamic">
+		<mat-label>{{searchLabel}}</mat-label>
+		<!-- <fa-icon matPrefix icon="magnifying-glass"></fa-icon> -->
+		<input matInput #searchInput type="text" [placeholder]="searchPlaceholder" [(ngModel)]="searchText"
+			(ngModelChange)="searchTextUpdate.next($event)" (change)="onSearchInputChange($event)"
+			[matAutocomplete]="auto">
+		<a matSuffix (click)="onSearchInputClear()"><fa-icon [icon]="['far', 'circle-xmark']"></fa-icon></a>
+		<mat-autocomplete #auto="matAutocomplete" (optionSelected)="onAutocompleteOptionSelection($event)">
+			<mat-option *ngFor="let option of autocomplete" [value]="option.value">
+				<ng-container *ngIf="!option.hierarchy; else optionWithHierarchy">
+					{{option.name}}
+				</ng-container>
+				<ng-template #optionWithHierarchy>
+					<div class="boundary">
+						<span class="parent-admins">
+							<span *ngFor="let parent of option.hierarchy!.slice(1)">{{parent}}</span>
+						</span>
+						<span>{{option.name}}</span>
+					</div>
+				</ng-template>
+			</mat-option>
+		</mat-autocomplete>
+	</mat-form-field>
+
+	<button mat-flat-button [ngClass]="{'active': showFilters}" (click)="showFilters = !showFilters">
+		<fa-icon icon="filter"></fa-icon>
+		<span class="label"><fa-icon icon="caret-down"></fa-icon></span>
+	</button>
+</div>
+
+
+
+<div class="filters-container" [hidden]="!showFilters">
+	<mat-form-field *ngFor="let filterItem of filters" subscriptSizing="dynamic">
+		<mat-label>{{filterItem.label}}</mat-label>
+		<mat-select #filterSelect [id]="filterItem.key" (selectionChange)="onFilterChange(filterItem.key, $event)"
+			placeholder="filter" [value]="filterValues.get(filterItem.key)">
+			<mat-option *ngFor="let filterOption of filterItem.choices"
+				[value]="filterOption.value">{{filterOption.label}}</mat-option>
+		</mat-select>
+		<fa-icon matSuffix icon="caret-down"></fa-icon>
+	</mat-form-field>
+</div>
+
+<mat-chip-set *ngIf="!showFilters">
+	<mat-chip *ngFor="let filterChoice of selectedFilters">
+		{{filterChoice[1]}}
+		<button matChipRemove (click)="onFilterRemove(filterChoice[0])">
+			<fa-icon icon="circle-xmark"></fa-icon>
+		</button>
+	</mat-chip>
+</mat-chip-set>

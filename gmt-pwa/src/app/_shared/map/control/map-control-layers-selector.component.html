@@ -1,0 +1,13 @@
+<div class="layer-selection-container" [class.open]="isLegendOpen">
+  <div class="menuButton" (click)="toggleLegend()">
+    <fa-stack>
+      <fa-icon class="legendIcon" icon="layer-group"></fa-icon>
+      <fa-icon class="legendIcon overlay" icon="caret-down"></fa-icon>
+    </fa-stack>
+  </div>
+  <div class="content">
+    <div class="part">
+      <p-panelMenu [model]="mapLayers"></p-panelMenu>
+    </div>
+  </div>
+</div>

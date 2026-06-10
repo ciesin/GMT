@@ -1,0 +1,168 @@
+<mat-expansion-panel
+  closeChildExpansionOnClose
+  class="sub-expansion"
+  [expanded]="activeTab == populationDiscrepanciesTab"
+  (opened)="mainPanelOpenState = true"
+  (closed)="mainPanelOpenState = false"
+>
+  <mat-expansion-panel-header class="main-header" (click)="panelStateChange()">
+    <mat-panel-title>
+      <fa-icon
+        class="v-align-middle accordion-title-icon"
+        icon="users"
+      ></fa-icon>
+      Population Discrepancies ({{ populationIssues.length }})
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <ng-template #noIssues>
+    <div class="container-with-padding">No population issues</div>
+  </ng-template>
+
+  <div class="panel-content" *ngIf="!!populationIssues.length; else noIssues">
+    <mat-accordion displayMode="flat">
+      <mat-expansion-panel
+        *ngFor="let issue of populationIssues"
+        class="sub-sub-expansion pop-issues-container is-form"
+        (opened)="panelOpenState = true"
+        (closed)="panelOpenState = false"
+        (click)="onOpenPanelAction(issue)"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title
+            [class]="{
+              'has-problematic': !!catchmentMap.get(
+                issue.settlementName.properties.global_id
+              )!.problematic.length
+            }"
+          >
+            <fa-icon
+              icon="location-crosshairs"
+              (click)="handleShowSettlementSiteOnMap($event, issue)"
+            ></fa-icon>
+            {{ issue.settlementName.properties.name }}
+          </mat-panel-title>
+          <mat-panel-description>
+            <div class="gmt-stats">
+              <div class="gmt-stats-text">
+                <span>{{
+                  formatPopulation(
+                    catchmentMap.get(issue.settlementName.properties.global_id)!
+                      .pop
+                  )
+                }}</span>
+                <!-- span
+                  >{{formatPercentage(100 -
+                  catchmentMap.get(issue.settlementName.properties.global_id).percUnclaimed)}}</span
+                -->
+              </div>
+              <gmt-catchment
+                mode="progressbar"
+                type="settlement"
+                [total]="
+                  catchmentMap.get(issue.settlementName.properties.global_id)!
+                    .pop
+                "
+                [fixedPost]="
+                  catchmentMap.get(issue.settlementName.properties.global_id)!
+                    .fixedPost
+                "
+                [outreach]="
+                  catchmentMap.get(issue.settlementName.properties.global_id)!
+                    .outreach
+                "
+                [unclaimed]="
+                  catchmentMap.get(issue.settlementName.properties.global_id)!
+                    .unclaimed
+                "
+                [settlementProblems]="
+                  catchmentMap.get(issue.settlementName.properties.global_id)!
+                    .problematic
+                "
+              >
+              </gmt-catchment>
+            </div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="sub-panel-content">
+          <div>
+            Please double check the estimated population, if there is a mistake
+            please set the correct value:
+          </div>
+          <div
+            class="review-text"
+            *ngIf="issue.settlementName.properties.marked_for_review"
+          >
+            Marked for review.
+          </div>
+
+          <mat-form-field subscriptSizing="dynamic" class="half-width">
+            <mat-label>estimated pop.</mat-label>
+            <fa-icon matPrefix icon="users" class="input-icon"></fa-icon>
+            <input
+              matInput
+              #estimated_pop
+              type="number"
+              [value]="issue.settlementName.properties.estimated_pop"
+              (change)="handleEstimatedPopChange(issue, estimated_pop)"
+              [disabled]="!userCanEdit"
+            />
+          </mat-form-field>
+
+          <mat-form-field subscriptSizing="dynamic" class="half-width">
+            <mat-label>computed pop.</mat-label>
+            <fa-icon matPrefix icon="users" class="input-icon"></fa-icon>
+            <input
+              matInput
+              [value]="
+                formatPopulation(
+                  issue.settlementPart.properties.computed_pop,
+                  false
+                )
+              "
+              [disabled]="true"
+              type="text"
+            />
+          </mat-form-field>
+
+          <mat-form-field
+            subscriptSizing="dynamic"
+            *ngIf="
+              issue.settlementName.properties.estimated_pop === 0 && userCanEdit
+            "
+            class="half-width"
+          >
+            <mat-label>uninhabited reason</mat-label>
+            <mat-select
+              #uninhabited_reason
+              [value]="issue.settlementName.properties.uninhabited_reason"
+              (selectionChange)="
+                uninhabitedReasonChange(uninhabited_reason.value, issue)
+              "
+            >
+              <mat-option
+                *ngFor="let uninhabitedReason of uninhabitedReasonsOptions"
+                [value]="uninhabitedReason.value"
+              >
+                {{ uninhabitedReason.label }}
+              </mat-option>
+            </mat-select>
+            <fa-icon matSuffix icon="caret-down"></fa-icon>
+          </mat-form-field>
+
+          <div>
+            If the estimate is correct, please mark this item for review.
+          </div>
+        </div>
+
+        <div class="mat-action-row" *ngIf="userCanEdit">
+          <button mat-flat-button color="accent" (click)="markForReview(issue)">
+            <fa-icon icon="circle-check"></fa-icon>
+            Mark for review
+          </button>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</mat-expansion-panel>

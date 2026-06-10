@@ -1,0 +1,17 @@
+<mat-button-toggle-group aria-label="Map toggle">
+  <mat-button-toggle
+    *ngFor="let button of buttons"
+    class="controlContainer"
+    checked="{{button.label == selectedButton}}"
+    value="{{button.label}}"
+    (change)="handleMapToggleChange($event)"
+  >
+    <div class="menuButton">
+      <fa-icon
+        class="legendIcon"
+        *ngIf="button.faIcon"
+        [icon]="button.faIcon"
+      ></fa-icon>
+    </div>
+  </mat-button-toggle>
+</mat-button-toggle-group>

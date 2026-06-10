@@ -1,0 +1,576 @@
+/* You can add global styles to this file, and also import other style files */
+// @import url('https://fonts.googleapis.com/css?family=Roboto');
+// @import "src/app/directives/clickable-tool-tip.directive";
+// @import "src/app/directives/menu-popup.directive";
+// @import "src/app/directives/popup.directive";
+@import "src/responsive";
+@import "src/less/wizard-popup.less";
+
+@import "src/assets/fonts/css2.css";
+@import "src/assets/fonts/material_icons.css";
+
+@side-padding-x: 1rem;
+
+/**
+ * Base typography
+ * NOTE: this should be set as per the front-end framework in use. As simply a
+ * contributor to the code-base, without knowledge of Angular, and without a day
+ * to spare to read and setup -- I am doing my best to at least consolidate a
+ * type scale here, as an 'override'.
+ * Using REMs as they are relative to the base size (16px), which a user can
+ * change
+ */
+html,
+body {
+  height: 100%;
+  // font-size: 16px; <-- browser default, this comment is just a reference
+}
+
+// NOTE: this is hacky, and a temporary fix
+// using specificity for a basic global override
+#body {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  label,
+  .fine-print {
+    font-weight: 500;
+    color: var(--base-dark);
+  }
+
+  // typescale: based of minor second scale
+  h1 {
+    margin: 0.5rem 0;
+    font-size: 1.85rem;
+  }
+  h2 {
+    margin: 0.5rem 0;
+    font-size: 1.6rem;
+  }
+  h3 {
+    margin: 0.25rem 0;
+    font-size: 1.4rem;
+  }
+  h4 {
+    margin: 0.2rem 0;
+    font-size: 1.25rem;
+  }
+  h5 {
+    margin: 0.15rem 0;
+    font-size: 1.15rem;
+    font-weight: 400;
+  }
+  h6 {
+    margin: 0;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  label,
+  .small-text,
+  .mat-step-label {
+    font-size: 0.9rem;
+  }
+
+  .fine-print,
+  .mat-sort-header,
+  .gmt-stats {
+    font-size: 0.75rem;
+  }
+
+  label,
+  .mat-sort-header {
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--base-base);
+  }
+
+  .mat-mdc-dialog-container .mdc-dialog__surface {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    box-shadow: 0 0 2px 2px rgba(var(--base-dark-rgb), 0.5);
+  }
+} // #body
+
+body {
+  margin: 0;
+  color: var(--base-dark);
+}
+
+* {
+  font-family: "Noto Sans", sans-serif;
+}
+
+#body .gmt-stats {
+  width: 100%;
+  max-width: 7rem;
+
+  .gmt-stats-text {
+    color: var(--base-dark);
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    line-height: 1.2;
+
+    > fa-icon {
+      color: var(--base-medium);
+    }
+  }
+}
+
+#feature-details-container {
+  .mat-mdc-card-header-text {
+    width: 100%;
+  }
+
+  .close-button {
+    color: var(--base-black) !important;
+  }
+}
+
+/**
+ * SIDEBAR
+ */
+.side-nav-back {
+  margin-top: 0.5rem;
+  border: 1px solid var(--base-light);
+  border-left: 0;
+  border-right: 0;
+  background: var(--base-pure-white);
+  display: flex;
+  justify-content: space-between;
+
+  button.mat-mdc-button.back {
+    text-transform: uppercase;
+  }
+
+  button.mat-mdc-button.locate fa-icon {
+    margin: 0 !important;
+    font-size: 1.15rem;
+  }
+}
+
+header.side-heading {
+  // padding: @side-padding-x;
+  padding: (@side-padding-x / 2) @side-padding-x;
+  color: var(--base-dark);
+
+  background: linear-gradient(
+    var(--base-pale),
+    rgba(var(--base-pure-white-rgb), 0.75)
+  );
+
+  h4 {
+    margin: 0;
+
+    fa-icon {
+      margin-right: 0.5rem;
+    }
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+
+  &.details {
+    border-bottom: 1px solid rgba(var(--base-medium-rgb), 0.5);
+    background: linear-gradient(
+      var(--base-pale),
+      rgba(var(--base-light-rgb), 0.75)
+    );
+  }
+
+  .properties,
+  .bounds-trail {
+    color: var(--base-base) !important;
+  }
+
+  .properties {
+    margin: -0.25rem 0 0 0;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .prop-content {
+    display: flex;
+    fa-icon {
+      margin-right: 0.5rem;
+    }
+  }
+
+  .bounds-trail {
+    text-transform: uppercase;
+  }
+}
+
+@header-height: 4.25rem;
+@map-overlay-padding: 0.5rem;
+@map-ctrl-size: 2.15rem;
+@map-ctrl-radius: 0.2rem;
+@map-viewport-shadow: 1px 1px 0.35rem rgba(var(--base-dark-rgb), 0.35);
+
+// specificity hack
+[class].mat-mdc-standard-chip {
+  font-size: 0.75rem;
+}
+
+/**
+ * Global Styles
+ */
+app-page-microplan,
+gmt-layout {
+  > mat-drawer-container {
+    // elements that must share same height
+    .mat-drawer-side mat-tab-header,
+    mat-drawer-content > .header,
+    mat-drawer-content > .header > button {
+      min-height: @header-height;
+    }
+
+    mat-drawer.mat-drawer-side {
+      z-index: 1;
+
+      mat-tab-header {
+        padding: 0 0.5rem;
+
+        .mat-mdc-tab-label-container {
+          align-items: end;
+        }
+      }
+    }
+
+    .mat-drawer-content {
+      z-index: 2;
+      overflow: unset;
+    }
+  }
+}
+
+.ol-scale-line {
+  bottom: @map-overlay-padding;
+  right: @map-overlay-padding;
+  left: unset;
+  background: none;
+
+  .ol-scale-line-inner {
+    color: var(--base-dark);
+    border-color: var(--base-dark);
+    border-width: 2px;
+    text-shadow: 1px 1px 1px var(--base-pure-white);
+  }
+}
+
+.gmt-map-ctrls,
+.gmt-map-overlay {
+  position: absolute;
+  padding: 0;
+  margin-top: @header-height + @map-overlay-padding;
+  z-index: 30;
+}
+
+.gmt-map-overlay {
+  width: 100%;
+}
+
+#feature-details-container {
+  right: @map-overlay-padding;
+}
+
+#show-single-catchment {
+  left: 37%;
+}
+
+.ol-map > ul.gmt-map-ctrls {
+  // unable to figure out what element is causing
+  // child list items to extend beyond their container
+  width: @map-ctrl-size;
+
+  > li {
+    box-shadow: @map-viewport-shadow;
+    border-radius: @map-ctrl-radius;
+
+    &:not(:last-child) {
+      margin-block-end: 0.5rem;
+    }
+
+    .controlContainer {
+      border: 1px solid var(--base-dark);
+
+      &:not(:first-child) {
+        border-top: 1px solid var(--base-medium);
+      }
+    }
+  }
+
+  // this one is unique
+  map-control-layers-selector-icon .controlContainer {
+    // reduces optical alignment
+    padding-bottom: 1px;
+    border-top-left-radius: @map-ctrl-radius;
+    border-bottom-left-radius: @map-ctrl-radius;
+  }
+
+  // due to markup, cannot use one selector to achieve this easily
+  // using :first-child & :last-child, would be optimal
+  // NOTE: this is quite an ugly hack, see top rules above. A simple html
+  // restructuring would not require such a hack
+  map-control-zoom .controlContainer:first-child,
+  map-control-selector .controlContainer,
+  map-control-baselayer-switcher .controlContainer,
+  boundary-map-legend .controlContainer {
+    border-top-left-radius: @map-ctrl-radius;
+    border-top-right-radius: @map-ctrl-radius;
+  }
+
+  location .controlContainer,
+  undo-redo .controlContainer:first-child {
+    border-top: 1px solid var(--base-medium);
+  }
+
+  map-control-zoom .controlContainer:last-child,
+  undo-redo .controlContainer:last-child,
+  location .controlContainer,
+  boundary-map-legend .controlContainer {
+    border-bottom-left-radius: @map-ctrl-radius;
+    border-bottom-right-radius: @map-ctrl-radius;
+  }
+}
+
+@bg: var(--base-pale);
+.gmt-map-legend ul.gmt-map-ctrls {
+  margin: 0;
+  display: flex;
+  gap: 0.25rem;
+
+  > li {
+    display: flex;
+    box-shadow: 1px 1px 1px rgba(var(--base-dark-rgb), 0.25);
+
+    .controlContainer {
+      width: auto;
+      background-color: @bg;
+      border-bottom: 3px solid var(--base-light);
+
+      &#layer-toggle-catchments {
+        border-right: 1px solid var(--base-light);
+      }
+
+      &:not(:first-child) {
+        border-left: 1px solid var(--base-light);
+      }
+
+      &:not(:last-child) {
+        border-right: 1px solid var(--base-medium);
+      }
+
+      &:hover[class] {
+        background-color: var(--accent-pale);
+      }
+
+      &.selected {
+        background-color: @bg;
+        border-bottom-color: var(--accent-base);
+
+        &:hover[class] {
+          background-color: var(--base-light);
+        }
+
+        .menuButton {
+          opacity: 1;
+        }
+      }
+
+      .menuButton {
+        display: flex;
+        padding: 0 0.5rem;
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
+ul.gmt-map-ctrls {
+  margin-left: @map-overlay-padding;
+  list-style: none;
+
+  > li {
+    .controlContainer {
+      z-index: 100;
+      background-color: var(--base-base);
+      width: @map-ctrl-size;
+      height: @map-ctrl-size;
+
+      fa-stack {
+        width: auto;
+
+        .legendIcon.overlay {
+          position: absolute;
+          bottom: -2px;
+          right: -5px;
+          color: var(--base-pure-white);
+
+          svg {
+            stroke: var(--base-base);
+            stroke-width: 55;
+          }
+        }
+      }
+
+      &.selected,
+      &.mat-button-toggle-checked,
+      &.cdk-focused,
+      &:hover {
+        background-color: var(--base-dark);
+
+        .legendIcon {
+          color: var(--base-pure-white);
+        }
+      }
+
+      &.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      // &:first-child {
+      //   border-top-left-radius: @map-ctrl-radius;
+      //   border-top-right-radius: @map-ctrl-radius;
+      // }
+
+      // &:last-child {
+      //   border-bottom-left-radius: @map-ctrl-radius;
+      //   border-bottom-right-radius: @map-ctrl-radius;
+      // }
+
+      fa-stack {
+        display: block;
+      }
+
+      .legendIcon {
+        svg path {
+          box-shadow: 1px 1px 1px var(--base-black);
+        }
+      }
+    }
+  }
+}
+
+//.gmt-map-legend-old,
+.gmt-map-legend {
+  z-index: 999;
+  margin-left: @map-overlay-padding;
+  left: @map-ctrl-size + @map-overlay-padding;
+  position: absolute;
+  height: 100%;
+
+  .legend-container {
+    margin-top: @header-height + 3rem;
+  }
+
+  &.indicators {
+    section,
+    ul,
+    li,
+    header {
+      display: flex;
+      align-items: center;
+      color: var(--base-dark);
+    }
+
+    section {
+      padding: 0.5rem;
+      flex-direction: column;
+      background: rgba(var(--base-pure-white-rgb), 0.9);
+      box-shadow: 1px 1px 1px rgba(var(--base-dark-rgb), 0.25);
+
+      ul,
+      li {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      li {
+        margin: 0 0.75rem;
+
+        &:first-child {
+          margin-left: 0;
+        }
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+
+      header,
+      fa-icon,
+      label {
+        margin: 0 0.25rem;
+      }
+
+      label {
+        line-height: 1;
+      }
+
+      header {
+        margin-bottom: 0.75rem;
+        border-bottom: 1px dotted var(--base-medium);
+        width: 100%;
+
+        fa-icon {
+          margin-right: 0.5rem;
+        }
+      }
+
+      mat-icon {
+        width: 1.15em;
+        height: 1.15em;
+
+        rect {
+          stroke: var(--base-pale);
+          stroke-width: 2;
+        }
+      }
+    }
+  }
+}
+
+.ol-viewport::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  box-shadow: inset @map-viewport-shadow;
+  z-index: 1;
+  pointer-events: none;
+}
+
+mat-drawer-content > .header {
+  box-shadow: @map-viewport-shadow;
+}
+
+// XXX: Hack
+#body st-details st-health-facilities hf-details-content > mat-expansion-panel {
+  &.mat-expanded .mat-expansion-indicator {
+    transform: rotate(-90deg) !important;
+  }
+
+  > .mat-expansion-panel-content {
+    display: none;
+  }
+}
+
+/**
+ * Responsive
+ */
+// only for OPB area, not overview due to graphs.
+#body app-page-microplan mat-drawer-container mat-drawer {
+  min-width: 260px;
+  @media screen and (max-width: 1200px) {
+    width: 340px;
+  }
+}

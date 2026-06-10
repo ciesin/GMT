@@ -1,0 +1,43 @@
+.hf-staff-content-form {
+  display: flex;
+  flex-wrap: wrap;
+  @gap: 1em;
+  gap: @gap;
+
+  padding: 1em;
+
+  .full-width {
+    flex: 1 0 100%;
+  }
+
+  .half-width {
+    flex: 1 0 calc(50% - @gap / 2);
+  }
+}
+
+mat-panel-title {
+  display: inline-block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  /*we don't want the name capitalized automatically*/
+  text-transform: none;
+}
+
+mat-action-row {
+  border: none;
+  flex: 1 1 100%;
+}
+
+.add-new-staff-container {
+  padding: 1em;
+
+  text-align: right;
+}
+
+.no-entries {
+  margin: 0;
+  padding: 1em;
+  background: var(--base-pure-white);
+  color: var(--base-dark);
+}

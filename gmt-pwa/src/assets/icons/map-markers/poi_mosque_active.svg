@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="28"
+   height="35.953125"
+   viewBox="0 0 28 35.953125"
+   fill="none"
+   version="1.1"
+   id="svg6023"
+   sodipodi:docname="poi_mosque_active.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview6025"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="7.1515152"
+     inkscape:cx="12.654661"
+     inkscape:cy="18.527542"
+     inkscape:window-width="958"
+     inkscape:window-height="1045"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg6023" />
+  <path
+     d="m 24,14 c 0,0.9827 -0.3402,2.3302 -1.036,3.9793 -0.6824,1.6172 -1.6418,3.3751 -2.728,5.1337 -2.1719,3.516 -4.7546,6.8806 -6.3602,8.8876 l 3.1234,2.4988 c 1.6444,-2.0555 4.3429,-5.5659 6.6398,-9.2843 1.1481,-1.8586 2.22,-3.8076 3.0103,-5.6808 C 27.4261,17.6933 28,15.7673 28,14 Z M 13.8758,32.0006 c 0.0098,-0.0123 0.0273,-0.0269 0.0483,-0.0367 0.0184,-0.0085 0.0335,-0.0108 0.0447,-0.0108 0.0111,0 0.0262,0.0023 0.0446,0.0108 0.021,0.0098 0.0385,0.0244 0.0483,0.0367 l -3.12344,2.4988 c 1.55064,1.9383 4.51034,1.9383 6.06094,0 z m 0.1859,0 C 12.4594,29.9976 9.89236,26.6337 7.73608,23.1183 6.65761,21.3601 5.70552,19.602 5.02849,17.9846 4.33821,16.3355 4,14.986 4,14 H 0 c 0,1.764 0.56804,3.6879 1.338695,5.5291 0.783913,1.8728 1.847445,3.8217 2.987725,5.6807 2.28122,3.719 4.96421,7.2301 6.61184,9.2896 z M 4,14 C 4,8.47277 8.42386,4 14,4 V 0 C 6.20114,0 0,6.27723 0,14 Z M 14,4 c 5.5204,0 10,4.47957 10,10 h 4 C 28,6.27043 21.7296,0 14,0 Z"
+     fill="#184f67"
+     id="path6000" />
+  <path
+     d="m 26,14 c 0,5.5 -7.3125,15.1875 -10.5625,19.25 -0.75,0.9375 -2.1875,0.9375 -2.9375,0 C 9.25,29.1875 2,19.5 2,14 2,7.375 7.3125,2 14,2 20.625,2 26,7.375 26,14 Z"
+     fill="#d6965a"
+     id="path5998"
+     style="fill:#fd8900;fill-opacity:1" />
+  <g
+     filter="url(#filter0_d_3180_168687)"
+     id="g6004"
+     transform="translate(2,2)">
+    <path
+       d="m 14.4609,18.0566 c -0.0293,0 -0.205,0 -0.2636,0 -3.4278,0 -6.18168,-2.7539 -6.18168,-6.1816 0,-3.39844 2.75388,-6.15234 6.18168,-6.15234 0.0586,0 0.2343,0 0.2636,0 0.2051,0 0.3809,-0.14649 0.4395,-0.35157 C 14.9297,5.16602 14.8125,4.96094 14.6074,4.87305 13.7578,4.55078 12.8789,4.375 12,4.375 c -4.16016,0 -7.5,3.36914 -7.5,7.5 0,4.1602 3.33984,7.5 7.5,7.5 0.8789,0 1.7578,-0.1465 2.6074,-0.4688 0.1758,-0.0585 0.293,-0.2343 0.293,-0.4101 0,-0.2344 -0.1758,-0.4395 -0.4395,-0.4395 z M 19.2363,10.6445 17.0098,10.3223 15.9844,8.30078 C 15.9551,8.18359 15.8379,8.125 15.75,8.125 c -0.1172,0 -0.2344,0.05859 -0.2637,0.17578 l -1.0254,2.02152 -2.2265,0.3222 C 12,10.6738 11.9121,10.9961 12.0586,11.1426 l 1.6406,1.582 -0.3808,2.2266 c -0.0293,0.205 0.0878,0.3515 0.2636,0.3515 0.0586,0 0.1172,0 0.1465,-0.0293 l 1.9922,-1.0546 2.0215,1.0546 c 0.0293,0.0293 0.0879,0.0293 0.1172,0.0293 0.1758,0 0.3222,-0.1465 0.2929,-0.3515 l -0.3808,-2.2266 1.6113,-1.582 c 0.1758,-0.1465 0.0879,-0.4688 -0.1465,-0.4981 z"
+       fill="#ffffff"
+       id="path6002" />
+  </g>
+  <defs
+     id="defs6021">
+    <filter
+       id="filter0_d_3180_168687"
+       x="2"
+       y="1"
+       width="21"
+       height="21"
+       filterUnits="userSpaceOnUse"
+       color-interpolation-filters="sRGB">
+      <feFlood
+         flood-opacity="0"
+         result="BackgroundImageFix"
+         id="feFlood6006" />
+      <feColorMatrix
+         in="SourceAlpha"
+         type="matrix"
+         values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+         result="hardAlpha"
+         id="feColorMatrix6008" />
+      <feOffset
+         dx="1"
+         dy="1"
+         id="feOffset6010" />
+      <feComposite
+         in2="hardAlpha"
+         operator="out"
+         id="feComposite6012" />
+      <feColorMatrix
+         type="matrix"
+         values="0 0 0 0 0.0266146 0 0 0 0 0.219547 0 0 0 0 0.304167 0 0 0 0.5 0"
+         id="feColorMatrix6014" />
+      <feBlend
+         mode="normal"
+         in2="BackgroundImageFix"
+         result="effect1_dropShadow_3180_168687"
+         id="feBlend6016" />
+      <feBlend
+         mode="normal"
+         in="SourceGraphic"
+         in2="effect1_dropShadow_3180_168687"
+         result="shape"
+         id="feBlend6018" />
+    </filter>
+  </defs>
+</svg>

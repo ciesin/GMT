@@ -1,0 +1,91 @@
+@wizard-padding: 1.25rem;
+.wizard-mat-dialog-panel.cdk-overlay-pane {
+  // width: 50%;
+  min-width: 300px;
+  //resize: both;
+
+  &.map-interaction {
+    /*position: fixed !important;
+    top: 0;*/
+  }
+  &.user-input {
+    /*position: fixed !important;
+    bottom: 0;*/
+  }
+  //needed for resize to work
+  // overflow: auto;
+}
+
+:root
+  .cdk-overlay-container
+  .cdk-global-overlay-wrapper.gmt-wizard-overlay-wrapper {
+  //Styles for overlay wrapper
+
+  //This is what moves the popup to the top
+  align-items: start !important;
+
+  // base dialog spacing
+  .mat-mdc-dialog-content {
+    padding: 0;
+  }
+
+  /* XXX: this is clearly a hack, would be best to do w/ component js */
+  .mat-horizontal-stepper-header-container {
+    padding: @wizard-padding;
+    padding-block: (@wizard-padding / 2);
+    margin-bottom: @wizard-padding;
+    background: linear-gradient(var(--base-pure-white), var(--base-pale));
+    border-bottom: 1px solid var(--base-light);
+  }
+
+  .mat-horizontal-stepper-header-container::before {
+    flex-grow: 1;
+    font-size: 1.15rem;
+    font-weight: bold;
+    margin-right: 1rem;
+    color: var(--base-dark);
+  }
+
+  .mat-horizontal-content-container {
+    padding: @wizard-padding;
+    padding-top: 0;
+  }
+
+  //NOTE Other CDK/Material modals use overlay container
+  //So wizard specific changes should be scoped
+  //to .cdk-global-overlay-wrapper
+  //Structure is cdk-overlayer-container -> cdk-overlap-wrapper (1 per modal) -> cdk-overlay-pane
+  .cdk-overlay-pane {
+    transition: all 0.5s;
+
+    //be in front of the overlay
+    z-index: 1002;
+
+    //to get z index working
+    position: relative;
+  }
+
+  // I've decided to just keep them at top, they will animate down
+  // &.gmt-modal-map {
+  //.cdk-global-overlay-wrapper {
+
+  //}
+  //These moved to the top (this block is at cdk-global-overlay-wrapper)
+
+  .gmt-modal-options section {
+    display: flex;
+    align-items: center;
+  }
+}
+
+div.map-interaction-overlay {
+  position: fixed;
+  background: var(--base-black);
+  opacity: 0.55;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  visibility: hidden;
+}

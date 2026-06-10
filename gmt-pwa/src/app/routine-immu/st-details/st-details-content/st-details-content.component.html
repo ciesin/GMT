@@ -1,0 +1,149 @@
+<form
+  *ngIf="stName?.properties"
+  [formGroup]="basicInformationFormGroup"
+  class="st-details-content-form"
+>
+  <div class="control-container">
+    <mat-form-field subscriptSizing="dynamic" class="full-width">
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Name"
+        name="settlement_name"
+        [formControlName]="FORM_KEY_NAME"
+        (ngModelChange)="nameChange($event)"
+      />
+    </mat-form-field>
+
+    <div class="full-width">
+      <gmt-wizard-list-control
+        [listItems]="basicInformationFormGroup.get(FORM_KEY_SYNONYM)!.value"
+        (listItemsOutput)="synonymChange($event)"
+        label="ALSO KNOWN AS (AKA)"
+        [canEdit]="controlsEnabled"
+      >
+      </gmt-wizard-list-control>
+    </div>
+
+    <mat-form-field subscriptSizing="dynamic" class="full-width">
+      <mat-label>Comments</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Comments"
+        name="settlement_comments"
+        [formControlName]="FORM_KEY_COMMENTS"
+        (ngModelChange)="commentsChange($event)"
+      />
+    </mat-form-field>
+
+    <div class="fake-mat-form-field full-width">
+      <mat-label>SPECIAL ATTENTION</mat-label>
+      <mat-select
+        placeholder="--"
+        [formControlName]="FORM_KEY_PROBLEMATIC"
+        (ngModelChange)="problematicChange()"
+        multiple
+      >
+        <mat-option
+          *ngFor="let problematicOption of problematicOptions"
+          [value]="problematicOption.value"
+        >
+          {{ problematicOption.label }}
+        </mat-option>
+      </mat-select>
+    </div>
+
+    <mat-form-field subscriptSizing="dynamic" class="half-width">
+      <mat-label>Estimated pop.</mat-label>
+      <fa-icon matPrefix icon="users"></fa-icon>
+      <input
+        matInput
+        type="number"
+        [formControlName]="FORM_KEY_ESTIMATED_POP"
+        (ngModelChange)="handleEstimatedPopChange()"
+      />
+      <!--           (blur) = "transNumberFormat()"-->
+    </mat-form-field>
+
+    <mat-form-field subscriptSizing="dynamic" class="half-width">
+      <mat-label>Computed pop.</mat-label>
+      <fa-icon matPrefix icon="users"></fa-icon>
+      <input
+        matInput
+        [formControlName]="FORM_KEY_COMPUTED_POP"
+        [disabled]="true"
+        type="text"
+      />
+    </mat-form-field>
+
+    <div *ngIf="editing" class="half-width">
+      <mat-slide-toggle
+        [checked]="stName.properties.uninhabited"
+        (change)="uninhabitedChange($event)"
+      >
+        Uninhabited
+      </mat-slide-toggle>
+    </div>
+
+    <mat-form-field
+      subscriptSizing="dynamic"
+      *ngIf="stName.properties.uninhabited"
+      class="half-width"
+    >
+      <mat-label
+        ><div class="edit-uninhabited-reason-icon">
+          <fa-icon (click)="handleEditUninhabitedReason()" icon="pen"></fa-icon>
+        </div>
+        Uninhabited reason
+      </mat-label>
+
+      <input
+        matInput
+        [value]="getUninhabitedReason()"
+        readonly
+        [disabled]="true"
+      />
+    </mat-form-field>
+  </div>
+
+  <!--Force to start a new row-->
+  <div class="control-container">
+    <div *ngIf="controlsEnabled" class="half-width vcenter">
+      <mat-slide-toggle
+        [checked]="outsideBoundary"
+        (change)="outsideBoundarySwitchChange($event.checked)"
+      >
+        Different Ward
+      </mat-slide-toggle>
+    </div>
+    <mat-form-field subscriptSizing="dynamic" class="half-width">
+      <mat-label>WARD</mat-label>
+      <mat-select
+        [formControlName]="FORM_KEY_BOUNDARY"
+        (ngModelChange)="boundaryChange($event)"
+      >
+        <mat-option
+          *ngFor="let surroundingBoundary of surroundingBoundaryOptions"
+          [value]="surroundingBoundary.boundaryId"
+        >
+          {{ surroundingBoundary.label }}
+        </mat-option>
+      </mat-select>
+      <fa-icon matSuffix icon="caret-down"></fa-icon>
+    </mat-form-field>
+  </div>
+</form>
+
+<mat-action-row *ngIf="editing">
+  <button mat-button (click)="handleDelete()" *ngIf="getIsGmt()">
+    <fa-icon icon="trash-can"></fa-icon>
+    <span class="label">Delete</span>
+  </button>
+  <button mat-button mat-flat-button (click)="enableLocationWizard()">
+    <fa-icon icon="location-crosshairs"></fa-icon>
+    <span class="pre-label">edit</span>
+    <span class="label">Location</span>
+  </button>
+</mat-action-row>

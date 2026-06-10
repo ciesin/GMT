@@ -1,0 +1,127 @@
+@import "src/shared";
+@import "../../../../../_shared/map/panel/base-map.component.less";
+@import "../../../../../_shared/map/control/map-control.component.less";
+
+.header {
+  background-color: @color-tertiary;
+  color: white;
+  padding: 2vh;
+  .label {
+    font-size: 2vh;
+  }
+}
+
+#ol-control-strategy {
+  top: .5em;
+  right: 8.7em;
+}
+
+.legendContainer {
+  position: absolute;
+  top: 2vh;
+  right: 2vh;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+
+  .menuButton {
+    z-index: 100;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 0.5vh;
+    display: flex;
+    align-items: center;
+    align-self: flex-end;
+    padding: 0.5vh;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+
+    .legendIcon {
+      height: 3vh;
+      width: 3.5vh;
+    }
+
+    .arrow {
+      margin-left: 0.5vh;
+      width: 1.5vh;
+      filter: invert(0.8);
+    }
+  }
+
+  &.open .menuButton {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow: none;
+  }
+
+  &.open .arrow {
+    transform: rotate(0deg);
+  }
+
+  &:not(.open) .arrow {
+    transform: rotate(180deg);
+  }
+
+  &.open .content {
+    display: flex;
+  }
+
+  .content {
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+    display: none;
+    background-color: white;
+    flex-direction: column;
+    padding: 1.5vh;
+    border-radius: 1.5vh 0 1.5vh 1.5vh;
+    font-size: 1.5vh;
+
+    .part {
+      margin-bottom: 1vh;
+
+      .title {
+        font-weight: bold;
+        margin-bottom: 0.5vh;
+      }
+
+      .items {
+        .item {
+          margin-bottom: 0.5vh;
+          display: flex;
+          align-items: center;
+
+          .legend {
+            .legend() ;
+            margin-right: 0.5vh;
+          }
+
+        }
+
+      }
+    }
+
+    .bottom {
+      border-top: @color-d2w-3 0.1rem solid;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding-top: 1vh;
+
+      .legend {
+        background-color: @color-second-dark;
+        border-radius: 0.2vh;
+        width: 1vh;
+        height: 1vh;
+        margin-right: 0.5vh;
+        margin-left: 0.5vh;
+      }
+    }
+  }
+}
+
+
+.ol-control button {
+    background-color: white;
+}
+
+::ng-deep .ol-control button {
+    background-color: white;
+}

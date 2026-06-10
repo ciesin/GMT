@@ -1,0 +1,245 @@
+@import "src/shared";
+
+.abovepage {
+  display: flex;
+  padding: 1rem 2rem;
+  color: @color-secondary;
+  background: linear-gradient(var(--base-pale), var(--base-light) 40%);
+  align-items: center;
+  gap: 1rem;
+
+
+  .left {
+    flex-grow: 1;
+    color: var(--base-dark);
+
+    &>div {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+.resetBtn {
+  border: solid 1px var(--accent-light);
+  background: var(--accent-pale);
+}
+
+.userCreationCardContainer {
+  display: flex;
+  row-gap: @gap;
+  background-color: var(--base-pale);
+
+  .card {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  input {
+    .input();
+    flex-grow: 20;
+    border-radius: 0.5rem !important;
+    border-color: @color-blue-table;
+    row-gap: @gap;
+
+    &::placeholder {
+      color: @color-inactive-field !important;
+    }
+  }
+
+  input.input-invalid {
+    color: @color-primary;
+    border-color: @color-primary !important;
+  }
+
+  .p-invalid {
+    color: @color-primary;
+  }
+
+
+  .header {
+    display: flex;
+    align-items: flex-end;
+    background: linear-gradient(var(--base-white), var(--base-pale));
+    border-bottom: 1px solid var(--base-light);
+    padding: 1.25rem;
+    padding-block: .625rem;
+
+    .closeBtn {
+      margin-left: 1rem;
+    }
+
+    .right {
+      margin-right: 5rem;
+
+      .resetUserPasswordButton {
+        .gmtTextButton();
+        font-weight: normal;
+        color: @color-second-dark;
+
+        img {
+          margin-right: 0.5vh;
+        }
+      }
+    }
+  }
+
+  .wrapper {
+    height: calc(100vh - 165px);
+    display: flex;
+    background-color: var(--base-white);
+    flex-direction: column;
+    padding: 1rem;
+    overflow: auto;
+
+    table {
+      table-layout: fixed;
+
+      td {
+        vertical-align: top;
+      }
+    }
+
+    boundary-map {
+      background-color: #c0c0c0;
+      height: 60vh; //100%;
+      display: flex;
+      flex-direction: column;
+      flex-flow: column wrap;
+      width: 40vw;
+      //flex-direction: row;
+      margin: 0 3rem 0 1rem;
+    }
+
+    .container {
+      display: flex;
+      flex-flow: column wrap;
+      flex-direction: column;
+      gap: 10px;
+
+      .row {
+        display: flex;
+        column-gap: @gap;
+
+        mat-label {
+          font-size: .9rem;
+        }
+
+        .inputWrapper {
+          display: flex;
+          flex-direction: column;
+          gap: 0.2rem;
+
+          ::ng-deep .search {
+            width: 90% !important;
+            min-width: 37rem;
+          }
+
+          ::ng-deep .p-multiselect {
+            .input();
+            max-width: 37rem;
+            min-width: 37rem;
+          }
+
+          ::ng-deep .p-inputtext {
+            .input();
+            max-width: 37rem;
+          }
+
+          ::ng-deep .host {
+            div:first-child {
+              display: none;
+            }
+          }
+
+          .roleDescription {
+            color: var(--base-dark);
+            background-color: var(--base-pale);
+            padding: 1rem;
+            border: 1px solid var(--base-dark);
+
+            .row {
+              display: flex;
+              flex-direction: row;
+              flex-wrap: wrap;
+              width: 100%;
+              padding: 2rem 0 2rem 0;
+
+              .column1 {
+                flex: 25%;
+              }
+
+              .column2 {
+                flex: 73%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .saveContainer {
+    display: flex;
+    justify-content: right;
+    margin-right: 2rem;
+
+    .gmtTextButton {
+      .gmtTextButton();
+    }
+
+    .save {
+      .primaryButton();
+      padding: 1.1vh 2vh;
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+// Tooltip is created outside the the user creation object
+::ng-deep .p-tooltip {
+  max-width: fit-content;
+}
+
+// classname should be unique as it is deep override
+::ng-deep .gmtMultiselectHostUserEdit {
+  border: white !important;
+
+  img {
+    display: none;
+  }
+}
+
+
+::ng-deep {
+  .p-inputswitch-slider {
+    background-color: white !important;
+    border-color: @color-secondary !important;
+    margin-left: 1rem;
+    height: 2.6rem;
+    width: 4.5rem;
+  }
+
+  .p-inputswitch .p-inputswitch-slider:before {
+    margin-top: -1rem;
+    height: 2.0rem;
+    width: 2.0rem;
+  }
+
+  .p-inputswitch-checked {
+    .p-inputswitch-slider {
+      background-color: @color-primary !important;
+      border-color: @color-primary !important;
+    }
+  }
+
+  label {
+    padding-left: 1.8rem;
+  }
+}
+
+
+::ng-deep .p-multiselect-panel.p-component {
+  background: white;
+}

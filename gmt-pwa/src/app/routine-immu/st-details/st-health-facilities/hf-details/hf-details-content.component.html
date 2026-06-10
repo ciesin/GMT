@@ -1,0 +1,57 @@
+<mat-expansion-panel
+  *ngIf="hf"
+  class="sub-sub-expansion"
+  (opened)="panelOpenState = true"
+  (closed)="panelOpenState = false"
+  hideToggle="true"
+  (click)="onOpenPanelAction()"
+>
+  <!--Use hideToggle because we won't actually expand this ever
+However to keep the style the same, we keep the map expansion panel
+-->
+  <mat-expansion-panel-header class="main-header">
+    <mat-panel-title>
+      <!-- fa-icon
+        icon="location-crosshairs"
+        (click)="handleShowHfSiteOnMap($event)"
+      ></fa-icon -->
+      <fa-icon
+        *ngIf="isExplicitInclude && userHasEditRights"
+        icon="minus-circle"
+        class="remove-icon"
+        (click)="deleteExplicitInclude($event)"
+      ></fa-icon>
+
+      <span>{{ displayName }}</span>
+      <fa-icon *ngIf="isExplicitInclude" icon="thumbtack"></fa-icon>
+      {{ "" // span is necessary here to get
+      icon margin }}
+    </mat-panel-title>
+    <mat-panel-description>
+      <div class="gmt-stats">
+        <div class="gmt-stats-text">
+          <span>{{ formatPopulation(coverageHf.catchmentPopulation) }}</span>
+          <fa-icon
+            *ngIf="coverageHf.isCatchmentDone"
+            icon="circle-check"
+          ></fa-icon>
+          <fa-icon
+            *ngIf="!coverageHf.isCatchmentDone"
+            icon="circle-minus"
+          ></fa-icon>
+        </div>
+        <gmt-catchment
+          mode="progressbar"
+          type="hf"
+          [total]="100"
+          [fixedPost]="coverageHf.percFixedPost"
+          [outreach]="coverageHf.percOutreach"
+          [problematic]="coverageHf.percProblematic"
+        >
+        </gmt-catchment>
+      </div>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <!--This used to have content but now longer does, that's why it's an expansion panel-->
+</mat-expansion-panel>

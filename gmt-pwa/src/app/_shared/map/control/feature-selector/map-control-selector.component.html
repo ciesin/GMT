@@ -1,0 +1,26 @@
+<div
+  *ngIf="userCanUpdateSt"
+  class="controlContainer"
+  [class.selected-map-control-feature]="isSplitMergeWizardOpened || isBoundaryEditWizardOpened"
+>
+  <div class="menuButton" [matMenuTriggerFor]="menu">
+    <fa-stack>
+      <fa-icon
+        class="legendIcon"
+        [class.selected]="isSplitMergeWizardOpened"
+        icon="draw-polygon"
+        (click)="toggleMenu()"
+      ></fa-icon>
+      <fa-icon class="legendIcon overlay" icon="caret-down"></fa-icon>
+    </fa-stack>
+  </div>
+</div>
+
+<mat-menu #menu="matMenu" backdropClass="map-menu">
+  <button mat-menu-item [ngStyle]="{'background-color' : isBoundaryEditWizardOpened ? 'rgba(10,10,10,.1)' : 'rgba(0,0,0,0)' }" (click)="handleWardCorrection()">
+    Ward Correction
+  </button>
+  <button mat-menu-item [ngStyle]="{'background-color' : isSplitMergeWizardOpened ? 'rgba(10,10,10,.1)' : 'rgba(0,0,0,0)' }" (click)="handleModifySettlements()">
+    Modify Settlements
+  </button>
+</mat-menu>

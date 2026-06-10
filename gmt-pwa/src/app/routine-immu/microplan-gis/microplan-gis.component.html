@@ -1,0 +1,16 @@
+<ng-container *ngIf="!loaded"> </ng-container>
+<ng-container *ngIf="loaded">
+  <div class="panel-content">
+    <header class="side-heading details">
+      <h4><fa-icon icon="list-check"></fa-icon> Resolve Issues</h4>
+      <p>Solve and manage data issues.</p>
+    </header>
+  </div>
+  <base-data-edit (hfsTabIsOpen)="tabStateChanged($event, hfsTab)"
+                  (settlementsTabIsOpen)="tabStateChanged($event, settlementsTab)"
+                  [activeTab]="activeTab!"></base-data-edit>
+  <geometry-issues (tabIsOpen)="tabStateChanged($event, geometryDataTab)" [activeTab]="activeTab!"></geometry-issues>
+  <population-data-edit (tabIsOpen)="tabStateChanged($event, populationDiscrepanciesTab)" [activeTab]="activeTab!"></population-data-edit>
+  <boundary-issues (tabIsOpen)="tabStateChanged($event, boundaryEditsTab)" [activeTab]="activeTab!"></boundary-issues>
+
+</ng-container>

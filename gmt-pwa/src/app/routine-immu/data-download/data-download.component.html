@@ -1,0 +1,8 @@
+<div class="container">
+  <ng-container *ngIf="errorMessage.length == 0" class="error">
+    {{messageForTheUser}}
+  </ng-container>
+  <div *ngIf="errorMessage.length > 0" class="error">
+    <p>{{errorMessage}}</p>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+services:
+  db:
+    ports:
+      - target: 5432
+        published: ${DB_PUBLISHED_PORT}
+        mode: ${DOCKER_NETWORK_MODE}
+
+

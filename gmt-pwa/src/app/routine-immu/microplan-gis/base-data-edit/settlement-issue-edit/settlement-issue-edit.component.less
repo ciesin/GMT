@@ -1,0 +1,39 @@
+:host {
+  .panel-content {
+    margin-bottom: 1rem;
+    color: var(--base-base);
+
+    .inline-edit-button {
+      padding-left: 1rem;
+    }
+
+    .st-name-input {
+      width: 60%;
+    }
+  }
+}
+
+.mat-expansion-panel-header-description {
+  flex-grow: 0.3;
+}
+
+:host
+  ::ng-deep
+  mat-expansion-panel.mat-expansion-panel
+  mat-expansion-panel-header.mat-expansion-panel-header
+  .mat-expansion-panel-header-title {
+  color: var(--base-base);
+  font-size: 0.9em;
+}
+
+mat-expansion-panel.mat-expansion-panel
+  mat-expansion-panel-header.mat-expansion-panel-header
+  .mat-expansion-panel-header-title {
+  &.has-problematic {
+    color: var(--settlements-special);
+
+    fa-icon {
+      color: inherit;
+    }
+  }
+}

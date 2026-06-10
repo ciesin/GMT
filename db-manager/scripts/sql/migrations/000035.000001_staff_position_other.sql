@@ -1,0 +1,1 @@
+ALTER TYPE public.hf_staff_position ADD VALUE 'Other' AFTER 'Unknown';

@@ -1,0 +1,13 @@
+<div class="content">
+  <h1 mat-dialog-title>Exclude Settlement</h1>
+  <div mat-dialog-content>
+    <p>This settlement is part of the catchments of one or more outreach sites attached to this fixed post and the fixed post. Do you want to exclude from</p>
+    
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button class="edit-btn" (click)="handleExcludeDialog('fp_only')">Fixed Post Only</button>
+    <button mat-button class="edit-btn" (click)="handleExcludeDialog('outreach_only')">Outreach Only</button>
+    <button mat-button class="edit-btn" (click)="handleExcludeDialog('both')">Both</button>
+  </div>
+
+</div>

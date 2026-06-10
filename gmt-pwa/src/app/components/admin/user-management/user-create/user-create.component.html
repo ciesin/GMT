@@ -1,0 +1,331 @@
+<div class="abovepage">
+  <button mat-button (click)="handleClose()" class="back">
+    <fa-icon
+      class="v-align-middle back-to-listing-icon"
+      icon="circle-arrow-left"
+    ></fa-icon>
+    <span class="label">Back to user list</span>
+  </button>
+
+  <div class="left">
+    <div *ngIf="!userId">
+      <mat-icon>person</mat-icon>Create a new
+      user
+    </div>
+    <div *ngIf="userId">
+      <mat-icon>person</mat-icon>
+      {{ user.username }} {{ user.first_name }} {{ user.last_name }}
+      <ng-container *ngIf="!resetPassword">
+        <mat-checkbox [ngModel]="user.enabled" (ngModelChange)="disableUser($event)">Activated</mat-checkbox>
+      </ng-container>
+    </div>
+  </div>
+  <div *ngIf="userId && !resetPassword" class="right">
+    <button mat-button class="resetBtn" (click)="handleResetUserPasswordDialog(true)">
+      <fa-icon icon="lock"></fa-icon>
+      <span class="label">Reset User Password</span>
+    </button>
+  </div>
+
+</div>
+<ng-container *ngIf="!user">
+  User was not found
+</ng-container>
+<ng-container>
+  <div *ngIf="user" class="userCreationCardContainer">
+    <div class="card">
+
+      <div class="gmtCard">
+        <div class="wrapper">
+          <table *ngIf="!resetPassword">
+            <tr>
+              <td>
+                <boundary-map #mapPanel
+                              [highlightedBoundaries]="geoPermissionsBoundaryIdsEvent.asObservable()"
+                ></boundary-map>
+              </td>
+              <td>
+                <div class="container">
+                  <div class="row">
+                    <p *ngIf="!userId">Please fill all the following fields, they are all mandatory</p>
+                  </div>
+                  <div class="row">
+                    <ng-container *ngIf="userId">
+                      <div class="inputWrapper">
+                        <!--          <img class="btn" src="assets/icons/bin.png" (click)="handleDisableUsers()" title="Disable user">-->
+                        <mat-label>ID</mat-label>
+                        <div style="font-size: 1.2rem; padding-right:1rem;align-self: center">{{ user.id }}</div>
+                      </div>
+                    </ng-container>
+
+                    <div class="inputWrapper">
+                      <mat-label>USERNAME*</mat-label>
+
+                      <div *ngFor="let error of errors.username">
+                        <small type="string" class="p-invalid">{{ error }}</small>
+                      </div>
+                      <ng-container *ngIf="userId">{{ user.username }}</ng-container>
+                      <input class="{{(errors.username.length > 0)? 'input-invalid': ''}}"
+                             *ngIf="!userId" type="string" pInputText
+                             [(ngModel)]="user.username"
+                             (blur)="handleValidation('username')">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="inputWrapper">
+                      <mat-label>E-MAIL*</mat-label>
+                      <div *ngFor="let error of errors.email">
+                        <small type="string" class="p-invalid">{{ error }}</small>
+                      </div>
+                      <input class="{{(errors.email.length > 0)? 'input-invalid': ''}}" type="string" pInputText
+                             [(ngModel)]="user.email"
+                             (blur)="handleValidation('email')"
+                      />
+                    </div>
+
+                    <!--               <div class="edit" >-->
+                    <!--                <p-inputSwitch-->
+                    <!--                  [ngModel]="user.email_verified"-->
+                    <!--                  (ngModelChange)="handleEmailVerifiedChange($event)"-->
+                    <!--                ></p-inputSwitch>-->
+                    <!--                <label>E-mail Verified</label>-->
+                    <!--              </div>-->
+                  </div>
+                  <div class="row">
+                    <div class="inputWrapper">
+                      <mat-label>FIRST NAME</mat-label>
+                      <div *ngFor="let error of errors.first_name">
+                        <small type="string" class="p-invalid">{{ error }}</small>
+                      </div>
+                      <input class="{{(errors.first_name.length > 0)? 'input-invalid': ''}}" type="string" pInputText
+                             aria-describedby="firstname-help"
+                             [(ngModel)]="user.first_name"
+                             (blur)="handleValidation('first_name')"
+                      />
+                    </div>
+                    <div class="inputWrapper">
+                      <mat-label>LAST NAME</mat-label>
+                      <div *ngFor="let error of errors.last_name">
+                        <small type="string" class="p-invalid">{{ error }}</small>
+                      </div>
+                      <input class="{{(errors.last_name.length > 0)? 'input-invalid': ''}}"
+                             type="string" pInputText
+                             [(ngModel)]="user.last_name"
+                             (blur)="handleValidation('last_name')"
+                      />
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="inputWrapper">
+                      <div class="label">ROLES
+                        <span>
+                          <button mat-icon-button
+                                  (click)="handleShowRoleExplanations()"
+                                  aria-label="Show roles explanations">
+                            <mat-icon>info</mat-icon>
+                          </button>
+                        </span>
+                      </div>
+                      <div *ngIf="showRolesExplanations" class="roleDescription">
+                        <div class="row">
+                          <div class="column1">
+                            <b>User Administrator: </b>
+                          </div>
+                          <div class="column2">
+                            {{ userAdminRoleExplanation }}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="column1">
+                            <b>Editor: </b>
+                          </div>
+                          <div class="column2">
+                            {{ editorRoleExplanation }}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="column1">
+                            <b>Admin: </b>
+                          </div>
+                          <div class="column2">
+                            User would have additional access to the system functions.
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="column1">
+                            <b>User: </b>
+                          </div>
+                          <div class="column2">
+                            {{ userRoleExplanation }}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="column1">
+                            <b>Participation manager: </b>
+                          </div>
+                          <div class="column2">
+                            {{ participationManagerRoleExplanation }}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="column1">
+                            <b>Microplan status manager: </b>
+                          </div>
+                          <div class="column2">
+                            {{ microPlaningStatusManagerRoleExplanation }}
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <mat-checkbox *ngFor="let r of roles" class="example-margin"
+                                      (change)="handleUserRolesChange($event, r)"
+                                      [checked]="user.roles.includes(r.id)">{{ r.name }}
+                        </mat-checkbox>
+                      </div>
+
+
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="inputWrapper">
+                      <div class="label">
+                        GEOGRAPHIC CONSTRAINTS
+
+                        <span>
+                          <button mat-icon-button
+                                  (click)="handleShowGeoPermissionExplanations()"
+                                  aria-label="Show geographic constraints explanations">
+                            <mat-icon>info</mat-icon>
+                          </button>
+                        </span>
+                      </div>
+                      <div *ngIf="showGeoPermissionExplanations" class="roleDescription">
+                        <p>User could be assigned with permissions for certain boundaries and he will be able to edit
+                          that and <b>surrounding regions</b></p>
+                        <p>You can see surrounding boundaries by clicking on the selected boundary gray area.</p>
+                      </div>
+                      <boundary-search (inputChangeEvent)="handleFilterInputChange($event)"></boundary-search>
+                      <!--                      <img *ngIf="!showGeoPermissionSelections"-->
+                      <!--                           style="width:2rem; margin-left: -3rem; margin-top: 1rem;" src="assets/icons/arrow-down.png"-->
+                      <!--                           (click)="handleOpenGeoPermissionsSelection(true)">-->
+                      <!--                      <img *ngIf="showGeoPermissionSelections" style="width:2rem; margin-left: -3rem; margin-top: 1rem;"-->
+                      <!--                           src="assets/icons/arrow-up.png" (click)="handleOpenGeoPermissionsSelection(false)">-->
+
+                      <mat-chip-set #chipGrid aria-label="Fruit selection">
+                        <mat-chip-row *ngFor="let perm of geoPermissionLabels | keyvalue"
+                                      (removed)="handleGeoPermissionRemove(perm.key)">
+                          {{ formatGeoPermissionsPath(perm.value.label) }}
+                          <button matChipRemove [attr.aria-label]="'remove ' + perm.value.label">
+                            <mat-icon>cancel</mat-icon>
+                          </button>
+                        </mat-chip-row>
+                      </mat-chip-set>
+                      <!--                      -->
+                      <!--                      <mat-chip-set>-->
+                      <!--                        <mat-chip-->
+                      <!--                          *ngFor="let perm of geoPermissionLabels | keyvalue">{{ formatGeoPermissionsPath(perm.value.label) }}-->
+                      <!--                        </mat-chip>-->
+                      <!--                      </mat-chip-set>-->
+                      <gmt-multi-select
+                        [openSelections]="finishedFilteringBoundaries"
+                        allLabel=" "
+                        [options]="geoPermissionOptions"
+                        [selectedItems]="geoPermissionsBoundaryIds"
+                        [selectionClass]="'gmtMultiselectHostUserEdit'"
+                        [filterInputText]="filterInputText"
+                        (onSelect)="handleGeoPermissionAdd($event)">
+                      </gmt-multi-select>
+
+                    </div>
+                  </div>
+                  <div class="saveContainer">
+                    <button mat-button (click)="handleClose()">
+                      <fa-icon icon="close"></fa-icon>
+                      Cancel
+                    </button>
+                    <button *ngIf="userId" [disabled]="saveChangesDisabled" mat-flat-button (click)="handleEditUser()">
+                      <fa-icon icon="circle-check"></fa-icon>
+                      Save changes
+                    </button>
+                    <button *ngIf="!userId" [disabled]="saveChangesDisabled" mat-flat-button
+                            (click)="handleCreateUser()">
+                      <fa-icon icon="circle-check"></fa-icon>
+                      Save user
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+          <ng-container *ngIf="resetPassword">
+            <div class="container">
+              <div class="row">
+                <div class="inputWrapper">
+                  <p>If you fill password field - this password will be given as temporary password for the user.
+                    Otherwise,
+                    if you just click "Reset Password" button, user will get an email with request to change his
+                    password.</p>
+                  <div class="label">PASSWORD</div>
+                  <div *ngFor="let error of errors.password">
+                    <small type="string" class="p-invalid">{{ error }}</small>
+                  </div>
+                  <!--                  id is set just for autocomplete not to fill the field as autocomplete does not work on chrome-->
+                  <p-password class="{{(errors.password.length > 0)? 'input-invalid': ''}}"
+                              autocomplete="do-not-autofill"
+                              id="gmt_password_1"
+                              [(ngModel)]="user.password"
+                              [toggleMask]="true"
+                              [feedback]="true"
+                              [placeholder]='"Type temporary user password"'
+                              (blur)="handleValidation('password')"
+                  >
+                    <ng-template pTemplate="header">
+                      <h6>Type secure temporary password</h6>
+                    </ng-template>
+                    <ng-template pTemplate="footer">
+                      <p class="mt-2">Suggestions</p>
+                      <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                        <li>At least one lowercase</li>
+                        <li>At least one uppercase</li>
+                        <li>At least one numeric</li>
+                        <li>Minimum 8 characters</li>
+                      </ul>
+                    </ng-template>
+                  </p-password>
+                </div>
+              </div>
+              <div class="row">
+                <div class="inputWrapper">
+                  <div class="label">PASSWORD CONFIRMATION</div>
+                  <div *ngFor="let error of errors.password_confirmation">
+                    <small type="string" class="p-invalid">{{ error }}</small>
+                  </div>
+                  <p-password class="{{(errors.password_confirmation.length > 0)? 'input-invalid': ''}}"
+                              [(ngModel)]="passwordConfirmation"
+                              [toggleMask]="true"
+                              [promptLabel]="'vvv'"
+                              [disabled]="false"
+                              [feedback]="false"
+                              [placeholder]='"Repeat the password"'
+                              (blur)="handleValidation('password_confirmation')"
+                  ></p-password>
+                </div>
+              </div>
+            </div>
+            <div class="saveContainer">
+              <button mat-button (click)="handleResetUserPasswordDialog(false)">
+                <fa-icon icon="close"></fa-icon>
+                Cancel
+              </button>
+              <button mat-flat-button (click)="handleResetUserPassword()">
+                <fa-icon icon="circle-check"></fa-icon>
+                Reset Password
+              </button>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+

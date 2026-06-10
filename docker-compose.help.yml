@@ -1,0 +1,6 @@
+version: '3.9'
+
+services:
+  server:
+    volumes:
+    - "/mnt/gmt/${ENV_NAME}_help:/usr/src/app/help"

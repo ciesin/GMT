@@ -1,0 +1,148 @@
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6em;
+  padding: 1.6em;
+  justify-content: flex-end;
+
+  & > button {
+    flex: 1;
+  }
+}
+
+mat-expansion-panel .action-buttons button {
+  flex: unset;
+}
+
+.filter-row {
+  display: flex;
+  padding: 1em;
+  gap: 1em;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: flex-start;
+
+  .search {
+    flex-grow: 1;
+  }
+}
+
+.mp-period {
+  padding: 1.9em 0.7em;
+
+  .title {
+    font-size: 2em;
+    font-weight: 500;
+    margin-bottom: 0.7em;
+    color: var(--base-dark);
+  }
+
+  .detail {
+    display: flex;
+    font-size: 1.6em;
+    color: var(--base-dark);
+
+    & > div {
+      flex: 1;
+      display: inline-flex;
+      flex-direction: column;
+
+      span:first-child {
+        color: var(--base-base);
+      }
+    }
+  }
+}
+
+.empty {
+  font-style: italic;
+  width: 100%;
+  padding: 0 1em;
+}
+
+mat-option {
+  ::ng-deep .mdc-list-item__primary-text {
+    display: flex;
+    gap: 0.2em;
+    align-items: center;
+    width: 100%;
+  }
+
+  fa-icon {
+    color: var(--accent-base);
+    order: 2;
+  }
+
+  i {
+    color: var(--accent-base);
+    // font-size: .7em;
+    order: 3;
+  }
+
+  .boundary {
+    .parent-admins {
+      color: var(--base-dark);
+      font-size: 0.7em;
+    }
+
+    & > span:last-child {
+      color: var(--base-base);
+    }
+  }
+}
+
+.parent-level-title {
+  color: var(--base-80);
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 1.1em;
+  padding: 0 1em;
+}
+
+.select-all {
+  padding: 0 0.5em;
+
+  ::ng-deep label {
+    color: var(--base-80);
+    font-weight: 400;
+  }
+}
+
+:host ::ng-deep div[pfocustrap] {
+  background: white;
+}
+
+.api-description {
+  padding: 16px 8px;
+  background-color: var(--base-pale);
+}
+
+.existing-token {
+  display: flex;
+  flex-direction: row;
+
+  .name-details {
+    padding: 10px;
+    font-family: Noto Sans;
+    vertical-align: middle;
+    letter-spacing: 0;
+    flex-grow: 1;
+    .name {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 20px;
+    }
+    .details {
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 100%;
+    }
+  }
+
+  .delete-container {
+    width: 48px;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+  }
+}

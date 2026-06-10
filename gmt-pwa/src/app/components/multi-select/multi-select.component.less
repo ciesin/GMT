@@ -1,0 +1,106 @@
+@import "src/shared";
+
+.gmtMultiselectHost {
+  border: @color-d2w-4 solid 0.016rem;
+  border-radius: 0.48rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  //flex-direction: column;
+  div {
+    padding: 0.80rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  img {
+    height: 2.4rem;
+    filter: invert(0.8);
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8
+    }
+  }
+}
+
+.chevronWrapper {
+  align-self: self-end;
+  position: absolute;
+  cursor: pointer;
+  z-index: 1;
+
+  img {
+    margin-top: 0.40rem;
+    height: 2.4rem;
+    filter: invert(0.8);
+  }
+
+  &:hover {
+    opacity: 0.8
+  }
+}
+
+.gmtMultiSelectPopup {
+  display: none;
+  position: absolute;
+  background-color: white;
+  border: @color-d2w-4 solid 0.016rem;
+  border-radius: 0.48rem;
+  opacity: 0;
+  z-index:  @zi-root-dropdown;
+  max-height: 30rem;
+  overflow-y: auto;
+
+  .item {
+    padding: 0.80rem;
+    padding-top:0;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+
+    &:nth-child(2){
+      padding-top:0.5rem;
+    }
+
+    input {
+      .input();
+      cursor: pointer;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+
+    label {
+      flex-grow: 1;
+      cursor: pointer;
+    }
+  }
+
+  .chevronWrapper {
+    align-self: self-end;
+    position: absolute;
+    cursor: pointer;
+    z-index: 1;
+
+    img {
+      height: 2.4rem;
+      filter: invert(0.8);
+    }
+
+    &:hover {
+      opacity: 0.8
+    }
+  }
+
+}
+
+.show {
+  display: flex;
+  flex-direction: column;
+}
+
+.positioned {
+  opacity: 1;
+}

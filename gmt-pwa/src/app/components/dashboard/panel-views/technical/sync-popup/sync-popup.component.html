@@ -1,0 +1,111 @@
+<div cdkTrapFocus>
+
+<!--  <button mat-button mat-dialog-close class="cancel" aria-label="close dialog">-->
+<!--    <fa-icon icon="close"></fa-icon>-->
+<!--  </button>-->
+
+  <mat-dialog-content>
+
+    <h1 mat-dialog-title>
+      Synchronize <img *ngIf="!isOnline" src="assets/icons/wifiOffline.svg"/>
+    </h1>
+
+    <ng-container *ngIf="!isProcessing">
+      <div class="message-line">
+        Are you sure you want to sync the latest data?
+      </div>
+      <div class="full-width message-row">
+        {{syncMessage}}</div>
+
+
+      <mat-expansion-panel *ngFor="let userName of userNames; index as i" [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Wards modified by {{userName}} ({{userChanges[i].length}})
+          </mat-panel-title>
+          <mat-panel-description>
+
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="boundary-modif-row"
+             *ngFor="let bModif of userChanges[i]"
+        >
+          <div class="boundary-label-group">
+            <div class="parent-label">
+              {{bModif.boundaryParentLabel}}
+            </div>
+            <div class="boundary-label">
+              {{bModif.boundaryLabel}}
+            </div>
+          </div>
+          <div class="modif-label">
+            <mat-chip>{{bModif.modificationLabel}}</mat-chip>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <div class="message-line top-margin">
+        This may temporarily slow down your connection performance.
+      </div>
+      <mat-dialog-actions align="end">
+        <button mat-button (click)="handleNoSync()">
+          <fa-icon icon="xmark"></fa-icon>
+          <span class="label">No</span>
+        </button>
+        <button mat-flat-button (click)="handleStartSync()">
+          <fa-icon icon="circle-check"></fa-icon>
+          <span class="label">Continue</span>
+        </button>
+      </mat-dialog-actions>
+
+    </ng-container>
+
+    <ng-container *ngIf="isProcessing">
+
+      <div class="sync-message">
+        <fa-icon *ngIf="syncStatus == 0" class="fa-check finished" icon="check" size="2x"></fa-icon>
+        <fa-icon *ngIf="syncStatus == 3" class="fa-xmark" icon="xmark" size="2x"></fa-icon>
+        {{syncMessage}}
+
+
+      </div>
+
+  <!--    <fa-icon class="fa-spin" icon="spinner"></fa-icon>-->
+
+
+      <mat-expansion-panel *ngFor="let step of steps; index as i" [expanded]="false">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="step-panel-title">
+            <mat-spinner class="spinner"  [diameter]="24" *ngIf="step.status == 1"></mat-spinner>
+            <fa-icon *ngIf="step.status == 0" class="fa-check finished" icon="check" size="1x"></fa-icon>
+            <fa-icon *ngIf="step.status == 2" class="fa-hourglass-half" icon="hourglass-half"></fa-icon>
+            <fa-icon *ngIf="step.status == 3" class="fa-xmark" icon="xmark" size="xl"></fa-icon>
+            Step #{{i+1}}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{step.title}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="step-detail">
+          {{step.detail}}
+        </div>
+      </mat-expansion-panel>
+
+      <mat-dialog-actions align="end">
+        <button mat-flat-button (click)="cancelSync()" *ngIf="!syncCompleted">
+          <span class="label">Cancel</span>
+        </button>
+        <button mat-flat-button (click)="ackSyncCompleted()" *ngIf="syncCompleted">
+          <span class="label">Close</span>
+        </button>
+
+      </mat-dialog-actions>
+
+    </ng-container>
+
+
+  </mat-dialog-content>
+
+
+
+</div>

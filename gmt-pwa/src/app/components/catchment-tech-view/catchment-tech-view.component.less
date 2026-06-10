@@ -1,0 +1,93 @@
+@header-height: 80px;
+
+@map-control-scalebar-container-width: 180px;
+@map-control-scalebar-width: @map-control-scalebar-container-width - 5px;
+
+@map-control-zoom-width: 35px;
+//Space between the map controls and the bottom of the map window
+@map-control-padding-bottom: 25px;
+//Space between the map controls and the left of the map window
+@map-control-padding-left: 15px;
+//Space between the map controls and the right of the map window
+@map-control-padding-right: 17px;
+
+//Needs to be under mouse position control
+@map-control-padding-top: 35px;
+
+@map-width: 1000px;
+
+.header {
+  height: @header-height;
+}
+.content {
+  height: calc(100vh - @header-height);
+  width: 100%;
+  display: flex;
+}
+.right-pane {
+  flex: 1;
+  max-width: calc(100% - @map-width);
+}
+.map_legend_container {
+  height: calc(100vh - @header-height);
+  width: @map-width;
+  display: block;
+
+  .map {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+:host {
+  ::ng-deep {
+    .custom-mouse-position {
+      padding: 5px;
+      margin-left: 35px;
+      color: black;
+    }
+
+    .ol-scale-line {
+      background: unset;
+    }
+    .ol-scale-line-inner {
+      border: 1px solid black;
+      border-top: none;
+      color: black;
+    }
+  }
+}
+
+.map_legend_container {
+  position: relative;
+
+  .mouse-position-4326 {
+    position: absolute;
+    top: 0;
+    right: 0px;
+  }
+
+  .scalebar-position {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: @map-control-padding-bottom;
+    left: @map-control-padding-left;
+
+    background-color: rgba(255, 255, 255, 0.438);
+    width: @map-control-scalebar-container-width;
+    padding: 0 10px 0 20px;
+    font-weight: 700;
+    font-size: 12px;
+    height: 40px;
+    border-radius: 6px;
+
+    .scalebar-container {
+      //because open layers css has position absolute
+      position: relative;
+      width: @map-control-scalebar-width;
+      min-width: @map-control-scalebar-width;
+    }
+  }
+}

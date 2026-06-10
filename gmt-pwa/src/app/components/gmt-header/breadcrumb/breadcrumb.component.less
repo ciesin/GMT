@@ -1,0 +1,114 @@
+// @import "../../catchment-card/catchment/catchment.component.less";
+
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+@padding-x: 0.75rem;
+
+ul {
+  display: flex;
+  flex-direction: row;
+
+  list-style: none;
+  margin: 0;
+  padding: 0 @padding-x;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: var(--base-black-90);
+  line-height: 1.5;
+
+  li {
+    text-transform: uppercase;
+    text-shadow: 1px 1px var(--base-dark);
+    color: var(--accent-base);
+
+    &[ng-reflect-router-link]:hover {
+      cursor: pointer;
+    }
+
+    &:not(:first-child):before {
+      content: ">";
+      padding: 1ch;
+      color: var(--base-light);
+    }
+
+    &:last-child {
+      flex: 1;
+    }
+
+    &:hover {
+      color: var(--accent-medium);
+    }
+  }
+}
+
+.main {
+  flex: 1;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 @padding-x;
+  line-height: 1.5;
+
+  color: var(--base-pale);
+  background: linear-gradient(
+    to right,
+    rgba(var(--base-black-rgb), 0.9) 0%,
+    rgba(var(--base-black-rgb), 0.8) 15%,
+    rgba(var(--base-black-rgb), 0.6) 40%,
+    rgba(var(--base-black-rgb), 0.6) 60%,
+    rgba(var(--base-black-rgb), 0.8) 90%,
+    rgba(var(--base-black-rgb), 0.9) 100%
+  );
+
+  & > h1 {
+    color: var(--base-pure-white) !important;
+    // main label
+    text-shadow: 2px 2px 1px var(--base-dark);
+    margin: 0 !important;
+    margin-top: -0.15rem !important;
+  }
+
+  .rhs {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: row;
+    /* inspection */
+    width: 400px;
+
+    .refreshBtn {
+      color: rgb(253, 137, 0);
+    }
+
+    .auto-catch-tooltip {
+      margin-right: 10px;
+    }
+
+    label {
+      margin-right: 10px;
+      color: white;
+    }
+
+    div.gmt-stats {
+      margin-left: 10px;
+
+      .gmt-stats-text {
+        display: flex;
+        flex-direction: row;
+      }
+    }
+  }
+}
+
+
+::ng-deep {
+  #body .rhs label {
+    /*auto sync label*/
+    text-transform: none;
+    color: white;
+  }
+}

@@ -1,0 +1,68 @@
+<ng-container *ngIf="breadcrumbService.$items | async as items; else loading">
+  <ul>
+    <li *ngFor="let b of items.slice(0, -1)" [routerLink]="b.routerLink">
+      {{ b.label }}
+    </li>
+  </ul>
+  <div class="main">
+    <!--Main header when viewing ward map (vs the indicator map)-->
+    <h1>{{ items.at(-1)?.label }}</h1>
+
+    <!--right align this-->
+    <div class="rhs">
+      <fa-icon
+        class="auto-catch-tooltip"
+        icon="circle-info"
+        matTooltip="By default, catchments refresh automatically when you do changes that could affect them.  Toggle off to prevent this"
+      >
+      </fa-icon>
+
+      <label> Auto-sync Catchments </label>
+
+      <mat-slide-toggle
+        [checked]="isAutoCatchmentEnabled"
+        (change)="changeIsAutoCatchmentEnabled($event.checked)"
+      >
+      </mat-slide-toggle>
+
+      <button
+        mat-button
+        class="refreshBtn"
+        *ngIf="itemsToRecalc > 0 && !isAutoCatchmentEnabled"
+        (click)="confirmRecalculateCatchment()"
+      >
+        <fa-icon icon="refresh"></fa-icon>
+      </button>
+
+      <div class="gmt-stats" *ngIf="boundaryCoverage.pop > 0">
+        <div class="gmt-stats-text">
+          <!--put 1st because row-reverse is used in styles.less-->
+          <fa-icon
+            matTooltip="Population and catchment distribution may not be accurate.  Click the refresh icon to refresh the catchments."
+            *ngIf="itemsToRecalc > 0"
+            icon="triangle-exclamation"
+          ></fa-icon>
+          <span>{{ formatPopulation(boundaryCoverage.pop) }}</span>
+        </div>
+        <gmt-catchment
+          mode="progressbar"
+          type="boundary"
+          [total]="
+            boundaryCoverage.fixedPost +
+            boundaryCoverage.outreach +
+            boundaryCoverage.unclaimed
+          "
+          [fixedPost]="boundaryCoverage.fixedPost"
+          [outreach]="boundaryCoverage.outreach"
+          [unclaimed]="boundaryCoverage.unclaimed"
+          [problematic]="boundaryCoverage.problematic"
+        >
+        </gmt-catchment>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #loading>
+  <div>loading...</div>
+</ng-template>

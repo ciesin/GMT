@@ -1,0 +1,17 @@
+<ng-container *ngIf="selectedKey">
+<div class="host" [id]="hostId" (click)="$event.stopPropagation();toggle()">
+  <div  class="selectedItem" [innerHTML]="options[selectedKey!].selectedHtml || options[selectedKey!].optionHtml ">
+  </div>
+  <img *ngIf="popup===null" src="assets/icons/arrow-down.svg"/>
+  <img *ngIf="popup!==null" src="assets/icons/arrow-up.svg"/>
+</div>
+</ng-container>
+
+<div [id]="popupId" class="dropdown">
+  <ng-container *ngFor="let optionkv of options | keyvalue">
+    <div class="item" (click)=" select(optionkv.key)" [innerHTML]="optionkv.value.optionHtml">
+    </div>
+  </ng-container>
+</div>
+
+

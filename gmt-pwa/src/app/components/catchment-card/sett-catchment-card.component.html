@@ -1,0 +1,52 @@
+<mat-expansion-panel
+  *ngIf="settlement"
+  (opened)="panelOpenState = true"
+  (closed)="panelOpenState = false"
+  (click)="onOpenPanelAction()"
+>
+  <mat-expansion-panel-header class="main-header">
+    <mat-panel-title
+      [class]="{'has-problematic': hasProblems()}"
+    >
+      <!-- fa-icon icon="location-crosshairs" (click)="handleShowSettlementSiteOnMap($event)"></fa-icon -->
+      <span [ngClass]="{'uninhabited-name': settlement.properties.uninhabited}">{{displayName}}</span>{{ '' // span is necessary here
+      to get icon margin}}
+    </mat-panel-title>
+    <mat-panel-description>
+      <div class="gmt-stats">
+        <div class="gmt-stats-text">
+          <span>{{formatPopulation(coverageSett.pop)}}</span>
+          <!-- span>{{formatPercentage(100 - coverageSett.percUnclaimed)}}</span -->
+        </div>
+        <gmt-catchment
+          mode="progressbar"
+          type="settlement"
+          [total]="coverageSett.pop"
+          [fixedPost]="coverageSett.fixedPost"
+          [outreach]="coverageSett.outreach"
+          [unclaimed]="coverageSett.unclaimed"
+          [settlementProblems]="coverageSett.problematic"
+        >
+        </gmt-catchment>
+      </div>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <gmt-catchment
+    mode="detailed"
+    type="settlement"
+    [total]="coverageSett.pop"
+    [fixedPost]="coverageSett.fixedPost"
+    [outreach]="coverageSett.outreach"
+    [unclaimed]="coverageSett.unclaimed"
+    [settlementProblems]="coverageSett.problematic"
+  ></gmt-catchment>
+
+  <div class="mat-action-row">
+    <button mat-flat-button class="main" (click)="redirectToDetails()">
+      <fa-icon icon="share"></fa-icon>
+      <span class="pre-label">go to</span>
+      <span class="label">details</span>
+    </button>
+  </div>
+</mat-expansion-panel>

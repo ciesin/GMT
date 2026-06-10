@@ -1,0 +1,66 @@
+.content-form {
+  display: flex;
+  flex-wrap: wrap;
+  @gap: 1em;
+  gap: @gap;
+  padding: 1em;
+
+  .full-width {
+    flex: 1 0 100%;
+  }
+
+  .half-width {
+    flex: 1 0 calc(50% - @gap / 2);
+  }
+}
+
+.cancel {
+  position: absolute;
+  top: 0.2em;
+  right: 0.2em;
+  font-size: 1.3em;
+  aspect-ratio: 1 / 1;
+  width: 1em;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+
+  color: var(--accent-base);
+}
+
+:host {
+  --mdc-dialog-subhead-color: var(--base-dark);
+}
+
+.help {
+  background-color: #eef5fb; // Light blue background
+  border-left: 4px solid #007bff; // Blue border to indicate info
+  color: #333;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  line-height: 1.5;
+
+  margin: 15px;
+
+  // Optional: slight shadow
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  // Support for embedded icon
+  fa-icon {
+    margin-left: 0.25rem;
+    color: #007bff;
+    vertical-align: middle;
+  }
+
+  fa-icon.remove-icon {
+    color: #dc3545; // Bootstrap's "danger" red
+  }
+
+  // Optional: emphasized inline icon reference
+  .icon-placeholder {
+    font-weight: bold;
+    color: #007bff;
+  }
+}

@@ -1,0 +1,36 @@
+:host ::ng-deep .ol-map-button {
+  position: absolute;
+  display: block;
+  z-index: 1;
+}
+
+.controlContainer {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .legendIcon {
+    font-size: 1.25rem;
+    color: var(--base-pure-white);
+  }
+
+  &.disabled {
+    cursor: not-allowed !important;
+    background-color: var(--base-medium);
+
+    .legendIcon {
+      color: var(--base-light);
+    }
+  }
+
+  .arrow {
+    margin-left: 0.5vh;
+    width: 1.5vh;
+    filter: invert(0.8);
+  }
+}
+
+.selected-map-control-feature {
+  background-color: var(--base-dark) !important;
+}

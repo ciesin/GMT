@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Geospatial Microplanning Toolkit</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!--While nginx should handle this, might help-->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <link rel="icon" id="appIcon" type="image/x-icon" href="assets/icons/logo/icon-384.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#1976d2">
+  <style type="text/css">
+    .bootSpinner {
+      display: inline-block;
+      width: 3.2rem;
+      height: 3.2rem;
+      margin-left: -3.6rem;
+    }
+
+    .bootSpinner:after {
+      content: " ";
+      display: block;
+      width: 3.6rem;
+      height: 3.6rem;
+      margin: 0.10rem;
+      border-radius: 50%;
+      border: 1.0rem solid #de036b;
+      border-color: #3a4767 transparent #de036b transparent;
+      animation: lds-dual-ring 1.2s linear infinite;
+    }
+
+    @keyframes lds-dual-ring {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .bootSpinnerWrapper {
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+      flex-direction: column;
+    }
+
+    .bootLoadingText {
+      padding-top: 2vw;
+      font-size: 1vw;
+      text-align: center;
+    }
+
+    .browser-unsupported {
+      color: white;
+      width: 100%;
+      display: none;
+    }
+
+    .browser-unsupported .container {
+      width: 100%;
+      min-width: 30rem;
+    }
+
+    .browser-unsupported .unsupported-browser {
+      margin: 3.5rem auto;
+      width: 100%;
+      box-shadow: 0 0 0.50rem #cacace;
+      position: relative;
+      padding: 2.0rem 3.0rem;
+      text-align: left;
+    }
+
+    .browser-unsupported .unsupported-browser h1 {
+      font-size: 2em;
+      font-weight: 0;
+    }
+
+    .browser-unsupported .unsupported-browser h2 {
+      border: 0;
+    }
+
+    .browser-unsupported .unsupported-browser li {
+      margin-bottom: 0.50rem;
+    }
+
+    .browser-unsupported .unsupported-browser li a {
+      color: inherit;
+    }
+
+    .browser-unsupported .unsupported-browser li a:hover {
+      color: #007bc3;
+    }
+
+    .browser-unsupported .unsupported hr {
+      margin-top: 5.0rem;
+    }
+
+    .browser-unsupported .unsupported-message {
+      font-size: 0.9em;
+      margin-top: 4.0rem;
+      margin-bottom: 3.0rem;
+    }
+
+    .browser-unsupported .unsupported-message li {
+      margin-bottom: 0.50rem;
+    }
+  </style>
+
+
+</head>
+<body id="body" class="default-theme">
+<app-root id="gmt_app_root">
+  <div class="bootSpinnerWrapper">
+    <div class="bootSpinner"></div>
+    <!--    <div class="bootLoadingText">Loading...</div>-->
+  </div>
+</app-root>
+<div class="browser-unsupported">
+  <div class="grid-tools FullSite">
+    <div class="container">
+      <div class="container-wrapper">
+        <div class="container-full-column">
+          <div class="unsupported-browser">
+
+            <h1>Please upgrade your browser in order to use this website</h1>
+            <p>We built GMT using the latest technology which improves the look of the site, increases the speed of the
+              site, and gives you a better experience with new features and functions. Unfortunately, your browser does
+              not support these technologies.</p>
+            <h2>Please download one of these free and up-to-date browsers:</h2>
+            <ul>
+              <li><a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Chrome</a></li>
+              <li><a href="https://www.mozilla.com/firefox/" target="_blank">Firefox</a></li>
+              <li><a href="https://www.microsoft.com/en-us/windows/microsoft-edge" target="_blank">Microsoft Edge</a>
+              </li>
+            </ul>
+            <hr>
+            <div class="unsupported-message">
+              <h3>I can't update my browser</h3>
+              <ul>
+                <li>Ask your system administrator to update your browser if you cannot install updates yourself.</li>
+                <li>If you can't change your browser because of compatibility issues, think about installing a second
+                  browser for utilization of this site and keep the old one for compatibility.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--to control z index properly, we want this under the modals but above everything else-->
+<div class="map-interaction-overlay">
+
+</div>
+
+
+<noscript>Please enable JavaScript to continue using this application.</noscript>
+<script type="text/javascript">
+  if (!('serviceWorker' in navigator)) {
+    var angular_root = document.querySelector('app-root');
+    angular_root.style.display = "none";
+
+    var unsupported_div = document.querySelector('.browser-unsupported');
+    unsupported_div.style.display = "block";
+
+    var body = document.querySelector('body');
+    body.style.backgroundColor = "#121a30";
+  }
+</script>
+
+</body>
+</html>

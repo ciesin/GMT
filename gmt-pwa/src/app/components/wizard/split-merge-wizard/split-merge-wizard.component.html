@@ -1,0 +1,107 @@
+<div>
+    <!--Title is set with css-->
+
+    <!--Wrap in matUI button for https://github.com/novelt/GMT/issues/2376-->
+    <!-- <fa-icon mat-dialog-close icon="close" class="cancel" (click)="handleCancel()"></fa-icon> -->
+    <button mat-dialog-close mat-button (click)="handleCancel()" class="cancel">
+        <fa-icon icon="close"></fa-icon>
+    </button>
+
+    <mat-dialog-content>
+        <mat-stepper class="split-merge-wizard-stepper" #stepper [linear]="true" (selectionChange)="handleStepChange($event)">
+            <mat-step [stepControl]="basicInformationFormGroup" [editable]="false">
+
+                <ng-template matStepLabel>Select Settlements</ng-template>
+
+                <!--Since merge doesn't need a special step, basically we are either splitting or choosing between split/merge-->
+                <ng-container *ngIf="!areSplitting">
+                    <div>To begin select one or more settlement polygons</div>
+                    <ul>
+                        <li>
+                            With one selected you can split
+                        </li>
+                        <li>
+                            With two selected you can merge
+                        </li>
+                    </ul>
+                    <div class="wizard-buttons">
+                        <button (click)="mergeSettlements()" class="merge" mat-button
+                            [disabled]="!canMerge || (isLoadingService.loading | async)">
+                            <fa-icon class="legendIcon" [class.disabled]="!canMerge" icon="object-ungroup"></fa-icon>
+                            <span class="label">Merge</span>
+                        </button>
+                        <button (click)="startSplitSettlement()" class="split" mat-button
+                            [disabled]="!canSplit || (isLoadingService.loading | async)">
+                            <fa-icon class="legendIcon" [class.disabled]="!canSplit" icon="scissors"></fa-icon>
+                            <span class="label">Split</span>
+                        </button>
+
+                    </div>
+                </ng-container>
+
+                <gmt-wizard-polygon-edit #polygonEditSplitSettlementBoundary [isVisible]="areSplitting"
+                    (nextClicked)="handleDrawEnd($event)"
+                    stepDescription="Draw a polygon that will be split from the settlement in order to create 2 new settlements.  ">
+                </gmt-wizard-polygon-edit>
+
+            </mat-step>
+
+            <!-- If merging requires choosing between many non machine generated primary names -->
+            <mat-step *ngIf="showChoosePrimaryName" [stepControl]="choosePrimaryNameFormGroup" [editable]="false">
+                <form [formGroup]="choosePrimaryNameFormGroup" class="form-vertical">
+                    <ng-template matStepLabel>Merge - Choose name</ng-template>
+
+                    <mat-form-field subscriptSizing="dynamic" class="full-width">
+                        <mat-label>Choose Name</mat-label>
+                        <mat-select [formControlName]="FORM_KEY_PRIMARY_NAME">
+                            <mat-option></mat-option>
+                            <mat-option *ngFor="let opt of primaryNameOptions"
+                                [value]="opt.value">{{opt.label}}</mat-option>
+                        </mat-select>
+                        <fa-icon matSuffix icon="caret-down"></fa-icon>
+                    </mat-form-field>
+                </form>
+
+                <div class="wizard-buttons">
+                    <button (click)="chooseMergePrimaryName()" mat-button>
+                        <fa-icon class="legendIcon" icon="object-ungroup"></fa-icon>
+                        <span class="label">Merge</span>
+                    </button>
+                </div>
+            </mat-step>
+
+            <mat-step *ngIf="showEnterPrimaryName" [stepControl]="enterPrimaryNameFormGroup" [editable]="false">
+                <form [formGroup]="enterPrimaryNameFormGroup" class="form-vertical">
+                    <ng-template matStepLabel>Split - Choose name</ng-template>
+                    <div>One of the settlement parts is currently unnamed. Would you like to name the area?</div>
+                    <mat-form-field subscriptSizing="dynamic" class="full-width">
+                        <mat-label>Name</mat-label>
+                        <input matInput placeholder="Settlement Name" [formControlName]="FORM_KEY_PRIMARY_NAME">
+                    </mat-form-field>
+                </form>
+
+                <div class="wizard-buttons">
+                    <button (click)="enterSplitPrimaryName()" mat-button [disabled]="isLoadingService.loading | async">
+                        <fa-icon class="legendIcon" icon="object-ungroup"></fa-icon>Split
+                    </button>
+                </div>
+            </mat-step>
+
+            <mat-step [editable]="false">
+                <div>When you click Finish, the requested changes will be processed.</div>
+                <ng-template matStepLabel>Finished</ng-template>
+                <div class="wizard-buttons">
+                    <button (click)="handleStartOver()" mat-button>
+                        <fa-icon icon="x"></fa-icon>
+                        <span class="label">Start Over</span>
+                    </button>
+                    <button (click)="handleFinish()" mat-flat-button>
+                        <fa-icon icon="circle-check"></fa-icon>
+                        <span class="label">Finish</span>
+                    </button>
+                </div>
+            </mat-step>
+
+        </mat-stepper>
+    </mat-dialog-content>
+</div>

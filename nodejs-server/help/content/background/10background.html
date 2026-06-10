@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1. Background &mdash; GMT User Guide  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1. Tutorial 1" href="../tutorials/10Tutorial1.html" />
+    <link rel="prev" title="Help for the Geospatial Microplanning Toolkit" href="../../index.html" />
+<link href="../../_static/style.css" rel="stylesheet" type="text/css">
+<link rel="manifest" href="./../../manifest.webmanifest">
+<script>
+    // Registering our Service worker
+    if ('serviceWorker' in navigator) {
+        let broadcastChannel = new BroadcastChannel('sw-messages');
+        console.log("sw:","../../sw.js");
+        navigator.serviceWorker.register("../../sw.js")
+        // navigator.serviceWorker.register('sw.js', { scope: "./" })
+        broadcastChannel.addEventListener('message', event => {
+            console.log('main Received', event.data);
+            if (event.data.cacheDone) {
+                localStorage['cacheDone'] = true;
+            }
+            if (event.data.reload) {
+                window.location.reload();
+            }
+        });
+
+        setInterval(async () => {
+            let fetchResp;
+            try {
+                fetchResp = await fetch("../../_static/version", {
+                    method: 'GET',
+                    headers: new Headers({
+                        'pragma': 'no-cache',
+                        'cache-control': 'no-cache',
+                    }),
+                });
+            }catch(error) {
+                console.log("New version detection impossible: ", error);
+            }
+            const serverVersion = await fetchResp.text();
+            const oldVersion = localStorage['version'];
+            const cache = await caches.open('GMT_DOC');
+            const keys = await cache.keys();
+            console.log("keys length:",keys.length);
+            if (serverVersion !== oldVersion || keys.length === 0
+                || ((localStorage['cacheDone']+"") === "false")) //bb: !localStorage['cacheDone'] not working. This is mysterious..
+            {
+                localStorage['version'] = serverVersion;
+                console.log("New version available: ", oldVersion, "=>", serverVersion);
+                localStorage['cacheDone'] = false;
+                broadcastChannel.postMessage({updateCache: true, oldVersion});
+            } else {
+                console.log("Current version :", oldVersion)
+            }
+        },5000);}
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+            <a href="../../index.html">
+            <img src="../../_static/GMT_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Background</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Background</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#gis-basics">1.1. GIS basics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vector-data">1.1.1. Vector data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#raster-data">1.1.2. Raster data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tabular-data">1.1.3. Tabular data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#settlements">1.2. Settlements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#settlement-polygons">1.2.1. Settlement polygons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#settlement-names">1.2.2. Settlement names</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#population">1.3. Population</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/10Tutorial1.html">1. Tutorial 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/20Tutorial2.html">2. Tutorial 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/30Tutorial3.html">3. Tutorial 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/40Tutorial4.html">4. Tutorial 4</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guide to the GMT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guide/10complete_guide.html">1. Guide to the GMT</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standard Operating Procedure</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../SOP/10SOP.html">1. Standard Operating Procedure for the GMT</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GMT User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">1. </span>Background</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="background">
+<h1><span class="section-number">1. </span>Background<a class="headerlink" href="#background" title="Permalink to this headline"></a></h1>
+<section id="gis-basics">
+<h2><span class="section-number">1.1. </span>GIS basics<a class="headerlink" href="#gis-basics" title="Permalink to this headline"></a></h2>
+<p>“GIS” stands for “Geospatial Information System”. In this part we will briefly introduce
+a few key concepts that are relevant for this application.</p>
+<p>In many places, microplans are drawn maps of health facilities and villages on paper. With GIS
+we can bring this analog method into the digital space: a map can be linked to other data
+and thus we can store the catchment of a health facility digitally.</p>
+<p>Why would it be useful for public health? Geographic mapping of disease has been used for
+years, when Dr. John Snow used it in 1859 to trace the source of a cholera
+outbreak in London. Maps were used to identify the location of drinking water pumps in relation
+to the homes of people who died and eventually determining the precise contaminated pump that
+was the source of the epidemic. Since then, immense growth in technology has allowed for the
+advanced mapping of disease spread, identifying sources, and determining target areas for
+interventions. Effective and coordinated national and global surveillance systems
+contribute to tracking and monitoring the spread of diseases across communities
+and across geo-political borders, guiding the planning and targeting of response,
+containment and control measures to areas most at risk, and supporting risk
+assessment and preparedness activities.</p>
+<p>Having these kind of tools digitally available is invaluable.</p>
+<p>To make it happen, the following things are needed:</p>
+<ul class="simple">
+<li><p>Hardware is needed for GIS - such as a tablet</p></li>
+<li><p>Software is needed - such as the GMT</p></li>
+<li><p>Data is needed - such as the health facilities, settlements and population</p></li>
+</ul>
+<p>We’ll talk about the data that is being used here in a bit.</p>
+<p>In general there are three data types used in GIS:</p>
+<ol class="arabic simple">
+<li><p>Vector data</p></li>
+<li><p>Raster data</p></li>
+<li><p>Tabular data</p></li>
+</ol>
+<section id="vector-data">
+<h3><span class="section-number">1.1.1. </span>Vector data<a class="headerlink" href="#vector-data" title="Permalink to this headline"></a></h3>
+<p>A coordinate-based data model that represents geographic features as points, lines and
+polygons. Each point feature is represented as a single coordinate pair, while line and polygon features are
+represented as ordered lists of vertices. Attributes are associated with each feature, as opposed to a raster
+data model, which associates attributes with grid cells. Examples: health facilities, settlements, roads, or
+country boundaries.</p>
+<p>As an example, these could be points of health facilities:</p>
+<img alt="../../_images/vector_data.png" class="align-center" src="../../_images/vector_data.png" />
+</section>
+<hr class="docutils" />
+<section id="raster-data">
+<h3><span class="section-number">1.1.2. </span>Raster data<a class="headerlink" href="#raster-data" title="Permalink to this headline"></a></h3>
+<p>A spatial data model that defines space as an array of equally sized cells (pixels) arranged in
+rows and columns, and comprised of single or multiple bands. Each cell contains an attribute value and
+location coordinates. Unlike a vector structure, which stores coordinates explicitly, raster coordinates are
+contained in the ordering of the matrix. Groups of cells that share the same value represent the same type of geographic feature.
+Example: population per pixel.</p>
+<p>As an example a population raster at low zoom:</p>
+<img alt="../../_images/raster_low.png" class="align-center" src="../../_images/raster_low.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>And at high zoom level, with population values displayed per grid cell:</p>
+<img alt="../../_images/raster_high.png" class="align-center" src="../../_images/raster_high.png" />
+</section>
+<hr class="docutils" />
+<section id="tabular-data">
+<h3><span class="section-number">1.1.3. </span>Tabular data<a class="headerlink" href="#tabular-data" title="Permalink to this headline"></a></h3>
+<p>Descriptive information, usually alphanumeric, that is stored in rows and columns in a
+database and can be linked to spatial data. Examples: employees per health facility.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="settlements">
+<h2><span class="section-number">1.2. </span>Settlements<a class="headerlink" href="#settlements" title="Permalink to this headline"></a></h2>
+<section id="settlement-polygons">
+<h3><span class="section-number">1.2.1. </span>Settlement polygons<a class="headerlink" href="#settlement-polygons" title="Permalink to this headline"></a></h3>
+<p>The settlements that you see on the map in this application are vector data, as described
+above. They have been created the following way:</p>
+<ul class="simple">
+<li><p>High resolution satellite imagery was used to identify all buildings for Nigeria - this resulted in a
+vector layer that contains all buildings</p></li>
+<li><p>The buildings in this layer were aggregated according to a set of rules to group them</p></li>
+<li><p>The resulting groups are the settlements we see on the map</p></li>
+</ul>
+<p>Advantages of this technique:</p>
+<ul class="simple">
+<li><p>All areas where people live can be mapped</p></li>
+</ul>
+<p>Disadvantages of this technique:</p>
+<ul class="simple">
+<li><p>The data is only as good as the imagery used to start with</p></li>
+<li><p>The building extraction algorithm may not always be accurate</p></li>
+</ul>
+<p>As a result, there may be areas where there is no settlement marked on the map, but people are
+living there.</p>
+</section>
+<hr class="docutils" />
+<section id="settlement-names">
+<h3><span class="section-number">1.2.2. </span>Settlement names<a class="headerlink" href="#settlement-names" title="Permalink to this headline"></a></h3>
+<p>As we have seen above, settlements are polygons, derived from building polygons. What we see
+on the map are the shapes of those settlements. Those shapes would be meaningless for a
+person, since humans don’t think in shapes but we refer to settlements with names. Thus,
+there is additionally a point layer of settlement names. This point layer can be
+intersected with the polygon layer - this way, the polygons can be named.</p>
+<p>In an ideal case, there would be one settlement name for each polygon. And ideally, each
+settlement would correspond exactly to one polygon. Let’s take an example below:</p>
+<img alt="../../_images/settlement_polygons.png" class="align-center" src="../../_images/settlement_polygons.png" />
+<p>We could assume those are four different villages, each has one single name. We would need
+a point layer that corresponds to that exactly - the black points labelled 1-4.</p>
+<p>However, there are two things that complicate this:</p>
+<ol class="arabic simple">
+<li><p>Since the settlements are automatically generated from satellite imagery, they may not
+always correspond to the actual settlement outlines. For instance in areas where two cities
+have fused and there is agglomeration, the settlement aggregation algorithm would assume that this
+is one single settlement.</p></li>
+<li><p>Often, one polygon intersects several name points - potentially because there are names not only
+for the principal name of a city, but maybe a neighborhood or an area. That’s why we have the
+possibility to have sub-place names (see <a class="reference internal" href="../tutorials/30Tutorial3.html#subplace-names"><span class="std std-ref">Subplace Names</span></a>).</p></li>
+</ol>
+<p>When you use the “Add Settlement” functionality in the GMT, there are two things you might be doing:
+if you add a settlement with a location where there is no other settlement, you are creating a new
+point, and in the background the application buffers this point with a 100m radius - so a polygon is
+created (see <span class="xref std std-ref">content/tutorials/20tutorial2:adding a settlement where there is none on the map</span>).
+In all other cases, you are simply creating a new name point. This point is then intersected with the
+underlying polygon. Since population is calculated per settlement polygon (and not settlement name point, see below),
+more information is required when you add a second name in an already existing polygon
+(see <a class="reference internal" href="../tutorials/40Tutorial4.html#add-settlement-name-within-existing-settlement"><span class="std std-ref">Add Settlement Name within existing settlement</span></a>).</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="population">
+<h2><span class="section-number">1.3. </span>Population<a class="headerlink" href="#population" title="Permalink to this headline"></a></h2>
+<p>As explained above, satellite imagery combined with a building extraction algorithm
+can already give us a good estimate as to where people live. If we would know how many people
+lived in a building, we would then obtain a very good population model, where only missing
+buildings would pose an issue. However, we cannot know the exact number of people living in each
+building. Thus, there are many ways to make a best guess to obtain that number. Many parameters can be
+used for that. As an example: survey data, the geographical context of the building, the size of the building,
+the neighborhood it is in, the land use of the surroundings etc. Taken together, these all serve as indicators
+to make a best guess for the population in a given building. Based on that information, a raster for
+the entire country is generated, at a 100m x 100m resolution. As a result, each 100mx100m square of
+the country has a population value.</p>
+<img alt="../../_images/raster_high.png" class="align-center" src="../../_images/raster_high.png" />
+<p>This data can then be intersected with a settlement polygon, and in that way we can obtain the amount of
+people that live in each settlement. This corresponds to the number that is shown in “Computed Pop”.</p>
+<img alt="../../_images/computed_pop_exp.png" class="align-center" src="../../_images/computed_pop_exp.png" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../index.html" class="btn btn-neutral float-left" title="Help for the Geospatial Microplanning Toolkit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../tutorials/10Tutorial1.html" class="btn btn-neutral float-right" title="1. Tutorial 1" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Novel-T.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

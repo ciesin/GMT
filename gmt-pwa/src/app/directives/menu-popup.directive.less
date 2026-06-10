@@ -1,0 +1,45 @@
+@import "src/shared";
+
+.menu-popup {
+  display: none;
+  z-index: @zi-root-dropdown;
+  flex-direction: column;
+  position: absolute;
+  background-color: white;
+  color: @color-d2w-1;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+  padding: 0.5vh;
+  //margin-top: 0.2vh;
+  max-width: 25vh;
+  opacity: 0;
+  top:0;
+  left:0;
+
+  &.menu-popup-show {
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  &.menu-popup-positioned{
+    opacity: 1;
+  }
+
+  div {
+    padding: 0.5vh;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+
+    &:hover {
+      opacity: 0.8;
+    }
+    img {
+      width: 2vh;
+      margin-right: 0.5vh;
+      display: inline-block;
+      filter: invert(40%);
+    }
+  }
+}
+
+

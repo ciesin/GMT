@@ -1,0 +1,27 @@
+<div class="gmtMultiselectHost {{selectionClass}}" [id]="hostId" (click)="show()">
+  <div>
+  <ng-container *ngIf="selectedItems.length === optionsCount">
+    {{allLabel}}
+  </ng-container>
+  </div>
+  <img (click)="show()" src="assets/icons/arrow-down.png"/>
+</div>
+
+<div [id]="popupId" class="gmtMultiSelectPopup">
+  <div class="chevronWrapper">
+    <img (click)="hide()" src="assets/icons/arrow-up.png"/>
+  </div>
+  <div *ngFor="let optionkv of options | keyvalue" class="item">
+    <input [id]="optionkv.key + hostId" type="checkbox" [checked]="isSelected(optionkv.key)"
+           (change)="onChange($event.target,optionkv.key, $event);log($event)"/>
+    <label [for]="optionkv.key + hostId" [innerHTML]="hightLightTerm(optionkv.value)"></label>
+  </div>
+  <div *ngIf="optionsCount > 4 && selectedItems.length > 0" (click)="$event.stopPropagation();selectedItems = []"  class="item">
+    <label>Disable all</label>
+  </div>
+  <div *ngIf="optionsCount > 4 && selectedItems.length != optionsCount" (click)="$event.stopPropagation(); enableAll()"  class="item">
+    <label>Enable all</label>
+  </div>
+</div>
+
+

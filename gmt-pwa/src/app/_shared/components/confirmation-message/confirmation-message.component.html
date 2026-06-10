@@ -1,0 +1,23 @@
+<h1 mat-dialog-title *ngIf="data.header">
+  {{ data.header }}
+</h1>
+<br *ngIf="!data.header" />
+
+<button mat-button mat-dialog-close class="cancel" aria-label="close dialog">
+  <fa-icon icon="close"></fa-icon>
+</button>
+
+<mat-dialog-content>
+  <pre class="full-width message-row">{{ data.message }}</pre>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="handleReject()" *ngIf="data.showRejectButton">
+    <fa-icon icon="xmark"></fa-icon>
+    <span class="label">{{ data.rejectLabel ? data.rejectLabel : "No" }}</span>
+  </button>
+  <button mat-flat-button (click)="handleAccept()">
+    <fa-icon icon="circle-check"></fa-icon>
+    <span class="label">{{ data.acceptLabel ? data.acceptLabel : "Yes" }}</span>
+  </button>
+</mat-dialog-actions>

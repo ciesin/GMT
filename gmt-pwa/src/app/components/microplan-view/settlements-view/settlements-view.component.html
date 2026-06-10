@@ -1,0 +1,23 @@
+<ng-container *ngIf="sortFilterService">
+  <header class="side-heading">
+    <h4><fa-icon icon="magnifying-glass"></fa-icon>Settlements</h4>
+  </header>
+  <!--searchTextChanged is as they type, not when they pressed enter-->
+  <gmt-microplan-filter
+    searchPlaceholder="Search Settlements"
+    [autocomplete]="sortFilterService.searchAutocompletePropositions"
+    [filters]="settFilters"
+    (chosenFiltersChanged)="handleChosenFilters($event)"
+    (searchTextChanged)="handleSearchText($event)"
+  ></gmt-microplan-filter>
+  <gmt-microplan-list
+    icon="users"
+    [itemComponent]="itemComponent"
+    [idDisplayList]="sortFilterService.idDisplayList"
+    [sortHeaders]="sortHeaders"
+    (sortOrderChanged)="handleSort($event)"
+    [addFabSpace]="true"
+    (onScroll)="handleScroll($event)"
+    [activeSort]="defaultSetSort"
+  ></gmt-microplan-list>
+</ng-container>

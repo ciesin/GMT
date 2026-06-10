@@ -1,0 +1,28 @@
+services:
+  db:
+    image: "postgis/postgis:13-3.4-alpine"
+    shm_size: '256mb'
+    networks:
+      gmt-net:
+        aliases:
+          - "${DOCKER_DB_HOSTNAME}"
+    env_file:
+      - config/${CONFIG_FILE_NAME}.env
+      - config/secrets.${CONFIG_FILE_NAME}.env
+    command: "-c max_locks_per_transaction=10000 -c max_parallel_workers_per_gather=0"
+    volumes:
+      - "gmt_db_data:/var/lib/postgresql/data:rw"
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+volumes:
+  gmt_db_data:
+
+networks:
+  gmt-net:
+    name: '${DOCKER_NETWORK_NAME}'
+    external: '${DOCKER_NETWORK_IS_EXTERNAL}'

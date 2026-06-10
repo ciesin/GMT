@@ -1,0 +1,5 @@
+
+DROP MATERIALIZED VIEW IF EXISTS ri.microplan_latest;
+DROP TABLE IF EXISTS ri.microplan CASCADE ;
+
+

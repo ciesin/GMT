@@ -1,0 +1,20 @@
+<mat-drawer-container hasBackdrop="false" autosize="true">
+
+  <mat-drawer #leftPanel mode="side" opened disableClose (onPositionChanged)="handleLeftPanelMoved()" (openedChange)="handleLeftPanelMoved()">
+    <gmt-microplan-left-wrapper #leftWrapper [boundary]="currentBoundaryData"></gmt-microplan-left-wrapper>
+  </mat-drawer>
+
+  <mat-drawer-content>
+    <div class="header">
+      <button class="toggle-panel primary" (click)="leftPanel.toggle()">
+        <fa-icon [icon]="leftPanel.opened ? 'angles-left': 'angles-right'"></fa-icon>
+      </button>
+      <gmt-header></gmt-header>
+    </div>
+    <gmt-new [hidden]="leftPanel.opened"></gmt-new>
+    <gmt-microplan-boundary-map #microplanMap
+    [animated]="true"
+    ></gmt-microplan-boundary-map>
+  </mat-drawer-content>
+
+</mat-drawer-container>

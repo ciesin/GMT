@@ -1,0 +1,94 @@
+<h1
+  matDialogTitle
+  cdkDrag
+  cdkDragRootElement=".cdk-overlay-pane"
+  cdkDragHandle
+  class="drag-header"
+>
+  {{ data.isEdit ? "Edit" : "Create new" }} staff member
+</h1>
+
+<mat-dialog-content>
+  <fa-icon
+    matDiagClose
+    class="cancel"
+    icon="xmark"
+    (click)="handleCancelDialog()"
+  ></fa-icon>
+
+  <form
+    [formGroup]="staffInfoFormGroup"
+    class="form-vertical hf-staff-content-form"
+  >
+    <ng-template matStepLabel>Details</ng-template>
+    <mat-form-field subscriptSizing="dynamic" class="full-width">
+      <mat-label>FULL NAME</mat-label>
+      <input
+        matInput
+        placeholder="Staff Full Name"
+        required
+        [formControlName]="FORM_KEY_NAME"
+      />
+      <mat-error
+        *ngIf="staffInfoFormGroup.get(FORM_KEY_NAME)?.hasError('required')"
+      >
+        Staff name is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field subscriptSizing="dynamic" class="half-width">
+      <mat-label>POSITION</mat-label>
+      <mat-select [formControlName]="FORM_KEY_POSITION">
+        <mat-option
+          *ngFor="let staffPosition of staffPositionOptions"
+          [value]="staffPosition.value"
+        >
+          {{ staffPosition.label }}
+        </mat-option>
+      </mat-select>
+      <fa-icon matSuffix icon="caret-down"></fa-icon>
+    </mat-form-field>
+
+    <mat-form-field
+      subscriptSizing="dynamic"
+      class="half-width"
+      *ngIf="staffInfoFormGroup.get(FORM_KEY_POSITION)?.value == 'Other'"
+    >
+      <mat-label>POSITION DETAIL</mat-label>
+      <input
+        matInput
+        placeholder="Specify the position"
+        required
+        [formControlName]="FORM_KEY_POSITION_OTHER"
+      />
+      <mat-error
+        *ngIf="
+          staffInfoFormGroup.get(FORM_KEY_POSITION_OTHER)?.hasError('required')
+        "
+      >
+        When Other is selected, the position text is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field subscriptSizing="dynamic" class="full-width">
+      <mat-label>TYPE</mat-label>
+      <mat-select [formControlName]="FORM_KEY_TYPE">
+        <mat-option *ngFor="let type of staffTypeOptions" [value]="type.value">
+          {{ type.label }}
+        </mat-option>
+      </mat-select>
+      <fa-icon matSuffix icon="caret-down"></fa-icon>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-flat-button
+    type="submit"
+    [disabled]="!staffInfoFormGroup.valid"
+    (click)="handleSaveAndClose()"
+  >
+    <span>{{ data.isEdit ? "Save Changes" : "Create" }}</span>
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,86 @@
+:host {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+:host ::ng-deep [matSort] {
+  flex: 0;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border-top: solid 1px var(--base-light);
+  border-bottom: solid 1px var(--base-medium);
+  color: var(--base-dark);
+  background: var(--base-pure-white);
+
+  fa-icon {
+    flex-grow: 0;
+    font-size: 1.25em;
+
+    &[ng-reflect-icon="house-medical"] {
+      color: var(--catchment-fixed);
+    }
+
+    &[ng-reflect-icon="users"] {
+      color: var(--settlements-base);
+
+      svg path {
+        stroke: rgba(var(--accent-medium-rgb), 0.75);
+        stroke-width: 20;
+      }
+    }
+  }
+
+  // name
+  & > div:nth-of-type(1) {
+    flex-grow: 1;
+  }
+
+  // pop
+  & > div:nth-of-type(2) {
+    flex-grow: 0.3;
+  }
+}
+
+mat-accordion {
+  flex: 1 1 auto;
+
+  &:not([cdkVirtualScrollingElement]) {
+    overflow: auto;
+  }
+}
+
+.fab-space {
+  height: 8.5rem; // should roughly correspond to gmt-new FAB button
+}
+
+:host ::ng-deep {
+  mat-expansion-panel {
+    box-shadow: none !important;
+  }
+}
+
+::ng-deep .sort-header {
+  margin-top: 0;
+  width: 12em;
+  font-size: 0.8em;
+
+  .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
+      .mdc-text-field--textarea
+    )
+    .mat-mdc-form-field-infix {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .mat-mdc-select-value-text {
+    font-size: 0.8em;
+  }
+
+  .mat-mdc-option .mdc-list-item__primary-text {
+    font-size: 0.8em;
+  }
+}

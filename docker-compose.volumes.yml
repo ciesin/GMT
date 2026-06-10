@@ -1,0 +1,9 @@
+version: '3.9'
+
+services:
+  importer:
+    volumes:
+      - "/mnt/gmt/${ENV_NAME}/data:/data"
+  server:
+    volumes:
+      - "/mnt/gmt/${ENV_NAME}/data:/data"

@@ -1,0 +1,49 @@
+.sub-panel-content {
+  display: flex;
+  flex-wrap: wrap;
+  @gap: 1em;
+  gap: @gap;
+
+  .full-width,
+  &>*:not(.half-width) {
+    flex: 0 0 100%;
+  }
+
+  .half-width {
+    flex: 0 0 calc(50% - @gap);
+  }
+}
+
+.mat-expansion-panel-header-description {
+  flex-grow: .3;
+}
+mat-expansion-panel.mat-expansion-panel mat-expansion-panel-header.mat-expansion-panel-header .mat-expansion-panel-header-title {
+	&.has-problematic {
+		color: var(--settlements-special);
+
+		fa-icon {
+			color: inherit;
+		}
+	}
+}
+
+// just to override card.less style for the second level of expansion panel
+mat-expansion-panel.sub-expansion {
+  ::ng-deep.mat-expansion-panel-content {
+    .mat-expansion-panel-body {
+      padding: 0rem;
+    }
+  }
+}
+mat-expansion-panel.sub-sub-expansion {
+  ::ng-deep.mat-expansion-panel-content {
+    .mat-expansion-panel-body {
+      padding: 1rem;
+    }
+  }
+}
+:host{
+  .container-with-padding {
+    padding: 1rem;
+  }
+}

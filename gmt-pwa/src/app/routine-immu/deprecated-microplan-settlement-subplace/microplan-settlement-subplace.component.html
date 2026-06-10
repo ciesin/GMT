@@ -1,0 +1,29 @@
+<!--<div class="top">-->
+<!--  <div class="title">Subplace names</div>-->
+<!--  <input (click)="handleSearchSubPlaceNameClick($event)" type="text"-->
+<!--         (ngModelChange)="handleSearchSubPlaceNameChange($event)"-->
+<!--         placeholder="Search Sub Place Name"-->
+<!--         [ngModel]="searchSubPlaceName"/>-->
+<!--  <img src="assets/icons/cross-circle.svg" class="subNamesShrinkBtn" (click)="close.emit(true)">-->
+<!--</div>-->
+
+<!--<div class="subPlaces" #subPlacesScroll (scroll)="updatePaginatedList()">-->
+<!--  <ng-container *ngFor="let subPlace of displayedSubPlaceList">-->
+<!--    <div class="row">-->
+<!--      <div class="name" *ngIf="renamingPlace!=subPlace" [innerHTML]="highlightText(subPlace.properties.name, textToHighlight)"></div>-->
+<!--       <input class="name renaming"  *ngIf="renamingPlace==subPlace" type="text"-->
+<!--               [(ngModel)]="nameToEdit"-->
+<!--        />-->
+<!--      <img *ngIf="settlementNameEditEnabled()" src="assets/icons/pen.svg" (click)="editName(subPlace)">-->
+<!--      <img *ngIf="settlementNameEditEnabled()" src="assets/icons/promote.svg" (click)="handlePromote(subPlace)">-->
+<!--      <img *ngIf="settlementNameEditEnabled()" src="assets/icons/zoomtoextend.svg" (click)="handleZoomToSubPlace(subPlace)">-->
+<!--      <img *ngIf="settlementNameEditEnabled()" src="assets/icons/bin.svg" (click)="handleDeleteSubPlace(subPlace)">-->
+<!--    </div>-->
+<!--  </ng-container>-->
+<!--</div>-->
+
+
+<!--<gmt-sett-promote-->
+<!--  [(showPopup)]="showPromoteDialog"-->
+<!--  [subPlaceNameId]="promoteSubPlaceNameId"-->
+<!--&gt;</gmt-sett-promote>-->

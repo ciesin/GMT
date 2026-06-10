@@ -1,0 +1,18 @@
+<mat-accordion>
+  <mat-expansion-panel
+    [expanded]="initialPanelOpen"
+    (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div class="mat-h3">
+          <fa-icon *ngIf="titleIcon" class="v-align-middle accordion-title-icon" [icon]="titleIcon"></fa-icon>
+          {{title}}
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="accordion-body">
+      <ng-container [ngComponentOutlet]="contentComponent!"></ng-container>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

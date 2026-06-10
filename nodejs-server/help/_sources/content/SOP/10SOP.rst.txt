@@ -1,0 +1,119 @@
+Standard Operating Procedure for the GMT
+++++++++++++++++++++++++++++++++++++++++
+
+Access and Download the Data
+============================
+
+#. Access the GMT on https://gmt-pilot.health
+#. Find your Ward of interest and take the data offline for the Ward(s) of interest
+
+See section :ref:`content/tutorials/10tutorial1:dashboard and taking data offline`
+
+.. image:: /content/_images/access_download.png
+    :align: center
+
+------------------------------------
+
+Review Health Facilities
+========================
+
+#. Review the health facility list and add / delete / rename / modify where necessary.
+   See sections :ref:`content/tutorials/10tutorial1:health facility deletion and
+   addition` and :ref:`content/tutorials/20tutorial2:adding a health facility with no location`.
+#. Mark if needed as not performing routine immunization. See section
+   :ref:`content/tutorials/30tutorial3:health facilities not performing ri`.
+#. Add potentially information about health facility equipment, staff, type etc.
+   See section :ref:`content/tutorials/10tutorial1:health facility details`.
+
+.. image:: /content/_images/hf_list_SOP.png
+    :align: center
+
+.. image:: /content/_images/hf_details_sop.png
+    :align: center
+
+------------------------------------
+
+Review Settlements
+===================
+
+#. Review the settlement list and modify / add / split / merge settlements where needed. See sections
+   :ref:`content/tutorials/30tutorial3:splitting a settlement` and :ref:`content/tutorials/30tutorial3:merging settlements`.
+#. Mark settlements as uninhabited if appropriate. See section :ref:`content/tutorials/30tutorial3:uninhabited settlements`.
+#. Add field estimated population if available as well as settlement attributes, if necessary.
+   See section :ref:`content/tutorials/10tutorial1:settlement details`.
+#. Rename machine generated settlements where possible. See section :ref:`content/tutorials/10tutorial1:settlement details`.
+#. Use the guides to potentially inform about decisions whether or not to split a settlement.
+   See sections :ref:`content/tutorials/20tutorial2:guides - distance`,
+   :ref:`content/tutorials/20tutorial2:guides - voronoi` and :ref:`content/tutorials/40tutorial4:review the settlement list / microplanning`.
+
+.. image:: /content/_images/settlements_sop.png
+    :align: center
+
+.. image:: /content/_images/settlement_detail_sop.png
+    :align: center
+
+.. image:: /content/_images/guides_sop.png
+    :align: center
+
+.. image:: /content/_images/split_sop.png
+    :align: center
+
+----------------------------------------
+
+Collect Missing Information
+===========================
+
+#. Collect the data that is still outstanding in a field data collection activity.
+   See section :ref:`content/tutorials/20tutorial2:field data collection`.
+#. Enter the data in the GMT
+
+The field data collection page:
+
+.. image:: /content/_images/FDC_sop.png
+    :align: center
+
+---------------------------------------
+
+Perform Microplanning
+=====================
+
+#. Either using a manual procedure or the computer based algorithm, proceed to microplanning.
+   See sections :ref:`content/tutorials/10tutorial1:perform microplanning`,
+   :ref:`content/tutorials/20tutorial2:perform microplanning`,
+   :ref:`content/tutorials/30tutorial3:perform microplanning` and :ref:`content/tutorials/40tutorial4:perform microplanning`.
+#. Fine-tune based on local knowledge if using the computer based algorithm.
+#. Ensure all settlements are claimed, and no over-allocation exist - no errors remain.
+#. Mark the catchment status for a health facility as complete.
+   See section :ref:`content/tutorials/10tutorial1:mark health facility catchment as complete`.
+
+Using the manual way - add all relevant information:
+
+.. image:: /content/_images/manual_sop.png
+    :align: center
+|
+The computer pre-generated microplan:
+
+.. image:: /content/_images/suggested_mp_sop.png
+    :align: center
+
+-----------------------------------
+
+Synchronize the Data
+=====================
+
+#. Ensure that you have connectivity
+#. Synchronize your changes back to the server. See section :ref:`content/sop/10sop:synchronize the data`.
+
+.. image:: /content/_images/sync_sop.png
+    :align: center
+
+---------------------------------
+
+Print the microplan PDF
+=======================
+
+#. Navigate back to the dashboard
+#. Print the microplan in PD_HF_wards. See section :ref:`content/sop/10sop:print the microplan pdf`.
+
+.. image:: /content/_images/print_sop.png
+    :align: center

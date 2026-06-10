@@ -1,0 +1,45 @@
+.severity {
+  font-size: 2em;
+  color: var(--accent-base);
+  text-transform: capitalize;
+
+  margin: .5em auto;
+}
+
+.summary {
+  margin: .5em auto;
+}
+
+.detail {
+  display: flex;
+  margin: .5em auto;
+
+  pre {
+    flex: 1;
+    font-size: .9em;
+    font-weight: 300;
+    line-height: 1.2em;
+    white-space: break-spaces;
+  max-height: 100px;
+  overflow: auto;
+  }
+
+  button {
+    flex: 0;
+    opacity: .5;
+
+    &:hover, &:focus, &:active {
+      opacity: 1;
+    }
+  }
+
+}
+
+.cancel {
+  position: absolute;
+  right: 3em;
+  top: 2em;
+  min-width: auto;
+  color: var(--accent-base);
+  cursor: pointer;
+}

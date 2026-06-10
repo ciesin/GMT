@@ -1,0 +1,63 @@
+.. GMT User Guide documentation master file, created by
+   sphinx-quickstart on Wed Nov 10 18:26:19 2021.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+
+Help for the Geospatial Microplanning Toolkit
+==============================================
+This help is  divided into four main sections:
+
+#. A section with background information
+#. A tutorial section
+#. A guide to the application
+#. A section recommending standard operating procedures (SOPs)
+
+The background section explains concepts used here and sheds some insights into
+some of the technical aspects behind the data used in this application.
+
+In the tutorial section, the user can approach the application step by step
+and learn the different aspects of it. It is recommended to start by this section.
+
+The guide is aimed to be utilized for reference when there are specific
+questions or certain functionalities need to be consulted in detail. This section
+also contains more details about the underlying technical aspects. The section is
+not complete at this point.
+
+The SOP section recommends a general approach to perform the microplanning in this
+application.
+
+If you have any questions or feedback about this application or the user guide, please
+do not hesitate to contact gmt@novel-t.ch.
+
+.. toctree::
+   :glob:
+   :caption: Background
+   :hidden:
+   :numbered:
+
+   content/background/*
+
+.. toctree::
+   :glob:
+   :caption: Tutorials
+   :hidden:
+   :numbered:
+
+   content/tutorials/*
+
+.. toctree::
+   :glob:
+   :caption: Guide to the GMT
+   :hidden:
+   :numbered:
+
+   content/guide/*
+
+.. toctree::
+   :glob:
+   :caption: Standard Operating Procedure
+   :hidden:
+   :numbered:
+
+   content/SOP/*

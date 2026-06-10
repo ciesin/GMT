@@ -1,0 +1,171 @@
+<div
+  *ngIf="featureDetails.type"
+  id="feature-details-container"
+  class="ol-map-button"
+>
+  <div [class]="'feature-details-content'">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          <span
+            [ngClass]="{
+              uninhabited: featureDetails.settlementDetails?.uninhabited
+            }"
+            >{{ featureDetails.name }}</span
+          >
+          <!--Wrap in matUI button for https://github.com/novelt/GMT/issues/2376-->
+          <!-- <fa-icon
+                    class="close-button"
+                    (click)="handleCancelDialog()"
+                    icon="close"
+                    size="1x"
+                ></fa-icon>
+            -->
+          <button
+            mat-button
+            (click)="handleCancelDialog()"
+            class="close-button"
+          >
+            <fa-icon icon="close" size="1x"></fa-icon>
+          </button>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <fa-icon
+            *ngIf="featureDetails.icon"
+            [icon]="featureDetails.icon"
+          ></fa-icon>
+          <div
+            *ngIf="featureDetails.subtitle"
+            [innerHTML]="featureDetails.subtitle"
+          ></div>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content class="details-content">
+        <div
+          *ngIf="featureDetails.additionalText"
+          [innerHTML]="featureDetails.additionalText"
+        ></div>
+        <div *ngIf="featureDetails.hfDetails as hfDetails">
+          <ul>
+            <ng-container *ngIf="!hfDetails.is_outreach">
+              <li>
+                <h6>MP Status</h6>
+                {{ hfDetails.mp_status }}
+              </li>
+              <li>
+                <h6>Primary Type</h6>
+                {{ hfDetails.primary_type }}
+              </li>
+              <li>
+                <h6>Total Outreach</h6>
+                {{ hfDetails.number_of_outreach }}
+              </li>
+              <li>
+                <h6>Total Staff</h6>
+                {{ hfDetails.number_of_staff }}
+              </li>
+              <!-- this is non-functional at the moment
+                <li><h6>Open days</h6> {{hfDetails.open_days.join(', ')}}</li>
+                -->
+              <li>
+                <h6>Services</h6>
+                {{ hfDetails.services }}
+              </li>
+            </ng-container>
+            <ng-container *ngIf="hfDetails.is_outreach">
+              <li>
+                <h6>Site Name</h6>
+                {{ hfDetails.outreach_name }}
+              </li>
+              <li>
+                <h6>Frequency</h6>
+                {{ hfDetails.frequency }}
+              </li>
+              <li>
+                <h6>Transport</h6>
+                {{ hfDetails.transport }}
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+        <div *ngIf="featureDetails.settlementDetails as settlementDetails">
+          <ul>
+            <li>
+              <h6>Computed Population</h6>
+              {{ formatPopulation(settlementDetails.computed_pop) }}
+            </li>
+            <li>
+              <h6>Field Estimated Population</h6>
+              {{ formatPopulation(settlementDetails.estimated_pop) }}
+            </li>
+            <li
+              *ngIf="
+                settlementDetails.problematic &&
+                settlementDetails.problematic.length > 0
+              "
+            >
+              <h6>Special Attention</h6>
+              {{ settlementDetails.problematic.join(", ") }}
+            </li>
+          </ul>
+        </div>
+
+        <div *ngIf="featureDetails.boundaryDetails as boundaryDetails">
+          <ul>
+            <li>
+              <h6>MP Completion</h6>
+              {{ boundaryDetails.mp_completion }}
+            </li>
+            <li>
+              <h6>Coverage</h6>
+              {{ boundaryDetails.coverage }}
+            </li>
+            <li>
+              <h6>Data Quality</h6>
+              {{ boundaryDetails.data_quality }}
+            </li>
+          </ul>
+        </div>
+
+        <!--        <button class="cancel" mat-button (click)="handleCancelDialog()">-->
+        <!--          <fa-icon icon="xmark"></fa-icon>-->
+        <!--        </button>-->
+        <!--        <br>-->
+        <!--        <p *ngIf="featureDetails.additionalText">-->
+        <!--        </p>-->
+      </mat-card-content>
+
+      <mat-card-actions align="end" *ngIf="showGoToDetailsButton">
+        <div
+          *ngIf="
+            featureDetails.catchmentInfo &&
+            featureDetails.catchmentInfo.pop >= 0
+          "
+          class="gmt-stats"
+        >
+          <div class="gmt-stats-text">
+            <span>{{
+              formatPopulation(featureDetails.catchmentInfo.pop)
+            }}</span>
+            <!--          <span>{{formatPercentage(100 - fullCoverageSett.percUnclaimed)}} %</span>-->
+          </div>
+          <gmt-catchment
+            mode="progressbar"
+            [type]="featureDetails.catchmentType!"
+            [total]="featureDetails.catchmentInfo.pop"
+            [fixedPost]="featureDetails.catchmentInfo.fixedPost"
+            [outreach]="featureDetails.catchmentInfo.outreach"
+            [unclaimed]="featureDetails.catchmentInfo.unclaimed"
+            [problematic]="featureDetails.catchmentInfo.problematic"
+          >
+          </gmt-catchment>
+        </div>
+        <button mat-button (click)="handleRedirectToFeature()">
+          <fa-icon icon="share"></fa-icon>
+          Go to Details
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

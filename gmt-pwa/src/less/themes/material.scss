@@ -1,0 +1,65 @@
+@use '@angular/material' as mat;
+
+@include mat.elevation-classes();
+@include mat.app-background();
+
+
+$default-palette: (
+	50: #E7EFEF,
+	100: #bedee6,
+	200: #9fc5d1,
+	300: #7facba,
+	400: #6599a8,
+	500: #4b8797,
+	600: #3f7786,
+	700: #316370,
+	800: #244f5b,
+	900: #123944,
+	A50: #fff2e0,
+	A100: #ffdfb1,
+	A200: #ffca7f,
+	A300: #ffb44b,
+	A400: #ffa324,
+	A500: #ff9300,
+	A600: #fd8700,
+	A700: #f77702,
+	A800: #f16603,
+	A900: #e84a04,
+	contrast: (50: rgba(black, 0.87),
+		100: rgba(black, 0.87),
+		200: rgba(black, 0.87),
+		300: rgba(black, 0.87),
+		400: rgba(black, 0.87),
+		500: rgba(black, 0.87),
+		600: rgba(black, 0.87),
+		700: rgba(black, 0.87),
+		800: rgba(black, 0.87),
+		900: rgba(black, 0.87),
+		A50: rgba(black, 0.87),
+		A100: rgba(black, 0.87),
+		A200: rgba(black, 0.87),
+		A300: rgba(black, 0.87),
+		A400: rgba(black, 0.87),
+		A500: rgba(black, 0.87),
+		A600: rgba(black, 0.87),
+		A700: rgba(black, 0.87),
+		A800: rgba(black, 0.87),
+		A900: rgba(black, 0.87),
+	)
+);
+
+
+$primary: mat.m2-define-palette($default-palette, 500);
+$secondary: mat.m2-define-palette($default-palette, A400, A100, A800);
+$typography: mat.m2-define-typography-config(
+	$font-family: 'Noto Sans',
+);
+
+
+$default-theme: mat.m2-define-light-theme((color: (primary: $primary, accent: $secondary),
+			typography: $typography,
+			density: 0,
+		));
+
+// @include mat.core-theme($default-theme);
+@include mat.all-component-themes($default-theme);

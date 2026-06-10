@@ -1,0 +1,32 @@
+.day-grid {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: 10px;
+  max-width: 300px;
+  margin-top: 5px;
+}
+
+.day-button {
+  border: none;
+  border-radius: 9999px;
+  padding: 10px 15px;
+  font-size: 14px;
+  background-color: #e6ebed;
+  color: #123b4d;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  span {
+    display: inline;
+
+    &.check {
+      margin-left: 5px;
+    }
+  }
+}
+
+.day-button.selected {
+  background-color: #e05915;
+  color: white;
+  font-weight: bold;
+}

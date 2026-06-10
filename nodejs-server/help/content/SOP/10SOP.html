@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1. Standard Operating Procedure for the GMT &mdash; GMT User Guide  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="1. Guide to the GMT" href="../guide/10complete_guide.html" />
+<link href="../../_static/style.css" rel="stylesheet" type="text/css">
+<link rel="manifest" href="./../../manifest.webmanifest">
+<script>
+    // Registering our Service worker
+    if ('serviceWorker' in navigator) {
+        let broadcastChannel = new BroadcastChannel('sw-messages');
+        console.log("sw:","../../sw.js");
+        navigator.serviceWorker.register("../../sw.js")
+        // navigator.serviceWorker.register('sw.js', { scope: "./" })
+        broadcastChannel.addEventListener('message', event => {
+            console.log('main Received', event.data);
+            if (event.data.cacheDone) {
+                localStorage['cacheDone'] = true;
+            }
+            if (event.data.reload) {
+                window.location.reload();
+            }
+        });
+
+        setInterval(async () => {
+            let fetchResp;
+            try {
+                fetchResp = await fetch("../../_static/version", {
+                    method: 'GET',
+                    headers: new Headers({
+                        'pragma': 'no-cache',
+                        'cache-control': 'no-cache',
+                    }),
+                });
+            }catch(error) {
+                console.log("New version detection impossible: ", error);
+            }
+            const serverVersion = await fetchResp.text();
+            const oldVersion = localStorage['version'];
+            const cache = await caches.open('GMT_DOC');
+            const keys = await cache.keys();
+            console.log("keys length:",keys.length);
+            if (serverVersion !== oldVersion || keys.length === 0
+                || ((localStorage['cacheDone']+"") === "false")) //bb: !localStorage['cacheDone'] not working. This is mysterious..
+            {
+                localStorage['version'] = serverVersion;
+                console.log("New version available: ", oldVersion, "=>", serverVersion);
+                localStorage['cacheDone'] = false;
+                broadcastChannel.postMessage({updateCache: true, oldVersion});
+            } else {
+                console.log("Current version :", oldVersion)
+            }
+        },5000);}
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+            <a href="../../index.html">
+            <img src="../../_static/GMT_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Background</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../background/10background.html">1. Background</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/10Tutorial1.html">1. Tutorial 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/20Tutorial2.html">2. Tutorial 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/30Tutorial3.html">3. Tutorial 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/40Tutorial4.html">4. Tutorial 4</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guide to the GMT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guide/10complete_guide.html">1. Guide to the GMT</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standard Operating Procedure</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Standard Operating Procedure for the GMT</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#access-and-download-the-data">1.1. Access and Download the Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#review-health-facilities">1.2. Review Health Facilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#review-settlements">1.3. Review Settlements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#collect-missing-information">1.4. Collect Missing Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#perform-microplanning">1.5. Perform Microplanning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#synchronize-the-data">1.6. Synchronize the Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#print-the-microplan-pdf">1.7. Print the microplan PDF</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GMT User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">1. </span>Standard Operating Procedure for the GMT</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="standard-operating-procedure-for-the-gmt">
+<h1><span class="section-number">1. </span>Standard Operating Procedure for the GMT<a class="headerlink" href="#standard-operating-procedure-for-the-gmt" title="Permalink to this headline"></a></h1>
+<section id="access-and-download-the-data">
+<h2><span class="section-number">1.1. </span>Access and Download the Data<a class="headerlink" href="#access-and-download-the-data" title="Permalink to this headline"></a></h2>
+<ol class="arabic simple">
+<li><p>Access the GMT on <a class="reference external" href="https://gmt-pilot.health">https://gmt-pilot.health</a></p></li>
+<li><p>Find your Ward of interest and take the data offline for the Ward(s) of interest</p></li>
+</ol>
+<p>See section <a class="reference internal" href="../tutorials/10Tutorial1.html#dashboard-and-taking-data-offline"><span class="std std-ref">Dashboard and taking data offline</span></a></p>
+<img alt="../../_images/access_download.png" class="align-center" src="../../_images/access_download.png" />
+</section>
+<hr class="docutils" />
+<section id="review-health-facilities">
+<h2><span class="section-number">1.2. </span>Review Health Facilities<a class="headerlink" href="#review-health-facilities" title="Permalink to this headline"></a></h2>
+<ol class="arabic simple">
+<li><p>Review the health facility list and add / delete / rename / modify where necessary.
+See sections <a class="reference internal" href="../tutorials/10Tutorial1.html#health-facility-deletion-and-addition"><span class="std std-ref">Health Facility deletion and addition</span></a> and <a class="reference internal" href="../tutorials/20Tutorial2.html#adding-a-health-facility-with-no-location"><span class="std std-ref">Adding a Health Facility with no location</span></a>.</p></li>
+<li><p>Mark if needed as not performing routine immunization. See section
+<a class="reference internal" href="../tutorials/30Tutorial3.html#health-facilities-not-performing-ri"><span class="std std-ref">Health facilities not performing RI</span></a>.</p></li>
+<li><p>Add potentially information about health facility equipment, staff, type etc.
+See section <a class="reference internal" href="../tutorials/10Tutorial1.html#health-facility-details"><span class="std std-ref">Health Facility details</span></a>.</p></li>
+</ol>
+<img alt="../../_images/hf_list_SOP.png" class="align-center" src="../../_images/hf_list_SOP.png" />
+<img alt="../../_images/hf_details_sop.png" class="align-center" src="../../_images/hf_details_sop.png" />
+</section>
+<hr class="docutils" />
+<section id="review-settlements">
+<h2><span class="section-number">1.3. </span>Review Settlements<a class="headerlink" href="#review-settlements" title="Permalink to this headline"></a></h2>
+<ol class="arabic simple">
+<li><p>Review the settlement list and modify / add / split / merge settlements where needed. See sections
+<a class="reference internal" href="../tutorials/30Tutorial3.html#splitting-a-settlement"><span class="std std-ref">Splitting a settlement</span></a> and <a class="reference internal" href="../tutorials/30Tutorial3.html#merging-settlements"><span class="std std-ref">Merging settlements</span></a>.</p></li>
+<li><p>Mark settlements as uninhabited if appropriate. See section <a class="reference internal" href="../tutorials/30Tutorial3.html#uninhabited-settlements"><span class="std std-ref">Uninhabited settlements</span></a>.</p></li>
+<li><p>Add field estimated population if available as well as settlement attributes, if necessary.
+See section <a class="reference internal" href="../tutorials/10Tutorial1.html#settlement-details"><span class="std std-ref">Settlement details</span></a>.</p></li>
+<li><p>Rename machine generated settlements where possible. See section <a class="reference internal" href="../tutorials/10Tutorial1.html#settlement-details"><span class="std std-ref">Settlement details</span></a>.</p></li>
+<li><p>Use the guides to potentially inform about decisions whether or not to split a settlement.
+See sections <a class="reference internal" href="../tutorials/20Tutorial2.html#guides-distance"><span class="std std-ref">Guides - Distance</span></a>,
+<a class="reference internal" href="../tutorials/20Tutorial2.html#guides-voronoi"><span class="std std-ref">Guides - Voronoi</span></a> and <a class="reference internal" href="../tutorials/40Tutorial4.html#review-the-settlement-list-microplanning"><span class="std std-ref">Review the Settlement list / Microplanning</span></a>.</p></li>
+</ol>
+<img alt="../../_images/settlements_sop.png" class="align-center" src="../../_images/settlements_sop.png" />
+<img alt="../../_images/settlement_detail_sop.png" class="align-center" src="../../_images/settlement_detail_sop.png" />
+<img alt="../../_images/guides_sop.png" class="align-center" src="../../_images/guides_sop.png" />
+<img alt="../../_images/split_sop.png" class="align-center" src="../../_images/split_sop.png" />
+</section>
+<hr class="docutils" />
+<section id="collect-missing-information">
+<h2><span class="section-number">1.4. </span>Collect Missing Information<a class="headerlink" href="#collect-missing-information" title="Permalink to this headline"></a></h2>
+<ol class="arabic simple">
+<li><p>Collect the data that is still outstanding in a field data collection activity.
+See section <a class="reference internal" href="../tutorials/20Tutorial2.html#field-data-collection"><span class="std std-ref">Field Data Collection</span></a>.</p></li>
+<li><p>Enter the data in the GMT</p></li>
+</ol>
+<p>The field data collection page:</p>
+<img alt="../../_images/FDC_sop.png" class="align-center" src="../../_images/FDC_sop.png" />
+</section>
+<hr class="docutils" />
+<section id="perform-microplanning">
+<h2><span class="section-number">1.5. </span>Perform Microplanning<a class="headerlink" href="#perform-microplanning" title="Permalink to this headline"></a></h2>
+<ol class="arabic simple">
+<li><p>Either using a manual procedure or the computer based algorithm, proceed to microplanning.
+See sections <a class="reference internal" href="../tutorials/10Tutorial1.html#perform-microplanning"><span class="std std-ref">Perform Microplanning</span></a>,
+<a class="reference internal" href="../tutorials/20Tutorial2.html#perform-microplanning"><span class="std std-ref">Perform microplanning</span></a>,
+<a class="reference internal" href="../tutorials/30Tutorial3.html#perform-microplanning"><span class="std std-ref">Perform Microplanning</span></a> and <a class="reference internal" href="../tutorials/40Tutorial4.html#perform-microplanning"><span class="std std-ref">Perform Microplanning</span></a>.</p></li>
+<li><p>Fine-tune based on local knowledge if using the computer based algorithm.</p></li>
+<li><p>Ensure all settlements are claimed, and no over-allocation exist - no errors remain.</p></li>
+<li><p>Mark the catchment status for a health facility as complete.
+See section <a class="reference internal" href="../tutorials/10Tutorial1.html#mark-health-facility-catchment-as-complete"><span class="std std-ref">Mark health facility catchment as complete</span></a>.</p></li>
+</ol>
+<p>Using the manual way - add all relevant information:</p>
+<img alt="../../_images/manual_sop.png" class="align-center" src="../../_images/manual_sop.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The computer pre-generated microplan:</p>
+<img alt="../../_images/suggested_mp_sop.png" class="align-center" src="../../_images/suggested_mp_sop.png" />
+</section>
+<hr class="docutils" />
+<section id="synchronize-the-data">
+<h2><span class="section-number">1.6. </span>Synchronize the Data<a class="headerlink" href="#synchronize-the-data" title="Permalink to this headline"></a></h2>
+<ol class="arabic simple">
+<li><p>Ensure that you have connectivity</p></li>
+<li><p>Synchronize your changes back to the server. See section <a class="reference internal" href="#synchronize-the-data"><span class="std std-ref">Synchronize the Data</span></a>.</p></li>
+</ol>
+<img alt="../../_images/sync_sop.png" class="align-center" src="../../_images/sync_sop.png" />
+</section>
+<hr class="docutils" />
+<section id="print-the-microplan-pdf">
+<h2><span class="section-number">1.7. </span>Print the microplan PDF<a class="headerlink" href="#print-the-microplan-pdf" title="Permalink to this headline"></a></h2>
+<ol class="arabic simple">
+<li><p>Navigate back to the dashboard</p></li>
+<li><p>Print the microplan in PD_HF_wards. See section <a class="reference internal" href="#print-the-microplan-pdf"><span class="std std-ref">Print the microplan PDF</span></a>.</p></li>
+</ol>
+<img alt="../../_images/print_sop.png" class="align-center" src="../../_images/print_sop.png" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../guide/10complete_guide.html" class="btn btn-neutral float-left" title="1. Guide to the GMT" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Novel-T.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

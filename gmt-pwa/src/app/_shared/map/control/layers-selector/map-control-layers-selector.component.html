@@ -1,0 +1,61 @@
+<div id="gmt-legend">
+	<header class="gmt-legend--header">
+    <h5 class="heading">
+      <fa-icon
+        class="v-align-middle road-icon"
+        icon="layer-group"
+        size="1x"
+      ></fa-icon>
+      Map Layers
+    </h5>
+    <button mat-button class="gmt-legend--close" (click)="handleCancelDialog()">
+      <fa-icon
+        class="v-align-middle road-icon"
+        icon="close">
+      </fa-icon>
+    </button>
+  </header>
+  <div class="gmt-legend--body">
+    <ng-container *ngFor="let layer of mapLayers">
+      <section *ngIf="layer.label !== 'POPULATION'">
+        <header>
+          <mat-checkbox
+            [checked]="layer.allChecked"
+            [indeterminate]="someChecked(layer)"
+            (change)="setAll(layer, $event.checked)"
+          >
+            <h5 class="small-text">{{layer.label}}</h5>
+          </mat-checkbox>
+        </header>
+    		<ul>
+          <ng-container *ngFor="let sublayer of layer.items">
+            <li *ngIf="sublayer.checked !== null">
+              <mat-checkbox
+                [(ngModel)]="sublayer.checked"
+                (ngModelChange)="updateChecked(layer)"
+                [class.is-pop]="sublayer.label === 'Population'"
+              >
+                  <mat-icon
+                    *ngIf="sublayer.icon && sublayer.icon.length > 0"
+                    class="v-align-middle"
+                    svgIcon="{{sublayer.icon}}"></mat-icon>
+                  <mat-icon
+                    *ngIf="sublayer.icon === 'hf'"
+                    class="v-align-middle"
+                    svgIcon="outreach"></mat-icon>
+                  <fa-icon
+                    *ngIf="!sublayer.icon && sublayer.label !== 'Population'"
+                    class="v-align-middle road-icon"
+                    icon="road"></fa-icon>
+                  <img
+                    *ngIf="sublayer.label === 'Population'"
+                    src="../assets/icons/map-markers/pop_legend_short.svg"/>
+                  <h6>{{sublayer.label}}</h6>
+              </mat-checkbox>
+            </li>
+          </ng-container>
+    		</ul>
+    	</section>
+    </ng-container>
+  </div>
+</div>

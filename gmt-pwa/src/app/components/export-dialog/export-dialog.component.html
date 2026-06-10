@@ -1,0 +1,114 @@
+<h4 mat-dialog-title>
+  <fa-icon icon="file-export"></fa-icon> Export Map and Data
+</h4>
+
+<!--Wrap in matUI button for https://github.com/novelt/GMT/issues/2376-->
+<!-- <fa-icon mat-dialog-close icon="close" class="cancel"></fa-icon> -->
+<button mat-dialog-close mat-button class="cancel">
+    <fa-icon icon="close"></fa-icon>
+</button>
+
+<mat-dialog-content>
+  <mat-expansion-panel class="sub-sub-expansion">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Selected Wards ({{wards.length.toLocaleString()}})
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="list-of-wards">
+      <div *ngFor="let ward of wards; trackBy: indentifyWard" class="boundary">
+        <div class="parent-admins">
+          <span *ngFor="let parent of getWardHierarchy(ward).slice(1)"
+            >{{parent}}</span
+          >
+        </div>
+        <span>{{ward.label}}</span>
+      </div>
+    </div>
+  </mat-expansion-panel>
+
+  <div>
+
+
+    <section>
+      <h5><fa-icon icon="map"></fa-icon> Map Settings</h5>
+      <div>
+        <mat-checkbox
+          name="generatePdf"
+          [(ngModel)]="exportOptions.generatePdf"
+          >Export Map</mat-checkbox
+        >
+        <div>
+          <mat-checkbox
+            name="hfPage"
+            [(ngModel)]="exportOptions.hfPage"
+            >One detail page per Health Facility</mat-checkbox
+          >
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h5><fa-icon icon="table"></fa-icon> Data Settings</h5>
+      <div>
+        <mat-checkbox
+          name="generateExcel"
+          [(ngModel)]="exportOptions.generateExcel"
+          >Export spreadsheet</mat-checkbox
+        >
+      </div>
+      <div>
+        <mat-checkbox
+          name="generateExcel"
+          [(ngModel)]="exportOptions.generateExcelServerSide"
+          >Export spreadsheet Server Side</mat-checkbox
+        >
+      </div>
+      <div>
+        <mat-checkbox
+          name="boundariesSingle"
+          [(ngModel)]="exportOptions.boundariesSingle"
+
+          >Separate file for each boundary</mat-checkbox
+        >
+      </div>
+      <div>
+        <mat-checkbox
+          name="gdbExport"
+          [(ngModel)]="exportOptions.gdbExport"
+          [disabled]="!isOnline || !loggedIn"
+          >Export gdb file</mat-checkbox
+        >
+      </div>
+      <div>
+        <mat-checkbox
+          name="generateRew"
+          [(ngModel)]="exportOptions.generateRew"
+          >Export REW</mat-checkbox
+        >
+      </div>
+      <div>
+        <mat-checkbox
+          name="generateRewServerSide"
+          [(ngModel)]="exportOptions.generateRewServerSide"
+          >Export REW (Server side)</mat-checkbox
+        >
+      </div>
+
+    </section>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-flat-button
+    (click)="handleExportClicked()"
+    [disabled]="!exportOptions.atLeastOneDataExportSelected"
+  >
+    <fa-icon icon="file-export"></fa-icon>
+    <span class="label">Export</span>
+  </button>
+</mat-dialog-actions>
+
+<ng-container #dynamicContainer></ng-container>

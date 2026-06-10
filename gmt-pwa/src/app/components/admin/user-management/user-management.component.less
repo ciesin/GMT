@@ -1,0 +1,83 @@
+@import "src/shared";
+@import "src/app/components/gmt-header/breadcrumb/breadcrumb.component.less";
+
+:host{
+
+  .tableTitle{
+    padding-right: 3rem;
+    font-weight: bold;
+  }
+  .icon {
+    align-items: center;
+    padding-right: 0.5rem;
+  }
+  .dashboard-container {
+    display: block;
+    height: 100%;
+    position: relative;
+    overflow-y: auto;
+
+    & > * {
+      flex: 1;
+    }
+    .fileInput {
+      display: none;
+    }
+    .controlsAboveTable {
+      display: flex;
+      padding: 1rem 2rem;
+      color: @color-secondary;
+      background: linear-gradient(var(--base-pale), var(--base-light) 40%);
+
+      .alignRightButton{
+        margin-left: auto;
+      }
+
+      .controlButton {
+        align-items: center;
+        display: flex;
+        margin: 0 2vh 1vh 2vh;
+        .active{
+          background-color: #687699;
+          color: #FFFFFF;
+        }
+      }
+    }
+    .textButton{
+      color: @color-secondary;
+      border-radius: 0.8rem;
+    }
+    .save{
+      color: @color-primary;
+      outline-color: @color-primary;
+      padding: 1.5rem;
+    }
+
+  }
+  .footer{
+    width: 95%;
+    margin-left: 3rem;
+    overflow-y: auto;
+    display: flex;
+    background-color: #FFFFFF;
+    align-items: center;
+    height: 15vh;
+    position: absolute;
+    top: 85%;
+    .alignRightButton{
+      margin-left: auto;
+    }
+    .cancel{
+      .gmtTextButton();
+    }
+    .saveFooter{
+      .primaryButton();
+    }
+  }
+}
+
+::ng-deep {
+  main {
+    width: unset !important;
+  }
+}

@@ -1,0 +1,104 @@
+<div *ngIf="mode === 'progressbar'; else detailed" class="progressbars">
+  <div class="progressbar">
+    <div
+      *ngIf="fixedPostPercent"
+      class="fixed"
+      [ngStyle]="{flexBasis: fixedPostPercent + '%' }"
+    ></div>
+    <div
+      *ngIf="outreachPercent"
+      class="outreach"
+      [ngStyle]="{flexBasis: outreachPercent + '%' }"
+    ></div>
+    <div
+      *ngIf="unclaimedPercent"
+      class="unclaimed"
+      [ngStyle]="{flexBasis: unclaimedPercent + '%' }"
+    ></div>
+  </div>
+  <div class="progressbar">
+    <div
+      *ngIf="problematicPercent"
+      class="problems"
+      [ngStyle]="{flexBasis: problematicPercent + '%' }"
+    ></div>
+  </div>
+</div>
+
+<ng-template #detailed>
+  <ng-template #coverageHeaderHf>
+    <h6>Catchment Distribution</h6>
+  </ng-template>
+  <ng-template #coverageHeaderSettlement>
+    <h6>Coverage by Catchment</h6>
+  </ng-template>
+  <ng-template #focusHf>
+    <ng-container *ngIf="settlementCountProblematic > 0">
+        <div class="catchment-header">
+          <h6>Special Attention</h6>
+        </div>
+        <gmt-catchment-chip
+        color="var(--settlements-special)"
+        title=""
+        [icon]="hardToReachIcon"
+        [value]="settlementCountProblematic + ' settlement(s)'"
+        class="align-left special-attention"
+        ></gmt-catchment-chip>
+    </ng-container>
+  </ng-template>
+  <ng-template #focusSettlement>
+    <ng-container *ngIf="(settlementProblems && settlementProblems.length > 0) || unclaimedPercent > 0">
+        <div class="catchment-header">
+            <h6>Special Attention</h6>
+        </div>
+        <div class="catchment-chips">
+        <div class="problematic">
+            <fa-icon icon="person-circle-exclamation"></fa-icon>
+            <span class="small-text"
+            >{{getProblemStr()}}</span
+            >
+        </div>
+        <div class="unclaimed">
+            <fa-icon icon="person-circle-question"></fa-icon>
+            <span class="value">
+            <h4>{{formatPercentage(unclaimedPercent)}}</h4>
+            <span>Unclaimed</span>
+            </span>
+        </div>
+        </div>
+    </ng-container>
+  </ng-template>
+
+  <div class="detailed">
+    <div class="detailed-catchment">
+      <div class="catchment-header">
+        <ng-container
+          *ngTemplateOutlet="type === 'hf' ?  coverageHeaderHf : coverageHeaderSettlement"
+        ></ng-container>
+      </div>
+      <div class="catchment-chips">
+        <gmt-catchment-chip
+          color="var(--catchment-fixed)"
+          title="Fixed Post"
+          [icon]="fixedPostIcon"
+          [value]="formatPercentage(fixedPostPercent)"
+          [detailValue]="settlementCountFixedPost"
+          [detailIcon]="settlementIcon"
+        ></gmt-catchment-chip>
+        <gmt-catchment-chip
+          color="var(--catchment-outreach)"
+          title="Outreach Post"
+          [icon]="outreachIcon"
+          [value]="formatPercentage(outreachPercent)"
+          [detailValue]="settlementCountOutreach"
+          [detailIcon]="settlementIcon"
+        ></gmt-catchment-chip>
+      </div>
+    </div>
+    <div class="detailed-catchment">
+      <ng-container
+        *ngTemplateOutlet="type === 'hf' ? focusHf : focusSettlement"
+      ></ng-container>
+    </div>
+  </div>
+</ng-template>

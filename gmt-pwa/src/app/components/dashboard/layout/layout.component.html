@@ -1,0 +1,38 @@
+<mat-drawer-container hasBackdrop="false" autosize="true"> -->
+  <!-- <mat-drawer #leftPanel mode="side" opened (onPositionChanged)="handleLeftPanelMoved()" (openedChange)="handleLeftPanelMoved()"> -->
+  <mat-drawer #leftPanel mode="side" opened disableClose>
+    <!-- <mat-tab-group animationDuration="0ms" (selectedTabChange)="onChangeTab($event)" [selectedIndex]="selectedIndex"> -->
+    <div class="left-wrapper">
+      {{ '' // left panel content }}
+      <mat-tab-group animationDuration="0ms" [selectedIndex]="selectedIndex" (selectedTabChange)="onChangeTab($event)">
+        <mat-tab *ngFor="let tab of tabs; trackBy: trackByFn">
+          <ng-template mat-tab-label>
+            <fa-icon *ngIf="tab.faIcon" [icon]="tab.faIcon" [ngClass]="tab.name"></fa-icon>
+            <span>{{tab.label}}</span>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+
+      <div class="tab-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+
+  </mat-drawer>
+
+  <mat-drawer-content>
+    {{ '' // map }}
+
+    <div class="header">
+      <button class="toggle-panel primary" (click)="leftPanel.toggle()">
+        <fa-icon [icon]="leftPanel.opened ? 'angles-left': 'angles-right'"></fa-icon>
+      </button>
+      <gmt-header></gmt-header>
+    </div>
+    <boundary-map #mapPanel></boundary-map>
+    <!-- <app-loading [loading]="loadingService.isMapLoading()">
+
+    </app-loading> -->
+  </mat-drawer-content>
+
+</mat-drawer-container>

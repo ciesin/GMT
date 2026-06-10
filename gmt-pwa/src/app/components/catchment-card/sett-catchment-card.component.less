@@ -1,0 +1,18 @@
+@import "src/less/settlement.less";
+
+:host {
+  display: block;
+}
+
+mat-expansion-panel.mat-expansion-panel
+  mat-expansion-panel-header.mat-expansion-panel-header
+  .mat-expansion-panel-header-title {
+  &.has-problematic {
+    color: var(--settlements-special);
+
+    fa-icon {
+      color: inherit;
+    }
+  }
+}
+
