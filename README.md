@@ -1,5 +1,5 @@
 # Geospatial Microplanning Toolkit
-![image](./readme_images/logo.png)
+![image](./gmt-pwa/src/assets/icons/logo/prod-192.png)
 
 # Overview
 
@@ -63,6 +63,8 @@ For the rest of the steps, it is assumed your are in a terminal at the root, e.g
 Go to https://wopr.worldpop.org/?NGA/Population/
 
 and download the latest "Gridded population estimates (~100m) for Nigeria"
+
+Put it in the repo under `<repo root>/importer/data/rasters/input/pop_4326.tif`
 
 ## 5. Data
 
